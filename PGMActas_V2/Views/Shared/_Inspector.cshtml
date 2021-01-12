@@ -1,0 +1,23 @@
+﻿
+@{
+    ViewBag.Title = "_Inspector";
+}
+
+@using (Ajax.BeginForm("InspectoresResultado", "Acta", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST",
+    UpdateTargetId = "tablaInspectores"
+
+}))
+{
+    <p>
+        Buscar por id, nombre o apellido: @Html.TextBox("searchString")
+        <input type="submit" id="search" class="btn btn-success btn-xs" value="Buscar" />
+    </p>
+}
+
+
+<div id="tablaInspectores">
+</div>
+

@@ -1,0 +1,23 @@
+﻿
+@{
+    ViewBag.Title = "_Ordenanza";
+}
+
+@using (Ajax.BeginForm("OrdenanzasResultado", "Acta", new AjaxOptions
+{
+    InsertionMode = InsertionMode.Replace, 
+    HttpMethod = "POST",
+    UpdateTargetId = "tablaOrdenanzas"//,
+                                 
+}))
+{
+<p>
+    Buscar por código, nomenclatura o descripción: @Html.TextBox("searchString")
+    <input type="submit" id="search" class="btn btn-success btn-xs" value="Buscar" />
+</p>
+}
+
+
+<div id="tablaOrdenanzas">
+</div>
+

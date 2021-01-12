@@ -1,0 +1,151 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title> Gestión de Actas </title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="~/assets/img/baseline_directions_car_white_18dp.png" />
+    <!--     Fonts and icons     -->
+    <link rel="stylesheet" type="text/css"
+          href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
+
+    <!-- CSS Files -->
+    <link href="~/assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/assets/css/material-bootstrap-wizard.css" rel="stylesheet" />
+
+    <!-- CSS Just for demo purpose, don't include it in your project -->
+    <link href="~/assets/css/demo.css" rel="stylesheet" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-fixed-top" style="padding-right: 100px;">
+
+            <a class="navbar-brand" onclick="window.location.href = '@Url.Action("Index", "Home")'" title="Municipalidad Sarasa" aria-label="Municipalidad Sarasa" style="cursor:pointer">
+                Municipalidad Sarasa
+            </a>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li class="nav-item ml-xl-2">
+                    <a class="nav-link scroll" onclick="window.location.href = '@Url.Action("Index", "Home")'" title="Inicio" aria-label="Inicio" style="cursor:pointer">
+                        Inicio
+                    </a>
+                </li>
+                <li class="nav-item ml-xl-2">
+                    <a class="nav-link scroll" onclick="window.location.href = '@Url.Action("CargarActa", "Acta")'" title="Cargar" aria-label="Cargar" style="cursor:pointer">
+                        Cargar
+                    </a>
+                </li>
+                <li class="nav-item ml-xl-2">
+                    <a class="nav-link scroll" onclick="window.location.href = '@Url.Action("InicioSesion", "Usuario")'" title="Iniciar Sesión" aria-label="Iniciar Sesión" style="cursor:pointer">
+                        Consultar
+                    </a>
+                </li>
+                <li class="nav-item ml-xl-2">
+                    <a class="nav-link scroll" onclick="window.location.href = '@Url.Action("InicioSesion", "Usuario")'" title="Iniciar Sesión" aria-label="Iniciar Sesión" style="cursor:pointer">
+                        Modificar
+                    </a>
+                </li>
+                <li class="nav-item ml-xl-2">
+                    <a class="nav-link scroll" onclick="window.location.href = '@Url.Action("InicioSesion", "Usuario")'" title="Iniciar Sesión" aria-label="Iniciar Sesión" style="cursor:pointer">
+                        Asignar actas
+                    </a>
+                </li>
+
+            </ul>
+
+        </nav>
+        <script src="~/assets/js/jquery-2.2.4.min.js" type="text/javascript"></script>
+        
+
+
+    </header>
+    @RenderBody()
+    <!--   Core JS Files   -->
+
+    <script src="~/assets/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="~/assets/js/jquery.bootstrap.js" type="text/javascript"></script>
+
+    <!--  Plugin for the Wizard -->
+    <script src="~/assets/js/material-bootstrap-wizard.js"></script>
+
+    <!--  More information about jquery.validate here: http://jqueryvalidation.org/	 -->
+    <script src="~/assets/js/jquery.validate.min.js"></script>
+
+    <!-- <script src="~/Scripts/jquery-1.7.1.min.js" type="text/javascript"></script>-->
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js" type="text/javascript"></script>
+
+
+    <script>
+        $(function () {
+            $('#btnInspectores').click(function () {
+                $('#modalInspectores').modal('toggle');
+                $.ajax({
+                    url: "@(Url.Action("Inspector", "Acta"))",
+                    type: 'GET',
+                    cache: false,
+                    success: function (result) {
+                        $('#divInspector').html(result);
+                    }
+                });
+                return false;
+            });
+        });
+
+        //Función Ordenanza
+                $(function () {
+                    $('#btnOrdenanzas').click(function () {
+                        $('#modalOrdenanzas').modal('toggle');
+                $.ajax({
+                    url: "@(Url.Action("Ordenanza", "Acta"))",
+                    type: 'GET',
+                    cache: false,
+                    success: function (result) {
+                        $('#divOrdenanzas').html(result);
+                    }
+                });
+                return false;
+                     });
+               });
+
+        //Función día actual
+           $(function () {
+
+                        var today = new Date();
+                        var dd = String(today.getDate()).padStart(2, '0');
+                        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+                        var yyyy = today.getFullYear();
+                        today = yyyy + '-' + mm + '-' + dd;
+
+
+               document.getElementById("fechaCarga").setAttribute("max", today);
+               document.getElementById("fecha").setAttribute("max", today);
+               $('#btnFechaCarga').click(function () {
+                   $("#fechaCarga").attr("value", today);
+                   $("#fechaCarga").val(today);
+                    });
+
+                return false;
+            });
+
+        //Función hora actual
+        $(function () {
+            $('#btnHoraCarga').click(function () {
+                var currentdate = new Date();
+                var datetime = currentdate.getHours() + ":" + currentdate.getMinutes();
+                $("#horaCarga").attr("value", datetime);
+                $("#horaCarga").val(datetime);
+            });
+
+            return false;
+        });
+
+        //Función solo números 
+       
+
+    
+    </script>
+
+</body>
+</html>

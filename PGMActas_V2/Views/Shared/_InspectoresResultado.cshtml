@@ -1,0 +1,52 @@
+﻿@model IEnumerable<PGMActas_V2.Models.Inspector>
+@{
+    ViewBag.Title = "_InspectoresResultado";
+}
+
+
+<div style="display:grid">
+    <table>
+        <thead>
+            <tr class="table100-head" style="border-bottom: 2px solid #4caf50">
+                <th class="column1" style="padding: 0.3rem">ID</th>
+                <th class="column2" style="padding: 0.3rem"> Nombre </th>
+                <th class="column3" style="padding: 0.3rem"> Habilitado </th>
+                <th class="column5" style="padding: 0.3rem"> Seleccionar </th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var inspector in Model)
+            {
+                <tr>
+                    <td>@inspector.id_inspector</td>
+                    <td>@inspector.persona.nombre @inspector.persona.apellido</td>
+                    <td>@(inspector.habilitado ? "Sí" : "No")</td>
+      
+
+                          <td>
+      
+                              <button class="btn btn-success btn-xs" id="@inspector.persona.nombre @inspector.persona.apellido">
+                            Llenar
+                        </button>
+                    </td>
+
+
+
+                </tr>
+            }
+
+
+        </tbody>
+    </table>
+</div>
+<script type="text/javascript">
+        $(document).ready(function () {
+
+            $('button.btn-success').click(function () {
+                var s = $(this).attr('id');
+                $("#inspectorID").attr("value", s);
+            })
+        });
+
+</script>

@@ -1,0 +1,55 @@
+﻿@model IEnumerable<PGMActas_V2.Models.Ordenanza>
+@{
+    ViewBag.Title = "_OrdenanzasResultado";
+}
+
+
+<div style="display:grid">
+    <table>
+        <thead>
+            <tr class="table100-head" style="border-bottom: 2px solid #4caf50">
+                <th class="column1" style="padding: 0.3rem">Código</th>
+                <th class="column2" style="padding: 0.3rem"> Nomenclatura </th>
+                <th class="column3" style="padding: 0.3rem"> Descripcion </th>
+                <th class="column4" style="padding: 0.3rem"> Estado </th>
+                <th class="column5" style="padding: 0.3rem"> Calificación </th>
+                <th class="column5" style="padding: 0.3rem"> Seleccionar </th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var ordenanza in Model)
+            {
+                <tr>
+                    <td>@ordenanza.codigo_ordenanza</td>
+                    <td>@ordenanza.nomenclatura</td>
+                    <td>@ordenanza.descripcion</td>
+                    <td>@(ordenanza.estado? "Vigente":"No Vigente")</td>
+                    <td>@ordenanza.calificacion</td>
+
+
+                    <td>
+                        <button class="btn btn-success btn-xs" id="@ordenanza.nomenclatura">
+                            Llenar
+                        </button>
+                    </td>
+
+
+
+                </tr>
+            }
+
+
+        </tbody>
+    </table>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('button.btn-success').click(function () {
+                var s = $(this).attr('id');
+                $("#ordenanzaID").attr("value", s);
+            })
+        });
+
+    </script>
