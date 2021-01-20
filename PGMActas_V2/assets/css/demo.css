@@ -531,6 +531,13 @@ body {
     -o-transition: all 150ms ease 0s;
     -ms-transition: all 150ms ease 0s;
     transition: all 150ms ease 0s;
+    padding-right: 100px;
+}
+@media only screen and (max-width: 768px) {
+    .navbar {
+      
+        padding-right: 0 !important;
+    }
 }
 
     .navbar .navbar-brand {
@@ -743,4 +750,35 @@ footer .pull-center {
 }
 .btn {
     border-radius: 30px;
+}
+
+
+@media (max-width: 800px) {
+    .modal-content {
+        height: 300px;
+        overflow-x: auto;
+    }
+   
+    .modal-content {
+        width: auto !important;
+    }
+    
+}
+
+@media (max-width: 600px) {
+    .collapse {
+        float: left !important;
+    }
+    .navbar-collapse {
+        float: left !important;
+    }
+
+    .imgInicio {
+        display: none !important;
+    }
+    .tab-content {
+        display: flex;
+        justify-content: center;
+    }
+
 }

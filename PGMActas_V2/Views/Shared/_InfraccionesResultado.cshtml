@@ -1,6 +1,6 @@
-﻿@model IEnumerable<PGMActas_V2.Models.Ordenanza>
+﻿@model IEnumerable<PGMActas_V2.Models.Infraccion>
 @{
-    ViewBag.Title = "_OrdenanzasResultado";
+    ViewBag.Title = "_InfraccionesResultado";
 }
 
 
@@ -18,18 +18,18 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var ordenanza in Model)
+            @foreach (var infraccion in Model)
             {
                 <tr>
-                    <td>@ordenanza.codigo_ordenanza</td>
-                    <td>@ordenanza.nomenclatura</td>
-                    <td>@ordenanza.descripcion</td>
-                    <td>@(ordenanza.estado? "Vigente":"No Vigente")</td>
-                    <td>@ordenanza.calificacion</td>
+                    <td>@infraccion.codigo_infraccion</td>
+                    <td>@infraccion.nomenclatura</td>
+                    <td>@infraccion.descripcion</td>
+                    <td>@(infraccion.estado? "Vigente":"No Vigente")</td>
+                    <td>@infraccion.calificacion</td>
 
 
                     <td>
-                        <button class="btn btn-success btn-xs" id="@ordenanza.nomenclatura">
+                        <button class="btn btn-success btn-xs" id="@infraccion.nomenclatura|@infraccion.codigo_infraccion">
                             Llenar
                         </button>
                     </td>
@@ -48,7 +48,9 @@
 
             $('button.btn-success').click(function () {
                 var s = $(this).attr('id');
-                $("#ordenanzaID").attr("value", s);
+                s = s.split('|');
+                $("#infraccionID").val(s[0]);
+                $("#codigoinfraccionID").val(s[1]);
             })
         });
 

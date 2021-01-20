@@ -121,26 +121,42 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\ActaController.cs" />
+    <Compile Include="Controllers\AutomotorController.cs" />
+    <Compile Include="Controllers\FormularioController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PersonaController.cs" />
+    <Compile Include="DataAccess\AutomotorDA.cs" />
+    <Compile Include="DataAccess\FormularioDA.cs" />
     <Compile Include="DataAccess\InspectorDA.cs" />
-    <Compile Include="DataAccess\OrdenanzaAD.cs" />
-    <Compile Include="DataAccess\PaisAD.cs" />
+    <Compile Include="DataAccess\InfraccionDA.cs" />
+    <Compile Include="DataAccess\PersonaDA.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Acta.cs" />
+    <Compile Include="Models\Articulo.cs" />
     <Compile Include="Models\Automotor.cs" />
+    <Compile Include="Models\AutomotorxPersona.cs" />
+    <Compile Include="Models\DatosFormulario.cs" />
+    <Compile Include="Models\GrupoInfraccion.cs" />
+    <Compile Include="Models\InfraccionForm.cs" />
+    <Compile Include="Models\InfraccionxActa.cs" />
+    <Compile Include="Models\InfractoresForm.cs" />
     <Compile Include="Models\Inspector.cs" />
-    <Compile Include="Models\Ordenanza.cs" />
+    <Compile Include="Models\Normativa.cs" />
+    <Compile Include="Models\Operador.cs" />
+    <Compile Include="Models\Infraccion.cs" />
     <Compile Include="Models\Persona.cs" />
+    <Compile Include="Models\PersonaForm.cs" />
+    <Compile Include="Models\PersonaInfraccionxActa.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModels\Localidad.cs" />
-    <Compile Include="ViewModels\Marcas.cs" />
-    <Compile Include="ViewModels\Pais.cs" />
-    <Compile Include="ViewModels\Provincia.cs" />
-    <Compile Include="ViewModels\ResponsabilidadLegal.cs" />
-    <Compile Include="ViewModels\TipoDocumentos.cs" />
-    <Compile Include="ViewModels\TipoVehiculo.cs" />
+    <Compile Include="ViewModels\LocalidadItemVM.cs" />
+    <Compile Include="ViewModels\MarcaItemVM.cs" />
+    <Compile Include="ViewModels\PaisItemVM.cs" />
+    <Compile Include="ViewModels\ProvinciaItemVM.cs" />
+    <Compile Include="ViewModels\ResponsabilidadLegalItemVM.cs" />
+    <Compile Include="ViewModels\TipoDocumentoItemVM.cs" />
+    <Compile Include="ViewModels\TipoVehiculoItemVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="assets\css\bootstrap.min.css" />
@@ -168,6 +184,7 @@
     <Content Include="assets\js\jquery.bootstrap.js" />
     <Content Include="assets\js\jquery.validate.min.js" />
     <Content Include="assets\js\material-bootstrap-wizard.js" />
+    <Content Include="assets\js\principal.js" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -228,15 +245,21 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Acta\CargarActa.cshtml" />
-    <Content Include="Views\Shared\_Paises.cshtml" />
-    <Content Include="Views\Shared\_PaisesResultado.cshtml" />
-    <Content Include="Views\Shared\_Ordenanza.cshtml" />
-    <Content Include="Views\Shared\_OrdenanzasResultado.cshtml" />
+    <Content Include="Views\Shared\_Infraccion.cshtml" />
+    <Content Include="Views\Shared\_InfraccionesResultado.cshtml" />
     <Content Include="Views\Shared\_Inspector.cshtml" />
     <Content Include="Views\Shared\_InspectoresResultado.cshtml" />
+    <Content Include="Views\Shared\_Automotor.cshtml" />
+    <Content Include="Views\Shared\_AutomotoresResultado.cshtml" />
+    <Content Include="Views\Shared\_Persona.cshtml" />
+    <Content Include="Views\Shared\_PersonasResultado.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Automotor\" />
+    <Folder Include="Views\Formulario\" />
+    <Folder Include="Views\Persona\" />
+    <Folder Include="Views\Prueba\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

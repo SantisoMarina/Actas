@@ -1,0 +1,174 @@
+﻿@model IEnumerable<PGMActas_V2.Models.Automotor>
+@{
+    ViewBag.Title = "_AutomotoresResultado";
+}
+
+
+<div style="display:grid">
+    <table>
+        <thead>
+            <tr class="table100-head" style="border-bottom: 2px solid #4caf50">
+                <th class="column1" style="padding: 0.3rem"> Nro Dominio </th>
+                <th class="column2" style="padding: 0.3rem"> Tipo vehículo </th>
+                <th class="column3" style="padding: 0.3rem"> Marca </th>
+                <th class="column3" style="padding: 0.3rem"> Modelo </th>
+                <th class="column3" style="padding: 0.3rem"> Color </th>
+                <th class="column5" style="padding: 0.3rem"> Seleccionar </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var automotor in Model)
+            {
+                <tr>
+                    <td>@automotor.numero_dominio</td>
+                    <td>@automotor.tipoVehiculo.tipo_vehiculo</td>
+                    <td>@automotor.marca.marca</td>
+                    <td>@automotor.modelo</td>
+                    <td>@automotor.color</td>
+                    <td>
+
+                        <button class="btn btn-success btn-xs visualizarDetalle" id="@automotor.id_automotor">
+                            Llenar
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('button.visualizarDetalle').click(function () {
+            var idAutomotor = $(this).attr('id');
+           //$.get(URL,data,function(data,status,xhr),dataType)
+           $.get(
+                "@Url.Action("ObtenerDetallesAutomotor","Automotor")",
+               { idAutomotor: idAutomotor},
+               function (response) {
+                //          $("#automotorID").attr("value", res[0]);
+                   $("#automotorID").val(response.numero_dominio);
+                   $("#automotorID").prop("disabled", true);
+                   $("#automotorID_form").remove();
+                   var automotor = $("#automotorID").val();
+                   var inputForm = "<input id='automotorID_form' name='automotorID_form' value='" + automotor + "'>";
+                   $('#formCargarActa').append(inputForm);
+
+                   $("#tipoVehiculoID").val(response.tipoVehiculo.id_tipo_vehiculo);
+                   $("#tipoVehiculoID").prop("disabled", true);
+                   $("#tipoVehiculo_form").remove();
+                   var tipoVehiculo = $("#tipoVehiculoID").val();
+                   var inputForm = "<input id='tipoVehiculo_form' name='tipoVehiculo_form' value='" + tipoVehiculo + "'>";
+                   $('#formCargarActa').append(inputForm);
+
+                     //     $("#marcaVehiculoID").attr("value", res[2]);
+                   $("#marcaVehiculoID").val(response.marca.id_marca);
+                   $("#marcaVehiculoID").prop("disabled", true);
+                   $("#marcaVehiculo_form").remove();
+                   var marcaVehiculo = $("#marcaVehiculoID").val();
+                   var inputForm = "<input id='marcaVehiculo_form' name='marcaVehiculo_form' value='" + marcaVehiculo + "'>";
+                   $('#formCargarActa').append(inputForm);
+
+                         // $("#modeloVehiculoID").attr("value", res[3]);
+                    $("#modeloVehiculoID").val(response.modelo);
+                   $("#modeloVehiculoID").prop("disabled", true);
+                   $("#modeloVehiculo_form").remove();
+                   var modeloVehiculo = $("#modeloVehiculoID").val();
+                   var inputForm = "<input id='modeloVehiculo_form' name='modeloVehiculo_form' value='" + modeloVehiculo + "'>";
+                   $('#formCargarActa').append(inputForm);
+                          //$("#colorVehiculoID").attr("value", res[4]);
+                   $("#colorVehiculoID").val(response.color);
+                   $("#colorVehiculo_form").remove();
+                   var colorVehiculo = $("#colorVehiculoID").val();
+                   var inputForm = "<input id='colorVehiculo_form' name='colorVehiculo_form' value='" + colorVehiculo + "'>";
+                   $('#formCargarActa').append(inputForm);
+
+                   //Funcion mas de un titular
+                    $("#btnAutomotorLimpiar").css('display', 'block');
+                   if (response.listadoTitulares.length > 0) {
+                        response.listadoTitulares.forEach(element => {
+                           var parentDiv = [];
+                            $("#titularesRegistrados > div").each((index, elem) => {
+                               parentDiv.push(elem.id);
+                            });
+                            if (parentDiv.length > 0) {
+                                parentDiv.forEach(id_persona => {
+                                    if (element.id_persona != id_persona) {
+                                        var badgePersona = "<div class='badge badge-light' id='badgeEliminarPersona_" + element.id_persona + "'>" + element.nombre + " " + element.apellido + "</div>";
+                                        $('#titularesRegistrados').append(badgePersona);
+                                        var inputFormIdPersona = "<input name='form_id_persona' type='text' class='form-control' id='form_id_persona' value='" + element.id_persona + "'>";
+                                        var inputFormTipoDocumento = "<input name='form_tipo_documento' type='text' class='form-control' id='form_tipo_documento' value='" + element.tipoDocumento.tipo_documento + "'>";
+                                        var inputFormNumeroDocumento = "<input name='form_numero_documento' type='text' class='form-control' id='form_numero_documento' value='" + element.numero_documento + "'>";
+                                        var inputFormNombre = "<input name='form_nombre' type='text' class='form-control' id='form_nombre' value='" + element.nombre + "'>";
+                                        var inputFormApellido = "<input name='form_apellido' type='text' class='form-control' id='form_apellido' value='" + element.apellido + "'>";
+                                        var datosPersonaTitular = "<div id='datosPersonasTitular_" + element.id_persona + "'>" + inputFormIdPersona + inputFormTipoDocumento + inputFormNumeroDocumento + inputFormNombre + inputFormApellido + "</div>";
+                                        $('#personasRegistradas').append(datosPersonaTitular);
+                                        $('#infraccionID').val(' ');
+                                        //TODO arreglar persona repetida
+                                    }
+                                });
+                            }
+                            else {
+                                var badgePersona = "<div class='badge badge-light' id='badgeEliminarPersona_" + element.id_persona + "'>" + element.nombre + " " + element.apellido + "</div>";
+                                $('#titularesRegistrados').append(badgePersona);
+                                var inputFormIdPersona = "<input name='form_id_persona' type='text' class='form-control' id='form_id_persona' value='" + element.id_persona + "'>";
+                                var inputFormTipoDocumento = "<input name='form_tipo_documento' type='text' class='form-control' id='form_tipo_documento' value='" + element.tipoDocumento.tipo_documento + "'>";
+                                var inputFormNumeroDocumento = "<input name='form_numero_documento' type='text' class='form-control' id='form_numero_documento' value='" + element.numero_documento + "'>";
+                                var inputFormNombre = "<input name='form_nombre' type='text' class='form-control' id='form_nombre' value='" + element.nombre + "'>";
+                                var inputFormApellido = "<input name='form_apellido' type='text' class='form-control' id='form_apellido' value='" + element.apellido + "'>";
+                                var datosPersonaTitular = "<div id='datosPersonasTitular_" + element.id_persona + "'>" + inputFormIdPersona + inputFormTipoDocumento + inputFormNumeroDocumento + inputFormNombre + inputFormApellido + "</div>";
+                                $('#personasRegistradas').append(datosPersonaTitular);
+                                $('#infraccionID').val(' ');
+                            }
+                       });
+                       $("#listadoTitulares").css('display', 'block');
+                       /*$("#tipoDoc").prop("disabled", true);
+                       $("#personaID").prop("disabled", true);
+                       $("#buscarInfracciones").prop("disabled", true);
+                       $("#btnPersona").prop("disabled", true);
+                       $("#nombrePersona").prop("disabled", true);
+                       $("#btnBuscarApellidoNombre").prop("disabled", true);
+                       $("#agregarTitular").prop("disabled", true);
+                       $("#btnTitularInfractor").prop("disabled", true);*/
+                   }
+
+                },
+                "json"
+           );
+
+        });
+        //Función de limpiar botón
+        $('#btnAutomotorLimpiar').click(function () {
+            $("#automotorID").val("");
+            $("#automotorID").prop("disabled", false);
+            $("#tipoVehiculoID").val("");
+            $("#tipoVehiculoID").prop("disabled", false);
+            $("#marcaVehiculoID").val("");
+            $("#marcaVehiculoID").prop("disabled", false);
+            $("#modeloVehiculoID").val("");
+            $("#modeloVehiculoID").prop("disabled", false);
+            $("#colorVehiculoID").val("");
+            $("#btnAutomotorLimpiar").css('display', 'none');
+            $('#listadoTitulares').empty();
+            $('#formCargarActa_titulares').empty();
+        });
+        $("#listadoTitulares").on("click", "div", function (event) {
+            $('#modalPersonaUnitaria').modal('toggle');
+
+
+         /*   event.preventDefault();
+            var idPersona = this.id;
+            idPersona = idPersona.split('_');
+            var personaForm = '#form_id_persona_' + idPersona[1];
+            $(personaForm).remove();
+            var personaBadgeId = "#" + this.id;
+            $(personaBadgeId).remove();*/
+
+        });
+    });
+
+
+
+
+</script>

@@ -1,13 +1,13 @@
 ﻿
 @{
-    ViewBag.Title = "_Ordenanza";
+    ViewBag.Title = "_Infraccion";
 }
 
-@using (Ajax.BeginForm("OrdenanzasResultado", "Acta", new AjaxOptions
+@using (Ajax.BeginForm("InfraccionesResultado", "Acta", new AjaxOptions
 {
     InsertionMode = InsertionMode.Replace, 
     HttpMethod = "POST",
-    UpdateTargetId = "tablaOrdenanzas"//,
+    UpdateTargetId = "tablaInfraccion"//,
                                  
 }))
 {
@@ -18,6 +18,6 @@
 }
 
 
-<div id="tablaOrdenanzas">
+<div id="tablaInfraccion">
 </div>
 

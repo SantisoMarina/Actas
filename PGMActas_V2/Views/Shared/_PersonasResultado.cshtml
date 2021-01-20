@@ -1,0 +1,112 @@
+﻿
+@model IEnumerable<PGMActas_V2.Models.Persona>
+
+@{
+    ViewBag.Title = "_PersonasResultado";
+}
+
+<div style="display:grid">
+    <table>
+        <thead>
+            <tr class="table100-head" style="border-bottom: 2px solid #4caf50">
+                <th class="column1" style="padding: 0.3rem"> Tipo Documento </th>
+                <th class="column2" style="padding: 0.3rem"> Nro Documento </th>
+                <th class="column3" style="padding: 0.3rem"> Nombre </th>
+                <th class="column5" style="padding: 0.3rem"> Seleccionar </th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var persona in Model)
+            {
+                <tr>
+                    <td> @persona.tipoDocumento.tipo_documento </td>
+                    <td> @persona.numero_documento </td>
+                    <td> @persona.nombre @persona.apellido </td>
+                    <td>
+                        <button class="btn btn-success btn-xs agregarP" id="@persona.numero_documento">
+                            Llenar
+                        </button>
+                    </td>
+                </tr>
+            }
+
+
+        </tbody>
+    </table>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('button.agregarP').click(function () {
+            var controlBtn = $('#btnBuscarPersona').val();
+            //persona titular
+            if (controlBtn == 0) {
+                var numeroDocumento = $(this).attr('id');
+                $("#personaID").attr("value", numeroDocumento);
+                $("#personaID").val(numeroDocumento);
+                 $.get(
+                    "@Url.Action("ObtenerDetallesPersona","Persona")",
+                     { numeroDocumento: numeroDocumento},
+                     function (response) {
+                         console.log("Obtener detalles persona");
+                         console.log(response);
+                              var idPersona = response.id_persona;
+                              var numeroDocumento = response.numero_documento;
+                              var tipoDocumento = response.tipoDocumento.id_tipo_documento;
+                              var nombre = response.nombre;
+                              var apellido = response.apellido;
+
+                              $("#personaIDPosible").val(idPersona);
+                              $("#personaID").val(numeroDocumento);
+                              $("#tipoDoc").val(tipoDocumento);
+                              $("#nombrePersona").val(nombre);
+                              $("#apellidoPersona").val(apellido);
+                     },
+                     "json"
+                 );
+            }
+            //persona infractor
+            else {
+                var numeroDocumento = $(this).attr('id');
+                $("#personaInfID").attr("value", numeroDocumento);
+                $("#personaInfID").val(numeroDocumento);
+
+                $.get(
+                    "@Url.Action("ObtenerDetallesPersona","Persona")",
+                     { numeroDocumento: numeroDocumento},
+                    function (response) {
+                        console.log("Obtener detalles persona");
+                        console.log(response);
+                        var idPersona = response.id_persona;
+                        var numeroDocumento = response.numero_documento;
+                        var tipoDocumento = response.tipoDocumento.id_tipo_documento;
+                        var nombre = response.nombre;
+                        var apellido = response.apellido;
+                        var localidad = response.localidad.id_localidad;
+                        var provincia = response.localidad.provincia.id_provincia;
+                        var pais = response.localidad.provincia.pais.id_pais;
+                        var domicilio = response.direccion;
+                        var codigoPostal = response.codigo_postal;
+                        console.log(localidad);
+                        $("#personaIDPosibleInf").val(idPersona);
+                        $("#personaInfID").val(numeroDocumento);
+                        $("#tipoDocInf").val(tipoDocumento);
+                        $("#nombreInfID").val(nombre);
+                        $("#apellidoInfID").val(apellido);
+                        $("#paisInfID").val(pais);
+                        $("#provinciaInfID").val(provincia);
+                        $("#localidadInfID").val(localidad);
+                        $("#domicilioInfID").val(domicilio);
+                        $("#codigoPostalID").val(codigoPostal);
+                        $("#comboResponsabilidadLegal").val('2');
+                        
+                     },
+                     "json"
+                 );
+            }
+
+        })
+    });
+
+</script>

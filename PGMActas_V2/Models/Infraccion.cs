@@ -5,14 +5,16 @@ using System.Web;
 
 namespace PGMActas_V2.Models
 {
-    public class Ordenanza
+    public class Infraccion
     {
-        private string estadoN = "";
-        public int codigo_ordenanza { get; set; }
+        public int codigo_infraccion { get; set; }
         public string nomenclatura { get; set; }
         public string descripcion { get; set; }
         public bool estado { get; set; }
         public string calificacion { get; set; }
+        public Normativa normativa { get; set; }
+        public Articulo articulo { get; set; }
+        public GrupoInfraccion grupoInfracciones { get; set; }
 
     }
 }

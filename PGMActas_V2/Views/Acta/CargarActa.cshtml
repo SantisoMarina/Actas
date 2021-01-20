@@ -1,4 +1,19 @@
-﻿
+﻿@model PGMActas_V2.Models.Automotor
+
+@using PGMActas_V2.ViewModels
+@{
+    List<MarcaItemVM> items = (List<MarcaItemVM>)ViewBag.items;
+    List<TipoVehiculoItemVM> items2 = (List<TipoVehiculoItemVM>)ViewBag.items2;
+    List<TipoDocumentoItemVM> items3 = (List<TipoDocumentoItemVM>)ViewBag.items3;
+    List<PaisItemVM> items4 = (List<PaisItemVM>)ViewBag.items4;
+    List<ProvinciaItemVM> items5 = (List<ProvinciaItemVM>)ViewBag.items5;
+    List<LocalidadItemVM> items6 = (List<LocalidadItemVM>)ViewBag.items6;
+    List<ResponsabilidadLegalItemVM> items7 = (List<ResponsabilidadLegalItemVM>)ViewBag.items7;
+}
+
+
+
+
 <div class="image-container set-full-height"
      style="background-image: url('/assets/img/stewart-edward-05zSlV1O_ys-unsplash.jpg')">
 
@@ -36,15 +51,6 @@
                                     <!-- Primer Columna, Parte uno -->
                                     <div class="col-sm-4 pl-4" style="padding-left: 50px;">
 
-                                        <div class="input-group">
-                                            <div class="form-group label-floating">
-                                                <label class="control-label">
-                                                    Número de Acta
-                                                    <small>(obligatorio)</small>
-                                                </label>
-                                                <input name="numerodeacta" type="text" class="form-control" onkeypress="return isNumberKey(event);">
-                                            </div>
-                                        </div>
 
                                         <div class="input-group">
                                             <div class="form-group label-floating">
@@ -64,28 +70,66 @@
                                             </div>
                                         </div>
 
-                                        <div id="modalInspectores" class="modal fade" role="dialog">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                        <h4 class="modal-title">Inspectores</h4>
-                                                    </div>
-                                                    <div class="modal-body">
 
 
-                                                        <div id="divInspector">
-                                                        </div>
 
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                                                    </div>
+                                        <div class="input-group">
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">
+                                                    Número de Acta
+                                                    <small>(obligatorio)</small>
+                                                </label>
+
+
+                                                <div style="flex-direction: row; display: flex;">
+                                                    <input name="numerodeacta" type="text" class="form-control" onkeypress="return isNumberKey(event);" id="numeroActaID">
+                                                    <button id="btnVerificarActa" class="btn btn-warning btn-xs"
+                                                            type="button">
+                                                        Verificar
+
+                                                    </button>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="input-group">
+                                            <div class="form-group label-floating">
+                                                <label>
+                                                    Fecha
+                                                    <small>(obligatorio)</small>
+                                                </label><br />
+                                                <div style="flex-direction: row; display: flex;">
+
+                                                    <input class="datefield" data-val="true"
+                                                           data-val-required="Date is required"
+                                                           name="ReleaseDate" type="date" id="fechaInf" />
+                                                    <button class="btn btn-danger btn-xs"
+                                                            type="button" style="margin-left:10px" id="btnFechaInf">
+                                                        Llenar
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="input-group">
+                                            <div class="form-group has-error" id="divHora">
+                                                <p style="color:#aaaaaa">
+                                                    Hora
+                                                    <small>(obligatorio)</small>
+                                                    </br>
+                                                </p>
+                                                <input name="hora" type="time" class="form-control" id="horaInf" disabled>
+
+                                                <!--   <button class="btn btn-danger btn-xs"
+                                                        type="button" style="margin-left:10px;" id="btnHoraCarga">
+                                                    Llenar
+                                                </button> -->
+                                            </div>
+                                        </div>
+
+
+
+                                        <!--   <div class="input-group">
 
                                             <div class="form-group label-floating">
                                                 <label>
@@ -101,348 +145,439 @@
                                         <div class="input-group">
                                             <div class="form-group label-floating">
                                                 <label>
-                                                    Juez de Falta
+                                                    Operador
                                                     <small>(obligatorio)</small>
                                                 </label>
                                                 <input name="juezFalta" type="text" class="form-control"
                                                        value="Romina Sanchez" disabled>
                                             </div>
                                         </div>
+                                         -->
+
+
+
+
+                                    </div>
+
+                                    <!-- Segunda Columna, Parte uno -->
+                                    <div class="col-sm-4" style="padding-left: 50px;">
+
+                                        <div class="input-group">
+
+
+                                            <div class="form-group label-floating">
+
+                                                <label class="control-label">
+                                                    Localidad
+                                                    <small>(obligatorio)</small>
+                                                </label>
+                                                <input name="localidad" type="text" class="form-control" onkeypress="return lettersSpacesOnly(event);" id="localidadInfoID">
+                                            </div>
+                                        </div>
+
+                                        <div class="input-group">
+
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">
+                                                    Dirección
+                                                    <small>(obligatorio)</small>
+                                                </label>
+                                                <input name="direccion" type="text" class="form-control" id="direccionInfID">
+                                            </div>
+                                        </div>
 
 
                                         <div class="input-group">
                                             <div class="form-group label-floating">
-                                                <label>
-                                                    Fecha de carga
-                                                    <small>(obligatorio)</small>
-                                                </label><br />
-                                                <div style="flex-direction: row; display: flex;">
+                                                <label class="control-label">
+                                                    Código postal
 
-                                                    <input class="datefield" data-val="true"
-                                                           data-val-required="Date is required"
-                                                           name="ReleaseDate" type="date" id="fechaCarga" />
+                                                </label>
+                                                <input name="direccion" type="text" class="form-control" onkeypress="return isNumberKey(event);" id="codigoPostalInfID">
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Tercer Columna, Parte uno -->
+
+                                    <div class="col-sm-4" style="padding-left:50px">
+
+                                        <div class="input-group">
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">
+                                                    Normativa
+                                                    <small>(obligatorio)</small>
+                                                </label>
+                                                <div style="flex-direction: row; display: flex;">
+                                                    <input name="ord" type="text" class="form-control"
+                                                           id="normativaID" value="8560 - Ley Prov. de Transito" disabled>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="listadoInfracciones">
+
+
+                                        </div>
+
+
+                                        <div class="input-group">
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">
+                                                    Infracción
+                                                    <small>(obligatorio)</small>
+                                                </label>
+                                                <div style="flex-direction: row; display: flex;">
+                                                    <input name="infraccion" type="text" class="form-control"
+                                                           id="infraccionID" value=" " disabled>
+                                                    <!-- Valor BD-->
+                                                    <input name="codigo_infraccion" type="text" class="form-control"
+                                                           id="codigoinfraccionID" value=" " style="display:none">
+
                                                     <button class="btn btn-danger btn-xs"
-                                                            type="button" style="margin-left:10px" id="btnFechaCarga">
-                                                        Llenar
+                                                            type="button" id="btnInfracciones">
+                                                        Ayuda
                                                     </button>
                                                 </div>
                                             </div>
                                         </div>
 
 
-                                        <div class="input-group">
-                                            <div class="form-group">
-                                                <p style="color:#aaaaaa">
-                                                    Hora de carga
-                                                    <small>(obligatorio)</small></br>
-                                                    <div style="flex-direction: row; display: flex;">
-
-                                                </p>
-                                                <input name="hora" type="time" class="form-control" id="horaCarga">
-                                                <button class="btn btn-danger btn-xs"
-                                                        type="button" style="margin-left:10px;" id="btnHoraCarga">
-                                                    Llenar
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
+                                        <button id="btnAgregarInfraccion" class="btn btn-warning btn-xs"
+                                                type="button">
+                                            Agregar Infracción
+                                        </button>
 
 
-                                </div>
-
-                                <!-- Segunda Columna, Parte uno -->
-                                <div class="col-sm-4" style="padding-left: 70px;">
-
-                                    <div class="input-group">
-
-
-                                        <div class="form-group label-floating">
-
-                                            <label class="control-label">
-                                                Localidad
-                                                <small>(obligatorio)</small>
-                                            </label>
-                                            <input name="localidad" type="text" class="form-control"
-                                                   value="Córdoba" disabled>
-                                        </div>
-                                    </div>
-
-                                    <div class="input-group">
-
-                                        <div class="form-group label-floating">
-                                            <label class="control-label">
-                                                Dirección
-                                                <small>(obligatorio)</small>
-                                            </label>
-                                            <input name="direccion" type="text" class="form-control">
-                                        </div>
-                                    </div>
-
-                                    <div class="input-group">
-                                        <div class="form-group label-floating">
+                                        <div class="radio">
+                                            Retuvo licencia
                                             <label>
-                                                Fecha
-                                                <small>(obligatorio)</small>
-                                            </label><br />
-                                            <input class="datefield" data-val="true"
-                                                   data-val-required="Date is required" id="fecha"
-                                                   name="ReleaseDate" type="date" />
+                                                <input type="radio" name="optionsRadios">
+                                                Sí
+                                            </label>
+                                            <label>
+                                                <input type="radio" name="optionsRadios">
+                                                No
+                                            </label>
                                         </div>
-                                    </div>
 
-                                    <div class="input-group">
-                                        <div class="form-group">
-                                            <p style="color:#aaaaaa">
-                                                Hora
-                                                <small>(obligatorio)</small>
-                                            </p>
-                                            <input name="hora" type="time" class="form-control">
+                                        <div class="radio">
+                                            Retuvo vehículo
+                                            <label>
+                                                <input type="radio" name="optionsRadios2">
+                                                Sí
+                                            </label>
+                                            <label>
+                                                <input type="radio" name="optionsRadios2">
+                                                No
+                                            </label>
                                         </div>
-                                    </div>
-
-                                    <div class="input-group">
 
 
-                                        <div class="form-group label-floating">
+                                        <div class="input-group">
 
 
-                                            <textarea class="form-control" placeholder="Observaciones" rows="5" maxlength="250"></textarea>
-                                            <small>Máx. 250 caracteres</small>
+                                            <div class="form-group label-floating">
+
+
+                                                <textarea class="form-control" placeholder="Observaciones" rows="5" maxlength="250" id="observacionesInfID"></textarea>
+                                                <small>Máx. 250 caracteres</small>
+                                            </div>
                                         </div>
+
                                     </div>
 
 
                                 </div>
-
-
-
-
-                                <!-- Tercer Columna, Parte uno -->
-
-                                <div class="col-sm-4">
-
-                                    <div class="input-group">
-                                        <div class="form-group label-floating">
-                                            <label class="control-label">
-                                                Ordenanza
-                                                <small>(obligatorio)</small>
-                                            </label>
-                                            <div style="flex-direction: row; display: flex;">
-                                                <input name="inspector" type="text" class="form-control"
-                                                       id="ordenanzaID" value=" ">
-                                                <button class="btn btn-danger btn-xs"
-                                                        type="button" id="btnOrdenanzas">
-                                                    Ayuda
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div id="modalOrdenanzas" class="modal fade" role="dialog" >
-                                        <div class="modal-dialog">
-                                            <div class="modal-content" style="width:800px">
-                                                <div class="modal-header">
-                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                    <h4 class="modal-title">Ordenanzas</h4>
-                                                </div>
-                                                <div class="modal-body">
-
-
-                                                    <div id="divOrdenanzas">
-                                                    </div>
-
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-
-                                    <div class="input-group">
-                                        <div class="form-group label-floating">
-                                            <label class="control-label">
-                                                Artículo
-                                                <small>(obligatorio)</small>
-                                            </label>
-                                            <div style="flex-direction: row; display: flex;">
-                                                <input name="inspector" type="text" class="form-control" value=" ">
-                                                <button class="btn btn-danger btn-xs"
-                                                        type="button">
-                                                    Ayuda
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="radio">
-                                        Retuvo licencia
-                                        <label>
-                                            <input type="radio" name="optionsRadios">
-                                            Sí
-                                        </label>
-                                        <label>
-                                            <input type="radio" name="optionsRadios">
-                                            No
-                                        </label>
-                                    </div>
-
-                                    <div class="radio">
-                                        Retuvo vehículo
-                                        <label>
-                                            <input type="radio" name="optionsRadios2">
-                                            Sí
-                                        </label>
-                                        <label>
-                                            <input type="radio" name="optionsRadios2">
-                                            No
-                                        </label>
-                                    </div>
-
-                                </div>
-
 
                             </div>
-                        </div>
-                        <div class="tab-pane" id="account">
-                            <div class="row">
-                                <h4 class="info-text"> Paso 2 de 3 </h4>
+                            <div class="tab-pane" id="account">
+                                <div class="row">
+                                    <h4 class="info-text"> Paso 2 de 3 </h4>
 
-                                <!-- Primer columna, Parte dos-->
-                                <div class="col-sm-5  col-sm-offset-1">
+                                    <!-- Primer columna, Parte dos-->
+                                    <div class="col-sm-5  col-sm-offset-1" style="margin-left:30px">
 
-                                    <div class="input-group">
+                                        <div class="input-group">
 
-                                        <div class="form-group label-floating">
+                                            <div class="form-group label-floating">
 
-                                            <div style="flex-direction: row; display: flex;">
+                                                <div style="flex-direction: row; display: flex;">
+                                                    <label class="control-label">
+                                                        Nro de dominio
+                                                        <small>(obligatorio)</small>
+                                                    </label>
+                                                    <input name="numeroDominio" type="text" class="form-control" value=" " id="automotorID" onkeypress="return noAlfanumericos(event);">
+                                                    <button class="btn btn-danger btn-xs"
+                                                            type="button" style="margin-left:10px;" id="btnAutomotor">
+                                                        Buscar
+                                                    </button>
+                                                    <button class="btn btn-warning btn-xs"
+                                                            type="button" style="margin-left:10px; display:none" id="btnAutomotorLimpiar">
+                                                        Limpiar
+                                                    </button>
+                                                </div>
+
+
+
+                                            </div>
+                                        </div>
+
+                                        @Html.DropDownListFor(model => model.marca, new SelectList(items2, "id_tipo_vehiculo", "tipo_vehiculo"), "Tipo Vehículo *", htmlAttributes: new { @class = "form-control", id = "tipoVehiculoID" })
+
+
+                                        @Html.DropDownListFor(model => model.marca, new SelectList(items, "id_marca", "marca"), "Marca *", htmlAttributes: new { @class = "form-control", @id = "marcaVehiculoID" })
+
+                                        <div class="input-group">
+                                            <div class="form-group label-floating">
                                                 <label class="control-label">
-                                                    Nro de dominio
+                                                    Modelo
+
+                                                </label>
+                                                <input name="direccion" type="text" class="form-control" id="modeloVehiculoID" value=" ">
+                                            </div>
+                                        </div>
+
+                                        <div class="input-group">
+
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">
+                                                    Color
+
+                                                </label>
+                                                <input name="direccion" type="text" class="form-control" id="colorVehiculoID" value=" " onkeypress="return lettersSpacesOnly(event);">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Segunda columna, Parte dos-->
+
+                                    <div class="col-sm-5  col-sm-offset-1">
+
+
+                                        <div id="listadoTitulares" style="display:none">
+                                            <h5>Titulares</h5>
+                                            <div id="titularesRegistrados">
+
+                                            </div>
+                                            <div id="titularesDeclarados">
+
+                                            </div>
+                                            <div id="titularesNoDeclarados">
+
+                                            </div>
+
+                                        </div>
+
+                                        @Html.DropDownListFor(model => model.marca, new SelectList(items3, "id_tipo_documento", "tipo_documento"), "Tipo Documento *", htmlAttributes: new { @class = "form-control", id = "tipoDoc" })
+
+
+
+
+
+                                        <div class="input-group">
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">
+                                                    Núm. de documento del titular
                                                     <small>(obligatorio)</small>
                                                 </label>
-                                                <input name="numeroDominio" type="text" class="form-control" value=" ">
-                                                <button class="btn btn-danger btn-xs"
-                                                        type="button" style="margin-left:10px;">
-                                                    Buscar
-                                                </button>
+                                                <input name="direccion" type="text" class="form-control" id="personaID" value=" " disabled onkeypress="return isNumberKey(event);" style="width:250px">
+
                                             </div>
                                         </div>
-                                    </div>
-
-                                    <select class="form-control" id="StudentGender" name="StudentGender">
-                                        <option>Tipo de vehículo *</option>
-                                        <option>Male</option>
-                                        <option>Female</option>
-                                    </select>
-
-                                    <select class="form-control" id="StudentGender" name="StudentGender">
-                                        <option>Marca *</option>
-                                        <option>Male</option>
-                                        <option>Female</option>
-                                    </select>
-
-                                    <div class="input-group">
-                                        <div class="form-group label-floating">
-                                            <label class="control-label">
-                                                Modelo
-                                                <small>(obligatorio)</small>
-                                            </label>
-                                            <input name="direccion" type="text" class="form-control">
+                                        <div style="flex-direction: row; display: flex;">
+                                            <button class="btn btn-danger btn-xs"
+                                                    type="button" id="btnPersona">
+                                                Buscar persona por número de documento
+                                            </button>
                                         </div>
-                                    </div>
 
-                                    <div class="input-group">
-
-                                        <div class="form-group label-floating">
-                                            <label class="control-label">
-                                                Color
-                                                <small>(obligatorio)</small>
-                                            </label>
-                                            <input name="direccion" type="text" class="form-control">
+                                        <div class="input-group">
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">
+                                                    Nombre del titular
+                                                    <small>(obligatorio)</small>
+                                                </label>
+                                                <input id="nombrePersona" name="direccion" type="text" class="form-control" style="width:250px" value=" ">
+                                            </div>
                                         </div>
+
+
+                                        <div class="input-group">
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">
+                                                    Apellido del titular
+                                                    <small>(obligatorio)</small>
+                                                </label>
+                                                <input id="apellidoPersona" name="direccion" type="text" class="form-control" style="width:250px" value=" ">
+
+                                            </div>
+                                        </div>
+                                        <div style="flex-direction: row; display: flex;">
+                                            <button id="agregarTitular" class="btn btn-success btn-xs"
+                                                    type="button">
+                                                AGREGAR PERSONA
+                                            </button>
+                                        </div>
+
+                                        <div style="flex-direction: row; display: flex;">
+                                            <button id="buscarInfracciones" class="btn btn-warning btn-xs"
+                                                    type="button" disabled>
+                                                Buscar infracciones de la persona
+                                            </button>
+                                        </div>
+
+
+                                        <div style="flex-direction: row; display: flex;">
+                                            <!--TODO agregar seleccion de badge para poder poner como infractor al titular-->
+                                            <button id="btnTitularInfractor" class="btn btn-warning btn-xs"
+                                                    type="button" disabled>
+                                                Titular e infractor
+                                            </button>
+                                        </div>
+
+
                                     </div>
+
+
+
                                 </div>
 
-                                <!-- Segunda columna, Parte dos-->
-
-                                <div class="col-sm-5  col-sm-offset-1">
-
-                                    Persona 1
-
-                                    <select class="form-control" id="StudentGender" name="StudentGender">
-                                        <option>Tipo de documento del titular *</option>
-                                        <option>Male</option>
-                                        <option>Female</option>
-                                    </select>
-
-                                    <div style="flex-direction: row; display: flex;">
-                                        <button class="btn btn-warning btn-xs"
-                                                type="button">
-                                            Buscar infracciones de la persona
-                                        </button>
-                                    </div>
 
 
 
-                                    <div class="input-group">
-                                        <div class="form-group label-floating">
-                                            <label class="control-label">
-                                                Núm. de documento del titular
-                                                <small>(obligatorio)</small>
-                                            </label>
-                                            <input name="direccion" type="text" class="form-control">
-                                            <div style="flex-direction: row; display: flex;">
-                                                <button class="btn btn-danger btn-xs"
-                                                        type="button">
-                                                    Buscar persona por número de documento
-                                                </button>
+                            </div>
+
+                            <div class="tab-pane" id="address">
+                                <div class="row">
+                                    <h4 class="info-text"> Paso 3 de 3 </h4>
+
+                                    <div class="col-sm-4">
+                                        <div id="listadoInfractores" style="display:none">
+                                            <h5>Infractores</h5>
+                                            <div id="infractoresDeclarados">
+
+                                            </div>
+                                            <div id="infractoresNoDeclarados">
+
+                                            </div>
+
+                                        </div>
+
+                                        @Html.DropDownListFor(model => model.marca, new SelectList(items3, "id_tipo_documento", "tipo_documento"), "Tipo Documento *", htmlAttributes: new { @class = "form-control", id = "tipoDocInf" })
+
+
+
+
+                                        <div class="input-group">
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">
+                                                    Número de documento
+                                                    <small>(obligatorio)</small>
+                                                </label>
+                                                <input name="direccion" type="text" class="form-control" id="personaInfID" value=" " disabled onkeypress="return isNumberKey(event);" style="width:250px">
+                                                <div style="flex-direction: row; display: flex;">
+                                                    <button class="btn btn-danger btn-xs"
+                                                            type="button" id="btnPersonaInfID">
+                                                        Buscar persona por número de documento
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
 
 
-                                    <div class="input-group">
-                                        <div class="form-group label-floating">
-                                            <label class="control-label">
-                                                Nombre del titular
-                                                <small>(obligatorio)</small>
-                                            </label>
-                                            <input name="direccion" type="text" class="form-control" style="width:250px">
-                                        </div>
-                                    </div>
 
-
-                                    <div class="input-group">
-                                        <div class="form-group label-floating">
-                                            <label class="control-label">
-                                                Apellido del titular
-                                                <small>(obligatorio)</small>
-                                            </label>
-                                            <input name="direccion" type="text" class="form-control">
-                                            <div style="flex-direction: row; display: flex;">
-                                                <button class="btn btn-danger btn-xs"
-                                                        type="button">
-                                                    Buscar persona por nombre y apellido
-                                                </button>
+                                        <div class="input-group">
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">
+                                                    Nombre
+                                                    <small>(obligatorio)</small>
+                                                </label>
+                                                <input name="direccion" type="text" class="form-control" id="nombreInfID" value=" ">
                                             </div>
                                         </div>
+
+
+                                        <div class="input-group">
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">
+                                                    Apellido
+                                                    <small>(obligatorio)</small>
+                                                </label>
+                                                <input name="direccion" type="text" class="form-control" id="apellidoInfID" value=" ">
+
+                                            </div>
+                                        </div>
+
+                                        <div style="flex-direction: row; display: flex;">
+                                            <button class="btn btn-warning btn-xs"
+                                                    type="button" disabled>
+                                                Buscar infracciones de la persona
+                                            </button>
+                                        </div>
+
+
                                     </div>
 
-                                    <div style="flex-direction: row; display: flex;">
-                                        <button class="btn btn-warning btn-xs"
-                                                type="button">
-                                            Agregar persona nueva
-                                        </button>
+
+
+                                    <div class="col-sm-4">
+
+                                        @Html.DropDownListFor(model => model.marca, new SelectList(items4, "id_pais", "pais"), "País *", htmlAttributes: new { @class = "form-control", id = "paisInfID" })
+
+
+
+                                        @Html.DropDownListFor(model => model.marca, new SelectList(items5, "id_provincia", "provincia"), "Provincia *", htmlAttributes: new { @class = "form-control", id = "provinciaInfID" })
+
+
+
+                                        @Html.DropDownListFor(model => model.marca, new SelectList(items6, "id_localidad", "localidad"), "Localidad *", htmlAttributes: new { @class = "form-control", id = "localidadInfID" })
+
+
+
+                                        <div class="input-group">
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">
+                                                    Domicilio
+                                                    <small>(obligatorio)</small>
+                                                </label>
+                                                <input name="direccion" type="text" class="form-control" id="domicilioInfID" value=" ">
+
+                                            </div>
+                                        </div>
+                                        <div class="input-group">
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">
+                                                    Código postal
+
+                                                </label>
+                                                <input name="direccion" type="text" class="form-control" onkeypress="return isNumberKey(event);" id="codigoPostalID" value=" ">
+
+                                            </div>
+                                        </div>
+
+
+
                                     </div>
 
-                                    <div style="flex-direction: row; display: flex;">
-                                        <button class="btn btn-warning btn-xs"
-                                                type="button">
-                                            Titular e infractor
-                                        </button>
+                                    <div class="col-sm-4">
+
+
+
+                                        @Html.DropDownListFor(model => model.marca, new SelectList(items7, "id_responsabilidad_legal", "responsabilidad_legal"), "Responsabilidad Legal *", htmlAttributes: new { @class = "form-control", id = "comboResponsabilidadLegal" })
+
+
+
+
+                                        <div style="flex-direction: row; display: flex;">
+                                            <button class="btn btn-warning btn-xs"
+                                                    type="button" style="margin: auto" id="agregarInfractor">
+                                                Agregar persona nueva
+                                            </button>
+                                        </div>
+
                                     </div>
+
 
 
                                 </div>
@@ -451,200 +586,173 @@
 
                             </div>
 
-
-
-
                         </div>
 
-                        <div class="tab-pane" id="address">
-                            <div class="row">
-                                <h4 class="info-text"> Paso 3 de 3 </h4>
-
-                                <div class="col-sm-4">
-                                    Persona 1
-
-                                    <select class="form-control" id="StudentGender" name="StudentGender">
-                                        <option>Tipo de documento *</option>
-                                        <option>Male</option>
-                                        <option>Female</option>
-                                    </select>
-                                    <div style="flex-direction: row; display: flex;">
-                                        <button class="btn btn-warning btn-xs"
-                                                type="button">
-                                            Buscar infracciones de la persona
-                                        </button>
-                                    </div>
-
-
-
-                                    <div class="input-group">
-                                        <div class="form-group label-floating">
-                                            <label class="control-label">
-                                                Número de documento
-                                                <small>(obligatorio)</small>
-                                            </label>
-                                            <input name="direccion" type="text" class="form-control">
-                                            <div style="flex-direction: row; display: flex;">
-                                                <button class="btn btn-danger btn-xs"
-                                                        type="button">
-                                                    Buscar persona por número de documento
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="input-group">
-                                        <div class="form-group label-floating">
-                                            <label class="control-label">
-                                                Nombre
-                                                <small>(obligatorio)</small>
-                                            </label>
-                                            <input name="direccion" type="text" class="form-control">
-                                        </div>
-                                    </div>
-
-
-                                    <div class="input-group">
-                                        <div class="form-group label-floating">
-                                            <label class="control-label">
-                                                Apellido
-                                                <small>(obligatorio)</small>
-                                            </label>
-                                            <input name="direccion" type="text" class="form-control">
-                                            <div style="flex-direction: row; display: flex;">
-                                                <button class="btn btn-danger btn-xs"
-                                                        type="button">
-                                                    Buscar persona por nombre y apellido
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-
-
+                        <!-- div del form invisible -->
+                        <div id="formCargarActa" style="display:none">
+                            <div id="formCargarActa_infracciones">
+                            </div>
+                            <div id="formCargarActa_titulares">
+                                <div id="personasRegistradas">
                                 </div>
-
-
-
-                                <div class="col-sm-4">
-
-                                    <select class="form-control" id="StudentGender" name="StudentGender">
-                                        <option>País *</option>
-                                        <option>Male</option>
-                                        <option>Female</option>
-                                    </select>
-
-
-
-                                    <select class="form-control" id="StudentGender" name="StudentGender">
-                                        <option>Provincia *</option>
-                                        <option>Male</option>
-                                        <option>Female</option>
-                                    </select>
-
-
-
-                                    <select class="form-control" id="StudentGender" name="StudentGender">
-                                        <option>Localidad *</option>
-                                        <option>Male</option>
-                                        <option>Female</option>
-                                    </select>
-
-
-                                    <div class="input-group">
-                                        <div class="form-group label-floating">
-                                            <label class="control-label">
-                                                Domicilio
-                                                <small>(obligatorio)</small>
-                                            </label>
-                                            <input name="direccion" type="text" class="form-control">
-
-                                        </div>
-                                    </div>
-
-
-                                    <div class="input-group">
-                                        <div class="form-group label-floating">
-                                            <label class="control-label">
-                                                Código postal
-
-                                            </label>
-                                            <input name="direccion" type="text" class="form-control">
-
-                                        </div>
-                                    </div>
+                                <div id="personasNoRegistradas">
                                 </div>
-
-                                <div class="col-sm-4">
-
-
-
-                                    <select class="form-control" id="StudentGender" name="StudentGender">
-                                        <option>Responsabilidad legal *</option>
-                                        <option>Male</option>
-                                        <option>Female</option>
-                                    </select>
-
-
-
-
-                                    <div style="flex-direction: row; display: flex;">
-                                        <button class="btn btn-warning btn-xs"
-                                                type="button" style="margin: auto">
-                                            Agregar persona nueva
-                                        </button>
-                                    </div>
-
+                            </div>
+                            <div id="formCargarActa_infractores">
+                                <div id="personasInfRegistradas">
                                 </div>
+                                <div id="personasInfNoRegistradas">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="formControlActa" style="display:none">
+                            <input id="btnBuscarPersona" value="0" />
+                            <input id="personaIDPosible" value="0" />
+                            <input id="personaDocumentoAnt" value="0" />
+                            <input id="personaIDAnt" value="0" />
+                            <input id="personaIDPosibleInf" value="0" />
+                            <input id="personaDocumentoAntInf" value="0" />
+                            <input id="personaIDAntInf" value="0" />
+                        </div>
 
 
-
+                        <div class="wizard-footer">
+                            <div class="pull-right">
+                                <input type='button' class='btn btn-next btn-fill btn-success btn-wd'
+                                       name='next' value='Siguiente' id="btnSiguiente" />
+                                <input type='button' id="btnRegistrarActa" class='btn btn-finish btn-fill btn-success btn-wd'
+                                       name='finish' value='Finalizar' />
                             </div>
 
-
-
+                            <div class="pull-left">
+                                <input type='button' class='btn btn-previous btn-fill btn-default btn-wd'
+                                       name='previous' value='Atrás' />
+                            </div>
+                            <div class="clearfix"></div>
                         </div>
-                    </div>
-                    <div class="wizard-footer">
-                        <div class="pull-right">
-                            <input type='button' class='btn btn-next btn-fill btn-success btn-wd'
-                                   name='next' value='Siguiente' />
-                            <input type='button' class='btn btn-finish btn-fill btn-success btn-wd'
-                                   name='finish' value='Finalizar' />
-                        </div>
-
-                        <div class="pull-left">
-                            <input type='button' class='btn btn-previous btn-fill btn-default btn-wd'
-                                   name='previous' value='Atrás' />
-                        </div>
-                        <div class="clearfix"></div>
                     </div>
                 </div>
             </div> <!-- wizard container -->
         </div>
     </div><!-- end row -->
 </div> <!--  big container -->
+<!-- Modal Inspectores -->
+<div id="modalInspectores" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Inspectores</h4>
+            </div>
+            <div class="modal-body">
+
+
+                <div id="divInspector">
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Infraccion -->
+<div id="modalInfraccion" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width:800px">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Infracción</h4>
+            </div>
+            <div class="modal-body">
+
+
+                <div id="divInfraccion">
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Automotores -->
+<div id="modalAutomotor" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Automotores</h4>
+            </div>
+            <div class="modal-body">
+
+
+                <div id="divAutomotor">
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Personas -->
+<div id="modalPersona" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Personas</h4>
+            </div>
+            <div class="modal-body">
+
+
+                <div id="divPersona">
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal adentro de Personas -->
+<div id="modalPersonaUnitaria" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"> P</h4>
+            </div>
+            <div class="modal-body">
+
+
+                <div id="divPersonaUnitaria">
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script type="module">
-    //Función IP
-    $.getJSON('https://ipgeolocation.abstractapi.com/v1/?api_key=a05fb540bdd04915ba8ad86976eca036', function (data) {
+    //Función IP (ya no se usa)
+    /*$.getJSON('https://ipgeolocation.abstractapi.com/v1/?api_key=a05fb540bdd04915ba8ad86976eca036', function (data) {
         $("#tbIP").attr("value", data.ip_addresss);
         $("#tbIP").val(data.ip_address);
-        
-    });
-
+    });*/
 </script>
-<script>
-    //Función solo números
-    function isNumberKey(evt) {
-        var charCode = (evt.which) ? evt.which : event.keyCode;
-        if (charCode != 46 && charCode > 31
-            && (charCode < 48 || charCode > 57))
-            return false;
 
-        return true;
-    }
-</script>
 

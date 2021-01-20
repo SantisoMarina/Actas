@@ -55,11 +55,11 @@ $(document).ready(function(){
         'previousSelector': '.btn-previous',
 
         onNext: function(tab, navigation, index) {
-        	var $valid = $('.wizard-card form').valid();
+        	/*var $valid = $('.wizard-card form').valid();
         	if(!$valid) {
         		$validator.focusInvalid();
         		return false;
-        	}
+        	}*/
         },
 
         onInit : function(tab, navigation, index){

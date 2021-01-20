@@ -20,44 +20,47 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-fixed-top" style="padding-right: 100px;">
+        <nav class="navbar navbar-fixed-top ">
 
             <a class="navbar-brand" onclick="window.location.href = '@Url.Action("Index", "Home")'" title="Municipalidad Sarasa" aria-label="Municipalidad Sarasa" style="cursor:pointer">
                 Municipalidad Sarasa
             </a>
+            <button id="btnCollapse" type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" style="float:right">
+                <span class="material-icons">menu</span>
+            </button>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="float:right">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="nav-item ml-xl-2">
+                        <a class="nav-link scroll" onclick="window.location.href = '@Url.Action("Index", "Home")'" title="Inicio" aria-label="Inicio" style="cursor:pointer">
+                            Inicio
+                        </a>
+                    </li>
+                    <li class="nav-item ml-xl-2">
+                        <a class="nav-link scroll" onclick="window.location.href = '@Url.Action("CargarActa", "Acta")'" title="Cargar" aria-label="Cargar" style="cursor:pointer">
+                            Cargar
+                        </a>
+                    </li>
+                    <li class="nav-item ml-xl-2">
+                        <a class="nav-link scroll" onclick="window.location.href = '@Url.Action("InicioSesion", "Usuario")'" title="Iniciar Sesión" aria-label="Iniciar Sesión" style="cursor:pointer">
+                            Consultar
+                        </a>
+                    </li>
+                    <li class="nav-item ml-xl-2">
+                        <a class="nav-link scroll" onclick="window.location.href = '@Url.Action("InicioSesion", "Usuario")'" title="Iniciar Sesión" aria-label="Iniciar Sesión" style="cursor:pointer">
+                            Modificar
+                        </a>
+                    </li>
+                    <li class="nav-item ml-xl-2">
+                        <a class="nav-link scroll" onclick="window.location.href = '@Url.Action("InicioSesion", "Usuario")'" title="Iniciar Sesión" aria-label="Iniciar Sesión" style="cursor:pointer">
+                            Asignar actas
+                        </a>
+                    </li>
 
-            <ul class="nav navbar-nav navbar-right">
-                <li class="nav-item ml-xl-2">
-                    <a class="nav-link scroll" onclick="window.location.href = '@Url.Action("Index", "Home")'" title="Inicio" aria-label="Inicio" style="cursor:pointer">
-                        Inicio
-                    </a>
-                </li>
-                <li class="nav-item ml-xl-2">
-                    <a class="nav-link scroll" onclick="window.location.href = '@Url.Action("CargarActa", "Acta")'" title="Cargar" aria-label="Cargar" style="cursor:pointer">
-                        Cargar
-                    </a>
-                </li>
-                <li class="nav-item ml-xl-2">
-                    <a class="nav-link scroll" onclick="window.location.href = '@Url.Action("InicioSesion", "Usuario")'" title="Iniciar Sesión" aria-label="Iniciar Sesión" style="cursor:pointer">
-                        Consultar
-                    </a>
-                </li>
-                <li class="nav-item ml-xl-2">
-                    <a class="nav-link scroll" onclick="window.location.href = '@Url.Action("InicioSesion", "Usuario")'" title="Iniciar Sesión" aria-label="Iniciar Sesión" style="cursor:pointer">
-                        Modificar
-                    </a>
-                </li>
-                <li class="nav-item ml-xl-2">
-                    <a class="nav-link scroll" onclick="window.location.href = '@Url.Action("InicioSesion", "Usuario")'" title="Iniciar Sesión" aria-label="Iniciar Sesión" style="cursor:pointer">
-                        Asignar actas
-                    </a>
-                </li>
-
-            </ul>
-
+                </ul>
+            </div>
         </nav>
         <script src="~/assets/js/jquery-2.2.4.min.js" type="text/javascript"></script>
-        
+
 
 
     </header>
@@ -76,8 +79,12 @@
     <!-- <script src="~/Scripts/jquery-1.7.1.min.js" type="text/javascript"></script>-->
     <script src="~/Scripts/jquery.unobtrusive-ajax.min.js" type="text/javascript"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js" integrity="sha512-d4KkQohk+HswGs6A1d6Gak6Bb9rMWtxjOa0IiY49Q3TeFd5xAzjWXDCBW9RS7m86FQ4RzM2BdHmdJnnKRYknxw==" crossorigin="anonymous"></script>
+
+    <script src="~/assets/js/principal.js"></script>
 
     <script>
+        //Función Inspector
         $(function () {
             $('#btnInspectores').click(function () {
                 $('#modalInspectores').modal('toggle');
@@ -93,59 +100,175 @@
             });
         });
 
-        //Función Ordenanza
+        //Función Infraccion
                 $(function () {
-                    $('#btnOrdenanzas').click(function () {
-                        $('#modalOrdenanzas').modal('toggle');
+                    $('#btnInfracciones').click(function () {
+                        $('#modalInfraccion').modal('toggle');
                 $.ajax({
-                    url: "@(Url.Action("Ordenanza", "Acta"))",
+                    url: "@(Url.Action("Infraccion", "Acta"))",
                     type: 'GET',
                     cache: false,
                     success: function (result) {
-                        $('#divOrdenanzas').html(result);
+                        $('#divInfraccion').html(result);
                     }
                 });
                 return false;
                      });
                });
 
-        //Función día actual
-           $(function () {
 
-                        var today = new Date();
-                        var dd = String(today.getDate()).padStart(2, '0');
-                        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-                        var yyyy = today.getFullYear();
-                        today = yyyy + '-' + mm + '-' + dd;
-
-
-               document.getElementById("fechaCarga").setAttribute("max", today);
-               document.getElementById("fecha").setAttribute("max", today);
-               $('#btnFechaCarga').click(function () {
-                   $("#fechaCarga").attr("value", today);
-                   $("#fechaCarga").val(today);
-                    });
-
+        //Función Automotor
+                $(function () {
+                    $('#btnAutomotor').click(function () {
+                        $('#modalAutomotor').modal('toggle');
+                $.ajax({
+                    url: "@(Url.Action("Automotor", "Acta"))",
+                    type: 'GET',
+                    cache: false,
+                    success: function (result) {
+                        $('#divAutomotor').html(result);
+                    }
+                });
                 return false;
-            });
+                     });
+               });
 
-        //Función hora actual
-        $(function () {
-            $('#btnHoraCarga').click(function () {
-                var currentdate = new Date();
-                var datetime = currentdate.getHours() + ":" + currentdate.getMinutes();
-                $("#horaCarga").attr("value", datetime);
-                $("#horaCarga").val(datetime);
-            });
+             //Función Persona
+                $(function () {
+                    $('#btnPersona').click(function () {
+                        $('#modalPersona').modal('toggle');
+                $.ajax({
+                    url: "@(Url.Action("Persona", "Acta"))",
+                    type: 'GET',
+                    cache: false,
+                    success: function (result) {
+                        $('#divPersona').html(result);
+                    }
+                });
+                return false;
+                     });
+                });
+         $(function () {
+             $('#btnPersonaInfID').click(function () {
+                 $('#btnBuscarPersona').val('1');
+                 $('#modalPersona').modal('toggle');
+                $.ajax({
+                    url: "@(Url.Action("Persona", "Acta"))",
+                    type: 'GET',
+                    cache: false,
+                    success: function (result) {
+                        $('#divPersona').html(result);
+                    }
+                });
+                return false;
+                     });
+         });
 
-            return false;
-        });
+        $('#btnRegistrarActa').click(
+            function () {
+                console.log("Comienza el guardado del acta");
+                var datosActa = $('#formCargarActa');
+                console.log("datos acta:");
+                console.log(datosActa);
+                var datosFormulario = {};
+                var infracciones = [];
+                var titulares = [];
+                var titularesRegistrados = [];
+                var titularesNoRegistrados = [];
 
-        //Función solo números 
-       
+                var infractores = [];
+                var infractoresRegistrados = [];
+                var infractoresNoRegistrados = [];
 
-    
+                $("#formCargarActa > input").each((index, elem) => {
+                    var key = elem.id;
+                    var objInput = {};
+                    datosFormulario[key] = elem.value;
+
+                    //console.log("input valores:");
+                    //console.log(objInput);
+                });
+                $("#formCargarActa_infracciones > input").each((index, elem) => {
+                    var key = elem.id;
+                    var objInput = {};
+                    objInput[key] = elem.value;
+
+                    infracciones.push(objInput);
+
+                    //console.log("input valores:");
+                    //console.log(objInput);
+                });
+                $("#personasRegistradas > div").each((index, elem) => {
+                    var listado_inputs = elem.querySelectorAll("input");
+                    var objInput = {};
+
+                    listado_inputs.forEach(elemento => {
+                        var key = elemento.id;
+
+                        objInput[key] = elemento.value;
+                    });
+                    titularesRegistrados.push(objInput);
+                });
+                $("#personasNoRegistradas > div").each((index, elem) => {
+                    var listado_inputs = elem.querySelectorAll("input");
+                    var objInput = {};
+
+                    listado_inputs.forEach(elemento => {
+                        var key = elemento.id;
+
+                        objInput[key] = elemento.value;
+                    });
+                    titularesNoRegistrados.push(objInput);
+                });
+                $("#personasInfRegistradas > div").each((index, elem) => {
+                    var listado_inputs = elem.querySelectorAll("input");
+                    var objInput = {};
+
+                    listado_inputs.forEach(elemento => {
+                        var key = elemento.id;
+
+                        objInput[key] = elemento.value;
+                    });
+                    infractoresRegistrados.push(objInput);
+                });
+                $("#personasInfNoRegistradas > div").each((index, elem) => {
+                    var listado_inputs = elem.querySelectorAll("input");
+                    var objInput = {};
+
+                    listado_inputs.forEach(elemento => {
+                        var key = elemento.id;
+
+                        objInput[key] = elemento.value;
+                    });
+                    infractoresNoRegistrados.push(objInput);
+                });
+
+                titulares.push(titularesRegistrados);
+                titulares.push(titularesNoRegistrados);
+                infractores.push(infractoresRegistrados);
+                infractores.push(infractoresNoRegistrados);
+                datosFormulario['infractores'] = infractores;
+                datosFormulario['titulares'] = titulares;
+                datosFormulario['infracciones'] = infracciones;
+                console.log("Datos Formulario:");
+                console.log(datosFormulario);
+
+                $.ajax({
+                    url: "@(Url.Action("GuardarFormulario", "Formulario"))",
+                    type: 'POST',
+                    data: JSON.stringify(datosFormulario),
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (data) {
+                        console.log(data);
+                        alert(data.success);
+                    },
+                    error: function () {
+                        alert("error");
+                    }
+                });
+            }
+        );
+
     </script>
-
 </body>
 </html>

@@ -5,10 +5,9 @@ using System.Web;
 
 namespace PGMActas_V2.ViewModels
 {
-    public class TipoDocumentos
+    public class PaisItemVM
     {
-        public int id_tipo_documento { get; set; }
-        public string tipo_documento { get; set; }
-
+        public int id_pais { get; set; }
+        public string pais { get; set; }
     }
 }

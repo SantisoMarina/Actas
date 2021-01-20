@@ -5,10 +5,10 @@ using System.Web;
 
 namespace PGMActas_V2.ViewModels
 {
-    public class Localidad
+    public class ProvinciaItemVM
     {
-        public int id_localidad { get; set; }
-        public string localidad { get; set; }
         public int id_provincia { get; set; }
+        public string provincia { get; set; }
+        public PaisItemVM pais { get; set; }
     }
 }

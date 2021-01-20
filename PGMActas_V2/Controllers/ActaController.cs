@@ -15,169 +15,63 @@ namespace PGMActas_V2.Controllers
         [HttpGet]
         public ActionResult CargarActa()
         {
+            //combo Marcas
+            List<MarcaItemVM> listaMarcas = AutomotorDA.obtenerListaMarcas();
+            ViewBag.items = listaMarcas;
+            //combo Tipos Vehiculos
+            List<TipoVehiculoItemVM> listaTiposVehiculos = AutomotorDA.obtenerListaTiposVehiculos();
+            ViewBag.items2 = listaTiposVehiculos;
+            //combo Tipos Documentos
+            List<TipoDocumentoItemVM> listaTiposDocumentos = PersonaDA.obtenerTiposDocumentos();
+            ViewBag.items3 = listaTiposDocumentos;
+            //combo Paises
+            List<PaisItemVM> listaPaises = PersonaDA.obtenerPaises();
+            ViewBag.items4 = listaPaises;
+            //combo Provincias
+            List<ProvinciaItemVM> listaProvincias = PersonaDA.obtenerProvincias();
+            ViewBag.items5 = listaProvincias;
+            //combo Localidades
+            List<LocalidadItemVM> listaLocalidades = PersonaDA.obtenerLocalidades();
+            ViewBag.items6 = listaLocalidades;
+            //combo Responsabilidad Legal
+            List<ResponsabilidadLegalItemVM> listaResponsabilidadesLegales = PersonaDA.obtenerResponsabilidadesLegales();
+            listaResponsabilidadesLegales.RemoveAt(0);//borro titular del combobox
+            ViewBag.items7 = listaResponsabilidadesLegales;
+            //
             return View();
         }
 
-        // GET: Acta
-        /* public ActionResult CargarActa()
-         {
-
-
-             return View();
-         }
-        */
+        //Vista Parciales de Infracciones
         [HttpGet]
-        public PartialViewResult PaisesResultado()
+        public PartialViewResult Infraccion()
         {
 
-            List<Pais> listaPais = PaisAD.obtenerListaPaises();
-            return PartialView("_PaisesResultado", listaPais);
-        }
-        [HttpPost]
-        public PartialViewResult PaisesResultado(string orden = "", string ordenamiento = "", string searchString = "") {
-
-            List<Pais> listaPais = PaisAD.obtenerListaPaises();
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                listaPais = listaPais.Where(s => s.pais.Contains(searchString)
-                  || s.pais.Contains(searchString)).ToList();
-            }
-
-            switch (orden)
-            {
-                case "id_pais":
-                    if (String.IsNullOrEmpty(ordenamiento) || ordenamiento.Equals("idPaisDes"))
-                    {
-                        ViewBag.ordenamiento = "idPaisAsc";
-                        listaPais = listaPais.OrderBy(s => s.id_pais).ToList();
-                    }
-                    else if (ordenamiento.Equals("idPaisAsc"))
-                    {
-                        ViewBag.ordenamiento = "idPaisDes";
-                        listaPais = listaPais.OrderByDescending(s => s.id_pais).ToList();
-                    }
-                    break;
-                case "pais":
-                    if (String.IsNullOrEmpty(ordenamiento) || ordenamiento.Equals("paisDes"))
-                    {
-                        ViewBag.ordenamiento = "paisAsc";
-                        listaPais = listaPais.OrderBy(s => s.pais).ToList();
-                    }
-                    else if (ordenamiento.Equals("paisAsc"))
-                    {
-                        ViewBag.ordenamiento = "paisDes";
-                        listaPais = listaPais.OrderByDescending(s => s.pais).ToList();
-                    }
-                    break;
-
-                default:
-                    listaPais = listaPais.OrderBy(s => s.id_pais).ToList();
-                    break;
-            }
-            return PartialView("_PaisesResultado", listaPais);
-        }
-        public PartialViewResult Paises()
-        {
-           
-            return PartialView("_Paises");
-        }
-
-        //Vista Parciales de Ordenanzas
-        [HttpGet]
-        public PartialViewResult Ordenanza()
-        {
-
-            return PartialView("_Ordenanza");
+            return PartialView("_Infraccion");
         }
 
         [HttpGet]
-        public PartialViewResult OrdenanzasResultado()
+        public PartialViewResult InfraccionesResultado()
         {
 
-            List<Ordenanza> listaOrdenanzas = OrdenanzaAD.obtenerListaOrdenanzas();
-            return PartialView("_OrdenanzasResultado", listaOrdenanzas);
+            List<Infraccion> listaInfracciones = InfraccionDA.obtenerListaInfracciones();
+            return PartialView("_InfraccionesResultado", listaInfracciones);
         }
 
         [HttpPost]
-        public PartialViewResult OrdenanzasResultado(string orden = "", string ordenamiento = "", string searchString = "")
+        public PartialViewResult InfraccionesResultado(string searchString = "")
         {
 
-            List<Ordenanza> listaOrdenanzas = OrdenanzaAD.obtenerListaOrdenanzas();
+            List<Infraccion> listaInfracciones = InfraccionDA.obtenerListaInfracciones();
             if (!String.IsNullOrEmpty(searchString))
             {
-                var codigoOrd = Int32.Parse(searchString);
-                listaOrdenanzas = listaOrdenanzas.Where(s => s.nomenclatura.Contains(searchString)
-                  || s.descripcion.Contains(searchString) || s.codigo_ordenanza == codigoOrd).ToList();
+                var codigoInf = Int32.Parse(searchString);
+                listaInfracciones = listaInfracciones.Where(s => s.nomenclatura.Contains(searchString)
+                  || s.descripcion.Contains(searchString) || s.codigo_infraccion == codigoInf).ToList();
             }
 
-            switch (orden)
-            {
-                case "codigo_ordenanza":
-                    if (String.IsNullOrEmpty(ordenamiento) || ordenamiento.Equals("codigo_ordenanzaDes"))
-                    {
-                        ViewBag.ordenamiento = "codigo_ordenanzaAsc";
-                        listaOrdenanzas = listaOrdenanzas.OrderBy(s => s.codigo_ordenanza).ToList();
-                    }
-                    else if (ordenamiento.Equals("codigo_ordenanzaAsc"))
-                    {
-                        ViewBag.ordenamiento = "codigo_ordenanzaDes";
-                        listaOrdenanzas = listaOrdenanzas.OrderByDescending(s => s.codigo_ordenanza).ToList();
-                    }
-                    break;
-                case "descripcion":
-                    if (String.IsNullOrEmpty(ordenamiento) || ordenamiento.Equals("descripcionDesc"))
-                    {
-                        ViewBag.ordenamiento = "descripcionAsc";
-                        listaOrdenanzas = listaOrdenanzas.OrderBy(s => s.descripcion).ToList();
-                    }
-                    else if (ordenamiento.Equals("descripcionAsc"))
-                    {
-                        ViewBag.ordenamiento = "descripcionDesc";
-                        listaOrdenanzas = listaOrdenanzas.OrderByDescending(s => s.descripcion).ToList();
-                    }
-                    break;
-                case "nomenclatura":
-                    if (String.IsNullOrEmpty(ordenamiento) || ordenamiento.Equals("nomenclaturaDesc"))
-                    {
-                        ViewBag.ordenamiento = "nomenclaturaAsc";
-                        listaOrdenanzas = listaOrdenanzas.OrderBy(s => s.nomenclatura).ToList();
-                    }
-                    else if (ordenamiento.Equals("nomenclaturaAsc"))
-                    {
-                        ViewBag.ordenamiento = "nomenclaturaDesc";
-                        listaOrdenanzas = listaOrdenanzas.OrderByDescending(s => s.nomenclatura).ToList();
-                    }
-                    break;
-                case "estado":
-                    if (String.IsNullOrEmpty(ordenamiento) || ordenamiento.Equals("estadoDesc"))
-                    {
-                        ViewBag.ordenamiento = "estadoAsc";
-                        listaOrdenanzas = listaOrdenanzas.OrderBy(s => s.estado).ToList();
-                    }
-                    else if (ordenamiento.Equals("estadoAsc"))
-                    {
-                        ViewBag.ordenamiento = "estadoDesc";
-                        listaOrdenanzas = listaOrdenanzas.OrderByDescending(s => s.estado).ToList();
-                    }
-                    break;
-                case "calificacion":
-                    if (String.IsNullOrEmpty(ordenamiento) || ordenamiento.Equals("calificacionDesc"))
-                    {
-                        ViewBag.ordenamiento = "calificacionAsc";
-                        listaOrdenanzas = listaOrdenanzas.OrderBy(s => s.calificacion).ToList();
-                    }
-                    else if (ordenamiento.Equals("calificacionAsc"))
-                    {
-                        ViewBag.ordenamiento = "calificacionDesc";
-                        listaOrdenanzas = listaOrdenanzas.OrderByDescending(s => s.calificacion).ToList();
-                    }
-                    break;
 
-                default:
-                    listaOrdenanzas = listaOrdenanzas.OrderBy(s => s.codigo_ordenanza).ToList();
-                    break;
-            }
-            return PartialView("_OrdenanzasResultado", listaOrdenanzas);
+
+            return PartialView("_InfraccionesResultado", listaInfracciones);
         }
 
         //Vistas Parciales Inspectores
@@ -204,13 +98,74 @@ namespace PGMActas_V2.Controllers
             List<Inspector> listaInspectores = InspectorDA.obtenerListaInspectores();
             if (!String.IsNullOrEmpty(searchString))
             {
-                var idInspector = Int32.Parse(searchString);
-                listaInspectores = listaInspectores.Where(s => s.persona.apellido.Contains(searchString)
-                  || s.persona.nombre.Contains(searchString) || s.id_inspector == idInspector).ToList();
+                listaInspectores = listaInspectores.Where(s => s.persona.nombre.Contains(searchString)).ToList();
             }
             return PartialView("_InspectoresResultado", listaInspectores);
         }
-           
-        
+
+        //Vistas Parciales Automotores
+
+        [HttpGet]
+        public PartialViewResult Automotor()
+        {
+
+            return PartialView("_Automotor");
+        }
+
+        [HttpGet]
+        public PartialViewResult AutomotoresResultado()
+        {
+
+            List<Automotor> listaAutomotores = AutomotorDA.obtenerListaAutomotores();
+            return PartialView("_AutomotoresResultado", listaAutomotores);
+        }
+
+        [HttpPost]
+        public PartialViewResult AutomotoresResultado(string searchString = "")
+        {
+
+            List<Automotor> listaAutomotores = AutomotorDA.obtenerListaAutomotores();
+            if (!String.IsNullOrEmpty(searchString))
+            {
+
+                listaAutomotores = listaAutomotores.Where(s => s.numero_dominio.Contains(searchString)
+                  ).ToList();
+            }
+            return PartialView("_AutomotoresResultado", listaAutomotores);
+        }
+
+
+
+        //Vistas Parciales Personas
+
+        [HttpGet]
+        public PartialViewResult Persona()
+        {
+
+            return PartialView("_Persona");
+        }
+
+        [HttpGet]
+        public PartialViewResult PersonasResultado()
+        {
+
+            List<Persona> listaPersonas = PersonaDA.obtenerListaPersonas();
+            return PartialView("_PersonasResultado", listaPersonas);
+        }
+
+        [HttpPost]
+        public PartialViewResult PersonasResultado(string searchString = "")
+        {
+
+            List<Persona> listaPersonas = PersonaDA.obtenerListaPersonas();
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                int nroDoc;
+
+                bool success = Int32.TryParse(searchString, out nroDoc);
+                listaPersonas = listaPersonas.Where(s => s.numero_documento == nroDoc).ToList();
+            }
+            return PartialView("_PersonasResultado", listaPersonas);
+        }
     }
 }

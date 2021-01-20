@@ -21,12 +21,12 @@
                 <tr>
                     <td>@inspector.id_inspector</td>
                     <td>@inspector.persona.nombre @inspector.persona.apellido</td>
-                    <td>@(inspector.habilitado ? "Sí" : "No")</td>
+                    <td>@(inspector.habilitado ? "Sí" : "Sí")</td>
       
 
                           <td>
       
-                              <button class="btn btn-success btn-xs" id="@inspector.persona.nombre @inspector.persona.apellido">
+                              <button class="btn btn-success btn-xs llenarInspector" id="@inspector.persona.nombre @inspector.persona.apellido">
                             Llenar
                         </button>
                     </td>
@@ -43,9 +43,17 @@
 <script type="text/javascript">
         $(document).ready(function () {
 
-            $('button.btn-success').click(function () {
+            $('button.llenarInspector').click(function () {
+                
                 var s = $(this).attr('id');
                 $("#inspectorID").attr("value", s);
+                $("#inspectorID").val(s);
+
+                //funcion inspector form invisible
+                $("#inspector_form").remove();
+                var inspector = $("#inspectorID").val();
+                var inputForm = "<input id='inspector_form' name='inspector_form' value ='" + inspector + "'> ";
+                $('#formCargarActa').append(inputForm);
             })
         });
 
