@@ -64,9 +64,8 @@ namespace PGMActas_V2.Controllers
             List<Infraccion> listaInfracciones = InfraccionDA.obtenerListaInfracciones();
             if (!String.IsNullOrEmpty(searchString))
             {
-                var codigoInf = Int32.Parse(searchString);
-                listaInfracciones = listaInfracciones.Where(s => s.nomenclatura.Contains(searchString)
-                  || s.descripcion.Contains(searchString) || s.codigo_infraccion == codigoInf).ToList();
+                //  listaInfracciones = listaInfracciones.Where(s => s.nomenclatura.Contains(searchString)).ToList();
+                listaInfracciones = listaInfracciones.Where(s => s.nomenclatura.IndexOf(searchString, StringComparison.OrdinalIgnoreCase) != -1).ToList();
             }
 
 
@@ -98,7 +97,10 @@ namespace PGMActas_V2.Controllers
             List<Inspector> listaInspectores = InspectorDA.obtenerListaInspectores();
             if (!String.IsNullOrEmpty(searchString))
             {
-                listaInspectores = listaInspectores.Where(s => s.persona.nombre.Contains(searchString)).ToList();
+                listaInspectores = listaInspectores.Where(s => (s.persona.nombre.ToLower().Contains(searchString.ToLower()) || s.persona.apellido.ToLower().Contains(searchString.ToLower()) ||
+                (s.persona.nombre.ToLower()+" " + s.persona.apellido.ToLower()).Contains(searchString.ToLower())
+                )).ToList();
+
             }
             return PartialView("_InspectoresResultado", listaInspectores);
         }
@@ -128,8 +130,7 @@ namespace PGMActas_V2.Controllers
             if (!String.IsNullOrEmpty(searchString))
             {
 
-                listaAutomotores = listaAutomotores.Where(s => s.numero_dominio.Contains(searchString)
-                  ).ToList();
+                listaAutomotores = listaAutomotores.Where(s => s.numero_dominio.IndexOf(searchString, StringComparison.OrdinalIgnoreCase) != -1).ToList();
             }
             return PartialView("_AutomotoresResultado", listaAutomotores);
         }
@@ -160,12 +161,42 @@ namespace PGMActas_V2.Controllers
             List<Persona> listaPersonas = PersonaDA.obtenerListaPersonas();
             if (!String.IsNullOrEmpty(searchString))
             {
-                int nroDoc;
+                /*  int nroDoc;
 
-                bool success = Int32.TryParse(searchString, out nroDoc);
-                listaPersonas = listaPersonas.Where(s => s.numero_documento == nroDoc).ToList();
+                  bool success = Int32.TryParse(searchString, out nroDoc);
+                  listaPersonas = listaPersonas.Where(s => s.numero_documento == nroDoc).ToList();
+                */
+                listaPersonas = listaPersonas.Where(s => s.numero_documento.ToString().Contains(searchString)).ToList();
             }
             return PartialView("_PersonasResultado", listaPersonas);
+        }
+
+        //verificar numero acta repetido
+        public HtmlString verificarNumeroActa(int numero_acta)
+        {
+
+            var success = ActaDA.obtenerNumeroActa(numero_acta);
+            var mensaje = success ? "Acta ya existente, para consultarla ingrese <a href=''>aquí</a>":"Número de acta válido.";
+            var response = new { success = success, Message = mensaje };
+            System.Web.Script.Serialization.JavaScriptSerializer jSerializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+            return new HtmlString(jSerializer.Serialize(response));
+        }
+
+        //verificar numero acta rango inspector
+        public HtmlString verificarNumeroActaRangoInspector(int id_inspector, int numero_acta)
+        {
+            var success = false;
+            var rangoComienzo = InspectorDA.obtenerRangoComienzoInspector(id_inspector);
+            var rangoFin = InspectorDA.obtenerRangoFinInspector(id_inspector);
+            if ((numero_acta >= rangoComienzo) && (numero_acta<=rangoFin))
+            {
+                success = true;
+            }
+
+            var mensaje = success ? "Acta dentro del rango del inspector. ":"Acta fuera del rango del inspector.";
+            var response = new { success = success, Message = mensaje };
+            System.Web.Script.Serialization.JavaScriptSerializer jSerializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+            return new HtmlString(jSerializer.Serialize(response));
         }
     }
 }

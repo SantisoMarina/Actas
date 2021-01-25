@@ -125,6 +125,7 @@
     <Compile Include="Controllers\FormularioController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PersonaController.cs" />
+    <Compile Include="DataAccess\ActaDA.cs" />
     <Compile Include="DataAccess\AutomotorDA.cs" />
     <Compile Include="DataAccess\FormularioDA.cs" />
     <Compile Include="DataAccess\InspectorDA.cs" />

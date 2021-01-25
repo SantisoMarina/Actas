@@ -8,32 +8,35 @@
     <table>
         <thead>
             <tr class="table100-head" style="border-bottom: 2px solid #4caf50">
-                <th class="column1" style="padding: 0.3rem">ID</th>
+                <th class="column1" style="padding: 0.3rem">Matrícula</th>
                 <th class="column2" style="padding: 0.3rem"> Nombre </th>
                 <th class="column3" style="padding: 0.3rem"> Habilitado </th>
-                <th class="column5" style="padding: 0.3rem"> Seleccionar </th>
+                <th class="column4" style="padding: 0.3rem"> Rango Comienzo </th>
+                <th class="column5" style="padding: 0.3rem"> Rango Fin </th>
+                <th class="column6" style="padding: 0.3rem"> Seleccionar </th>
 
             </tr>
         </thead>
         <tbody>
             @foreach (var inspector in Model)
             {
-                <tr>
-                    <td>@inspector.id_inspector</td>
-                    <td>@inspector.persona.nombre @inspector.persona.apellido</td>
-                    <td>@(inspector.habilitado ? "Sí" : "Sí")</td>
-      
-
-                          <td>
-      
-                              <button class="btn btn-success btn-xs llenarInspector" id="@inspector.persona.nombre @inspector.persona.apellido">
-                            Llenar
-                        </button>
-                    </td>
+            <tr>
+                <td>@inspector.matricula</td>
+                <td>@inspector.persona.nombre @inspector.persona.apellido</td>
+                <td>@(inspector.habilitado ? "Sí" : "No")</td>
+                <td>@inspector.rango_comienzo_acta</td>
+                <td>@inspector.rango_fin_acta</td>
 
 
+                <td>
 
-                </tr>
+                    <button class="btn btn-success btn-xs llenarInspector" id="@inspector.persona.nombre @inspector.persona.apellido | @inspector.rango_comienzo_acta | @inspector.rango_fin_acta | @inspector.id_inspector">
+                        Llenar
+                    </button>
+                </td>
+
+
+            </tr>
             }
 
 
@@ -45,15 +48,25 @@
 
             $('button.llenarInspector').click(function () {
                 
-                var s = $(this).attr('id');
-                $("#inspectorID").attr("value", s);
-                $("#inspectorID").val(s);
-
+                var s = $(this).attr('id').split("|");
+                $("#inspectorID").attr("value", s[0]);
+                $("#inspectorID").val(s[0]);
+                
                 //funcion inspector form invisible
                 $("#inspector_form").remove();
-                var inspector = $("#inspectorID").val();
+                var inspector = s[3];
                 var inputForm = "<input id='inspector_form' name='inspector_form' value ='" + inspector + "'> ";
                 $('#formCargarActa').append(inputForm);
+
+                //función  numero de acta verificado
+                $("#btnVerificarActa").prop("disabled", false);
+                $("#numeroActaID").prop("disabled", false);
+
+                //función rango de acta en label
+                $("#labelRangoInspector").remove();
+                var mensajeInspector = "<label id='labelRangoInspector'>" + "Rango de " + s[1] + " a " + s[2] + "</label>";
+                $("#divInspectorInputButton").after(mensajeInspector);
+
             })
         });
 

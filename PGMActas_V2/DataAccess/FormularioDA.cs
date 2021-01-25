@@ -11,83 +11,136 @@ namespace PGMActas_V2.DataAccess
 {
     public class FormularioDA
     {
-        public bool guardarActa(DatosFormulario datosFormulario)
+        public static bool guardarActa(DatosFormulario datosFormulario)
         {
             bool resultado = true;
-            int idAutomotor = Convert.ToInt32(datosFormulario.automotorID_form);
-            if (idAutomotor != 0) {
+            try
+            {
+
+
+                //Guardado del vehiculo
+                int idAutomotor = Convert.ToInt32(datosFormulario.id_automotor_form);
+                if (idAutomotor == 0)
+                {
+                    var tipoVehiculoP = Convert.ToInt32(datosFormulario.tipoVehiculo_form);
+                    Automotor automotor = new Automotor(0, datosFormulario.automotorID_form, tipoVehiculoP, datosFormulario.modeloVehiculo_form, datosFormulario.colorVehiculo_form);
+                    idAutomotor = guardarAutomotor(automotor);
+                }
+                //Guardado del acta
+                Acta acta = new Acta();
+                var inspector = new Inspector();
+                var operador = new Operador();
                 var tipoVehiculo = Convert.ToInt32(datosFormulario.tipoVehiculo_form);
-                Automotor automotor = new Automotor(0,datosFormulario.automotorID_form, tipoVehiculo, datosFormulario.modelo_vehiculo,datosFormulario.colorVehiculo_form);
-                idAutomotor = guardarAutomotor(automotor);
+                var automotorForm = new Automotor(idAutomotor, datosFormulario.automotorID_form, tipoVehiculo, datosFormulario.modeloVehiculo_form, datosFormulario.colorVehiculo_form);
+
+                operador.id_operador = 1;
+                inspector.id_inspector = Convert.ToInt32(datosFormulario.inspector_form);
+                acta.numero_acta = Convert.ToInt32(datosFormulario.numeroActa_form);
+                acta.inspector = inspector;
+                acta.ip_carga = "192.168.789";//TODO obtener ip
+                acta.operador = operador;
+                acta.fecha_carga = datosFormulario.fechaCarga_form;
+                acta.hora_carga = datosFormulario.horaCarga_form;
+                acta.fecha_acta = datosFormulario.fechaInf_form;
+                acta.hora_acta = datosFormulario.horaInf_form;
+                acta.observaciones = datosFormulario.observacionesInf_form;
+                acta.retuvo_licencia = true;
+                acta.retuvo_vehiculo = true;
+                acta.id_localidad = 1; //capital
+                acta.direccion = datosFormulario.direccionInf_form;
+                acta.codigo_postal = Convert.ToInt32(datosFormulario.codigoPostalInf_form); ;
+                acta.automotor = automotorForm;
+
+
+                resultado = registrarActa(acta);
+
+                //Guardado de infracciones
+                List<int> infracciones = new List<int>();
+                datosFormulario.infracciones.ForEach(elem =>
+                {
+                    var infraccionId = Convert.ToInt32(elem.form_codigo_infraccion);
+                    infracciones.Add(infraccionId);
+                });
+
+                int numeroActa = Convert.ToInt32(datosFormulario.numeroActa_form);
+                guardarInfracciones(infracciones, numeroActa);
+
+                //Guardar de titulares
+                List<Persona> titulares = new List<Persona>();
+                datosFormulario.titulares.ForEach(elem =>
+                {
+                    Console.WriteLine("Entro Tit");
+                    Console.WriteLine(elem);
+                    elem.ForEach(elemento =>
+                    {
+                        Console.WriteLine("Entro Tit");
+                        Console.WriteLine(elemento);
+                        var titular = new Persona();
+                        var localidad = new LocalidadItemVM();
+                        var tipoDoc = new TipoDocumentoItemVM();
+                        var tipoDocumento = Convert.ToInt32(elemento.form_tipo_documento);
+                        var domicilio = "";
+                        if (elemento.form_domicilio != null)
+                        {
+                            domicilio = elemento.form_domicilio;
+                        }
+                        tipoDoc.id_tipo_documento = tipoDocumento; //TODO agregar campo tipo documento
+                        localidad.id_localidad = 1;
+                        titular.id_persona = Convert.ToInt32(elemento.form_id_persona);
+                        titular.nombre = elemento.form_nombre;
+                        titular.apellido = elemento.form_apellido;
+                        titular.numero_documento = Convert.ToInt32(elemento.form_numero_documento);
+                        titular.direccion = domicilio;
+                        titular.codigo_postal = 0;
+                        titular.tipoDocumento = tipoDoc;
+                        titular.localidad = localidad;
+                        titular.idResponsabilidadLegal = 1;
+                        titulares.Add(titular);
+
+                    });
+                });
+                guardarTitular(titulares, idAutomotor);
+                //Guardado de titulares
+                List<Persona> infractores = new List<Persona>();
+                datosFormulario.infractores.ForEach(elem =>
+                {
+                    Console.WriteLine("Entro Inf");
+                    Console.WriteLine(elem);
+                    elem.ForEach(elemento =>
+                    {
+                        Console.WriteLine("Entro Inf");
+                        Console.WriteLine(elemento);
+                        var infractor = new Persona();
+                        var localidad = new LocalidadItemVM();
+                        var tipoDoc = new TipoDocumentoItemVM();
+                        var domicilio = "";
+                        if (elemento.form_domicilio != null)
+                        {
+                            domicilio = elemento.form_domicilio;
+                        }
+                        tipoDoc.id_tipo_documento = 1;//TODO agregar campo tipo documento
+                        localidad.id_localidad = Convert.ToInt32(elemento.form_localidad);
+                        infractor.id_persona = Convert.ToInt32(elemento.form_id_persona);
+                        infractor.nombre = elemento.form_nombre;
+                        infractor.apellido = elemento.form_apellido;
+                        infractor.numero_documento = Convert.ToInt32(elemento.form_numero_documento);
+                        infractor.direccion = domicilio;
+                        infractor.codigo_postal = elemento.form_codigo_postal != null ? Convert.ToInt32(elemento.form_codigo_postal) : 0;
+                        infractor.idResponsabilidadLegal = Convert.ToInt32(elemento.form_responsabilidad);
+                        infractor.localidad = localidad;
+                        infractor.tipoDocumento = tipoDoc;
+                        infractores.Add(infractor);
+
+                    });
+                });
+                guardarInfractor(infractores, numeroActa);
+
             }
-            List<int> infracciones = new List<int>();
-            datosFormulario.infracciones.ForEach(elem => {
-                var infraccionId = Convert.ToInt32(elem.form_codigo_infraccion);
-                infracciones.Add(infraccionId);
-            });
-            
-            int numeroActa = Convert.ToInt32(datosFormulario.numeroActa_form);
-            guardarInfracciones(infracciones, numeroActa);
-            List<Persona> titulares = new List<Persona>();
-            datosFormulario.titulares.ForEach(elem => {
-                elem.ForEach(elemento =>{
-                    var titular = new Persona();
-                    var localidad = new LocalidadItemVM();
-                    var tipoDoc = new TipoDocumentoItemVM();
-                    tipoDoc.id_tipo_documento = Convert.ToInt32(elemento.form_tipo_documento);
-                    localidad.id_localidad = Convert.ToInt32(elemento.form_localidad);
-                    titular.id_persona = Convert.ToInt32(elemento.form_id_persona);
-                    titular.nombre = elemento.form_nombre;
-                    titular.apellido = elemento.form_apellido;
-                    titular.numero_documento = Convert.ToInt32(elemento.form_numero_documento);
-                    titular.direccion = elemento.inputFormDomicilio;
-                    titular.codigo_postal = Convert.ToInt32(elemento.inputFormCodigoPostal);
-                    titulares.Add(titular);
+            catch (Exception e)
+            {
+                resultado = false;
 
-                });
-            });
-            guardarTitular(titulares, idAutomotor);
-            List<Persona> infractores = new List<Persona>();
-            datosFormulario.infractores.ForEach(elem => {
-                elem.ForEach(elemento => {
-                    var titular = new Persona();
-                    var localidad = new LocalidadItemVM();
-                    var tipoDoc = new TipoDocumentoItemVM();
-                    tipoDoc.id_tipo_documento = Convert.ToInt32(elemento.form_tipo_documento);
-                    localidad.id_localidad = Convert.ToInt32(elemento.form_localidad);
-                    titular.id_persona = Convert.ToInt32(elemento.form_id_persona);
-                    titular.nombre = elemento.form_nombre;
-                    titular.apellido = elemento.form_apellido;
-                    titular.numero_documento = Convert.ToInt32(elemento.form_numero_documento);
-                    titular.direccion = elemento.inputFormDomicilio;
-                    titular.codigo_postal = Convert.ToInt32(elemento.inputFormCodigoPostal);
-                    titulares.Add(titular);
-
-                });
-            });
-            guardarInfractor(infractores, numeroActa);
-            Acta acta = new Acta();
-            var inspector = new Inspector();
-            var operador = new Operador();
-            var tipoVehiculo = Convert.ToInt32(datosFormulario.tipoVehiculo_form);
-            var automotorForm = new Automotor(0, datosFormulario.automotorID_form, tipoVehiculo, datosFormulario.modelo_vehiculo, datosFormulario.colorVehiculo_form);
-
-            operador.id_operador = 1;
-            inspector.id_inspector = 1;
-            acta.numero_acta = Convert.ToInt32(datosFormulario.numeroActa_form);
-            acta.inspector = inspector;
-            acta.ip_carga = "192.168.789";
-            acta.operador = operador;
-            acta.fecha_carga = "";
-            acta.hora_carga = "";
-            acta.fecha_acta = datosFormulario.fechaInf_form;
-            acta.hora_acta = "";
-            acta.observaciones = datosFormulario.observacionesInf_form;
-            acta.retuvo_licencia = true;
-            acta.retuvo_vehiculo = true;
-            acta.automotor = automotorForm;
-
-            resultado = registrarActa(acta);
+            }
 
             return resultado;
         }
@@ -102,10 +155,11 @@ namespace PGMActas_V2.DataAccess
                 SqlCommand command = new SqlCommand();
                 string insertAutomotor = "INSERT INTO Actas " +
                     " VALUES " +
-                    " (@id_inspector, @ip_carga, @id_operador, @fecha_carga, @hora_carga, @fecha_acta, @hora_acta, @observaciones, @retuvo_licencia, " +
-                    " @retuvo_vehiculo, @id_automotor);";
+                    " (@numero_acta, @id_inspector, @ip_carga, @id_operador, @fecha_carga, @hora_carga, @fecha_acta, @hora_acta, @observaciones, @retuvo_licencia, " +
+                    " @retuvo_vehiculo, @id_automotor, @direccion_infraccion, @codigo_postal_infraccion, @id_localidad);";
                 command.Parameters.Clear();
-                command.Parameters.AddWithValue("@id_inspector",acta.inspector.id_inspector);
+                command.Parameters.AddWithValue("@numero_acta", acta.numero_acta);
+                command.Parameters.AddWithValue("@id_inspector", acta.inspector.id_inspector);
                 command.Parameters.AddWithValue("@ip_carga", acta.ip_carga);
                 command.Parameters.AddWithValue("@id_operador", acta.operador.id_operador);
                 command.Parameters.AddWithValue("@fecha_carga", acta.fecha_carga);
@@ -116,7 +170,9 @@ namespace PGMActas_V2.DataAccess
                 command.Parameters.AddWithValue("@retuvo_licencia", acta.retuvo_licencia);
                 command.Parameters.AddWithValue("@retuvo_vehiculo", acta.retuvo_vehiculo);
                 command.Parameters.AddWithValue("@id_automotor", acta.automotor.id_automotor);
-
+                command.Parameters.AddWithValue("@direccion_infraccion", acta.direccion);
+                command.Parameters.AddWithValue("@codigo_postal_infraccion", acta.codigo_postal);
+                command.Parameters.AddWithValue("@id_localidad", acta.id_localidad);
                 command.CommandType = System.Data.CommandType.Text;
                 command.CommandText = insertAutomotor;
                 conexion.Open();
@@ -124,7 +180,7 @@ namespace PGMActas_V2.DataAccess
                 command.ExecuteNonQuery();
                 resultado = true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
 
                 throw;
@@ -152,7 +208,6 @@ namespace PGMActas_V2.DataAccess
                 command.Parameters.AddWithValue("@modelo", automotor.modelo);
                 command.Parameters.AddWithValue("@color", automotor.color);
                 command.Parameters.Add("@ID", SqlDbType.Int, 4).Direction = ParameterDirection.Output;
-                command.ExecuteNonQuery();
                 command.CommandType = System.Data.CommandType.Text;
                 command.CommandText = insertAutomotor;
                 conexion.Open();
@@ -160,10 +215,10 @@ namespace PGMActas_V2.DataAccess
                 command.ExecuteNonQuery();
                 idAutomotor = Convert.ToInt32(command.Parameters["@ID"].Value);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-
                 throw;
+
             }
             finally
             {
@@ -177,11 +232,12 @@ namespace PGMActas_V2.DataAccess
             bool resultado = true;
             string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
             SqlConnection conexion = new SqlConnection(cadenaConexion);
+            conexion.Open();
             try
             {
                 foreach (var personaTitular in listadoPersonasTitulares)
                 {
-                    
+
                     if (personaTitular.id_persona == 0)
                     {
                         SqlCommand command = new SqlCommand();
@@ -199,31 +255,38 @@ namespace PGMActas_V2.DataAccess
                         command.Parameters.Add("@ID", SqlDbType.Int, 4).Direction = ParameterDirection.Output;
                         command.CommandType = System.Data.CommandType.Text;
                         command.CommandText = insertPersona;
-                        conexion.Open();
                         command.Connection = conexion;
                         command.ExecuteNonQuery();
                         personaTitular.id_persona = Convert.ToInt32(command.Parameters["@ID"].Value);
 
                     }
-                    SqlCommand command2 = new SqlCommand();
-                    string insertPersonaxAutomotor = "INSERT INTO AutomotoresxPersonas " +
-                        " VALUES " +
-                        " (@id_automotor, @id_persona, @id_responsabilidad_legal);";
-                    command2.Parameters.Clear();
-                    command2.Parameters.AddWithValue("@id_automotor", idAutmotor);
-                    command2.Parameters.AddWithValue("@id_persona", personaTitular.id_persona);
-                    command2.Parameters.AddWithValue("@id_responsabilidad_legal", personaTitular.idResponsabilidadLegal);
-                    command2.CommandType = System.Data.CommandType.Text;
-                    command2.CommandText = insertPersonaxAutomotor;
-                    conexion.Open();
-                    command2.Connection = conexion;
-                    command2.ExecuteNonQuery();
+
+                    try
+                    {
+                        SqlCommand command2 = new SqlCommand();
+                        string insertPersonaxAutomotor = "INSERT INTO AutomotoresxPersonas " +
+                            " VALUES " +
+                            " (@id_automotor, @id_persona, @id_responsabilidad_legal);";
+                        command2.Parameters.Clear();
+                        command2.Parameters.AddWithValue("@id_automotor", idAutmotor);
+                        command2.Parameters.AddWithValue("@id_persona", personaTitular.id_persona);
+                        command2.Parameters.AddWithValue("@id_responsabilidad_legal", personaTitular.idResponsabilidadLegal);
+                        command2.CommandType = System.Data.CommandType.Text;
+                        command2.CommandText = insertPersonaxAutomotor;
+                        command2.Connection = conexion;
+                        command2.ExecuteNonQuery();
+                    }
+                    catch (Exception e )
+                    {
+                        Console.WriteLine("Error al intentar guardar las personas por los automotores");
+                    }
+                    
 
 
                 }
 
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 resultado = false;
                 throw;
@@ -239,6 +302,7 @@ namespace PGMActas_V2.DataAccess
             bool resultado = false;
             string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
             SqlConnection conexion = new SqlConnection(cadenaConexion);
+            conexion.Open();
             try
             {
                 foreach (var personaInfractor in listadoPersonasInfractores)
@@ -260,7 +324,6 @@ namespace PGMActas_V2.DataAccess
                         command2.Parameters.Add("@ID", SqlDbType.Int, 4).Direction = ParameterDirection.Output;
                         command2.CommandType = System.Data.CommandType.Text;
                         command2.CommandText = insertPersona;
-                        conexion.Open();
                         command2.Connection = conexion;
                         command2.ExecuteNonQuery();
                         personaInfractor.id_persona = Convert.ToInt32(command2.Parameters["@ID"].Value);
@@ -277,14 +340,13 @@ namespace PGMActas_V2.DataAccess
 
                     command.CommandType = System.Data.CommandType.Text;
                     command.CommandText = insertPersonaxActa;
-                    conexion.Open();
                     command.Connection = conexion;
                     command.ExecuteNonQuery();
 
                 }
 
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 resultado = false;
                 throw;
@@ -301,6 +363,7 @@ namespace PGMActas_V2.DataAccess
             bool resultado = true;
             string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
             SqlConnection conexion = new SqlConnection(cadenaConexion);
+            conexion.Open();
             try
             {
                 foreach (var codigo in codigosInfraccion)
@@ -314,13 +377,12 @@ namespace PGMActas_V2.DataAccess
                     command.Parameters.AddWithValue("@codigo_infraccion", codigo);
                     command.CommandType = System.Data.CommandType.Text;
                     command.CommandText = insertInfraccion;
-                    conexion.Open();
                     command.Connection = conexion;
                     command.ExecuteNonQuery();
                 }
 
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 resultado = false;
                 throw;

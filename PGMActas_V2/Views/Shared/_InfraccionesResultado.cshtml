@@ -8,11 +8,10 @@
     <table>
         <thead>
             <tr class="table100-head" style="border-bottom: 2px solid #4caf50">
-                <th class="column1" style="padding: 0.3rem">Código</th>
-                <th class="column2" style="padding: 0.3rem"> Nomenclatura </th>
-                <th class="column3" style="padding: 0.3rem"> Descripcion </th>
-                <th class="column4" style="padding: 0.3rem"> Estado </th>
-                <th class="column5" style="padding: 0.3rem"> Calificación </th>
+                <th class="column1" style="padding: 0.3rem"> Nomenclatura </th>
+                <th class="column2" style="padding: 0.3rem"> Descripcion </th>
+                <th class="column3" style="padding: 0.3rem"> Estado </th>
+                <th class="column4" style="padding: 0.3rem"> Calificación </th>
                 <th class="column5" style="padding: 0.3rem"> Seleccionar </th>
 
             </tr>
@@ -20,23 +19,21 @@
         <tbody>
             @foreach (var infraccion in Model)
             {
-                <tr>
-                    <td>@infraccion.codigo_infraccion</td>
-                    <td>@infraccion.nomenclatura</td>
-                    <td>@infraccion.descripcion</td>
-                    <td>@(infraccion.estado? "Vigente":"No Vigente")</td>
-                    <td>@infraccion.calificacion</td>
+            <tr>
+                <td>@infraccion.nomenclatura</td>
+                <td>@infraccion.descripcion</td>
+                <td>@(infraccion.estado? "Vigente":"No Vigente")</td>
+                <td>@infraccion.calificacion</td>
 
-
-                    <td>
-                        <button class="btn btn-success btn-xs" id="@infraccion.nomenclatura|@infraccion.codigo_infraccion">
-                            Llenar
-                        </button>
-                    </td>
+                <td>
+                    <button class="btn btn-success btn-xs agregarInfraccion" id="@infraccion.nomenclatura|@infraccion.codigo_infraccion|@infraccion.habilitado_retuvo_licencia|@infraccion.habilitado_retuvo_vehiculo">
+                        Llenar
+                    </button>
+                </td>
 
 
 
-                </tr>
+            </tr>
             }
 
 
@@ -46,12 +43,17 @@
     <script type="text/javascript">
         $(document).ready(function () {
 
-            $('button.btn-success').click(function () {
+            $('button.agregarInfraccion').click(function () {
                 var s = $(this).attr('id');
                 s = s.split('|');
                 $("#infraccionID").val(s[0]);
                 $("#codigoinfraccionID").val(s[1]);
+                !!$("#retuvoLicenciaID").val(!!s[2]);
+                !!$("#retuvoVehiculoID").val(!!s[3]);
+                //TODO infraccion con medida auxiliar
+                console.log(!!s[3]);
             })
         });
 
     </script>
+

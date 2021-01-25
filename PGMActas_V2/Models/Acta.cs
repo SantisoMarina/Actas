@@ -23,11 +23,14 @@ namespace PGMActas_V2.Models
         public List<Infraccion> listaInfraccionesActa { get; set; }
         public int id_automotor_persona { get; set; }
         public int id_persona_infraccion_acta { get; set; }
+        public int id_localidad { get; set; }
+        public  string direccion { get; set; }
+        public int codigo_postal { get; set; }
 
         public Acta(int numero_acta, Inspector inspector, string ip_carga, Operador operador, 
             string fecha_acta, string hora_acta, string observaciones, bool retuvo_licencia, 
             bool retuvo_vehiculo, Automotor automotor, List<Persona> listaPersonasInfraccion, 
-            List<Infraccion> listaInfraccionesActa)
+            List<Infraccion> listaInfraccionesActa, int id_localidad, string direccion, int codigo_postal, string fecha_carga, string hora_carga)
         {
             this.numero_acta = numero_acta;
             this.inspector = inspector;
@@ -41,8 +44,11 @@ namespace PGMActas_V2.Models
             this.automotor = automotor;
             this.listaPersonasInfraccion = listaPersonasInfraccion;
             this.listaInfraccionesActa = listaInfraccionesActa;
-            fecha_carga = DateTime.UtcNow.ToString("MM-dd-yyyy"); 
-            hora_carga = DateTime.UtcNow.ToString("HH:mm");
+            this.id_localidad = id_localidad;
+            this.direccion = direccion;
+            this.codigo_postal = codigo_postal;
+            fecha_carga = fecha_carga; 
+            hora_carga = hora_carga;
         }
 
         public Acta()

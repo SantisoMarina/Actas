@@ -58,15 +58,18 @@
                                                     Inspector
                                                     <small>(obligatorio)</small>
                                                 </label>
-                                                <div style="flex-direction: row; display: flex;">
+                                                <div style="flex-direction: row; display: flex;" id="divInspectorInputButton">
+
                                                     <input name="inspector" type="text" class="form-control"
                                                            value=" " id="inspectorID" disabled>
-                                                    <button id="btnInspectores" class="btn btn-danger btn-xs"
+
+                                                    <button id="btnInspectores" class="btn btn-warning btn-xs"
                                                             type="button">
-                                                        Ayuda
+                                                        Buscar inspector
                                                     </button>
 
                                                 </div>
+
                                             </div>
                                         </div>
 
@@ -74,22 +77,24 @@
 
 
                                         <div class="input-group">
-                                            <div class="form-group label-floating">
-                                                <label class="control-label">
+                                            <div class="form-group has-error" id="divNumeroActa">
+                                                <p style="color:#aaaaaa">
                                                     Número de Acta
                                                     <small>(obligatorio)</small>
-                                                </label>
+                                                </p>
+                                                <div style="flex-direction: row; display: flex;" id="divNumeroActa">
+                                                    <div style="flex-direction: column">
 
+                                                        <input disabled name="numerodeacta" type="text" class="form-control" onkeypress="return isNumberKey(event);" id="numeroActaID">
 
-                                                <div style="flex-direction: row; display: flex;">
-                                                    <input name="numerodeacta" type="text" class="form-control" onkeypress="return isNumberKey(event);" id="numeroActaID">
-                                                    <button id="btnVerificarActa" class="btn btn-warning btn-xs"
-                                                            type="button">
+                                                    </div>
+                                                    <!--  <button id="btnVerificarActa" class="btn btn-warning btn-xs"
+                                                            type="button" disabled style="height:25px">
                                                         Verificar
-
-                                                    </button>
+                                                    </button>-->
 
                                                 </div>
+
                                             </div>
                                         </div>
                                         <div class="input-group">
@@ -103,9 +108,9 @@
                                                     <input class="datefield" data-val="true"
                                                            data-val-required="Date is required"
                                                            name="ReleaseDate" type="date" id="fechaInf" />
-                                                    <button class="btn btn-danger btn-xs"
+                                                    <button class="btn btn-warning btn-xs"
                                                             type="button" style="margin-left:10px" id="btnFechaInf">
-                                                        Llenar
+                                                        Llenar con día actual
                                                     </button>
                                                 </div>
                                             </div>
@@ -166,12 +171,17 @@
 
 
                                             <div class="form-group label-floating">
-
+                                                <label>
+                                                    Localidad
+                                                    
+                                                </label><br />
+                                                <!--
                                                 <label class="control-label">
                                                     Localidad
                                                     <small>(obligatorio)</small>
                                                 </label>
-                                                <input name="localidad" type="text" class="form-control" onkeypress="return lettersSpacesOnly(event);" id="localidadInfoID">
+                                                 <input name="localidad" type="text" class="form-control" onkeypress="return lettersSpacesOnly(event);" id="localidadInfoID"> -->
+                                                @Html.DropDownListFor(model => model.marca, new SelectList(items6, "id_localidad", "localidad", 1), "Localidad *", htmlAttributes: new { @class = "form-control", id = "localidadInfID", @disabled = "disabled", @name= "localidadInf" })
                                             </div>
                                         </div>
 
@@ -191,7 +201,7 @@
                                             <div class="form-group label-floating">
                                                 <label class="control-label">
                                                     Código postal
-
+                                                    <small>(obligatorio)</small>
                                                 </label>
                                                 <input name="direccion" type="text" class="form-control" onkeypress="return isNumberKey(event);" id="codigoPostalInfID">
 
@@ -210,7 +220,7 @@
                                                     <small>(obligatorio)</small>
                                                 </label>
                                                 <div style="flex-direction: row; display: flex;">
-                                                    <input name="ord" type="text" class="form-control"
+                                                    <input name="normativa" type="text" class="form-control"
                                                            id="normativaID" value="8560 - Ley Prov. de Transito" disabled>
                                                 </div>
                                             </div>
@@ -229,21 +239,24 @@
                                                 </label>
                                                 <div style="flex-direction: row; display: flex;">
                                                     <input name="infraccion" type="text" class="form-control"
-                                                           id="infraccionID" value=" " disabled>
+                                                           id="infraccionID" value=" " disabled style="width:150px">
                                                     <!-- Valor BD-->
                                                     <input name="codigo_infraccion" type="text" class="form-control"
                                                            id="codigoinfraccionID" value=" " style="display:none">
-
-                                                    <button class="btn btn-danger btn-xs"
+                                                    <input name="retuvo_licencia" type="text" class="form-control"
+                                                           id="retuvoLicenciaID" value=" " style="display:none">
+                                                    <input name="retuvo_vehiculo" type="text" class="form-control"
+                                                           id="retuvoVehiculoID" value=" " style="display:none">
+                                                    <button class="btn btn-warning btn-xs"
                                                             type="button" id="btnInfracciones">
-                                                        Ayuda
+                                                        Buscar<br /> infracciones
                                                     </button>
                                                 </div>
                                             </div>
                                         </div>
 
 
-                                        <button id="btnAgregarInfraccion" class="btn btn-warning btn-xs"
+                                        <button id="btnAgregarInfraccion" class="btn btn-success btn-xs"
                                                 type="button">
                                             Agregar Infracción
                                         </button>
@@ -281,7 +294,7 @@
 
 
                                                 <textarea class="form-control" placeholder="Observaciones" rows="5" maxlength="250" id="observacionesInfID"></textarea>
-                                                <small>Máx. 250 caracteres</small>
+                                                <small><text id="count"></text> caracteres restantes.</small>
                                             </div>
                                         </div>
 
@@ -308,11 +321,11 @@
                                                         <small>(obligatorio)</small>
                                                     </label>
                                                     <input name="numeroDominio" type="text" class="form-control" value=" " id="automotorID" onkeypress="return noAlfanumericos(event);">
-                                                    <button class="btn btn-danger btn-xs"
-                                                            type="button" style="margin-left:10px;" id="btnAutomotor">
-                                                        Buscar
-                                                    </button>
                                                     <button class="btn btn-warning btn-xs"
+                                                            type="button" style="margin-left:10px;" id="btnAutomotor">
+                                                        Buscar Automotor por patente
+                                                    </button>
+                                                    <button class="btn btn-danger btn-xs"
                                                             type="button" style="margin-left:10px; display:none" id="btnAutomotorLimpiar">
                                                         Limpiar
                                                     </button>
@@ -386,7 +399,7 @@
                                             </div>
                                         </div>
                                         <div style="flex-direction: row; display: flex;">
-                                            <button class="btn btn-danger btn-xs"
+                                            <button class="btn btn-warning btn-xs"
                                                     type="button" id="btnPersona">
                                                 Buscar persona por número de documento
                                             </button>
@@ -416,11 +429,11 @@
                                         <div style="flex-direction: row; display: flex;">
                                             <button id="agregarTitular" class="btn btn-success btn-xs"
                                                     type="button">
-                                                AGREGAR PERSONA
+                                                AGREGAR Titular
                                             </button>
                                         </div>
 
-                                        <div style="flex-direction: row; display: flex;">
+                                        <!--  <div style="flex-direction: row; display: flex;">
                                             <button id="buscarInfracciones" class="btn btn-warning btn-xs"
                                                     type="button" disabled>
                                                 Buscar infracciones de la persona
@@ -430,12 +443,12 @@
 
                                         <div style="flex-direction: row; display: flex;">
                                             <!--TODO agregar seleccion de badge para poder poner como infractor al titular-->
-                                            <button id="btnTitularInfractor" class="btn btn-warning btn-xs"
+                                        <!--    <button id="btnTitularInfractor" class="btn btn-warning btn-xs"
                                                     type="button" disabled>
                                                 Titular e infractor
                                             </button>
                                         </div>
-
+                                        -->
 
                                     </div>
 
@@ -477,7 +490,7 @@
                                                 </label>
                                                 <input name="direccion" type="text" class="form-control" id="personaInfID" value=" " disabled onkeypress="return isNumberKey(event);" style="width:250px">
                                                 <div style="flex-direction: row; display: flex;">
-                                                    <button class="btn btn-danger btn-xs"
+                                                    <button class="btn btn-warning btn-xs"
                                                             type="button" id="btnPersonaInfID">
                                                         Buscar persona por número de documento
                                                     </button>
@@ -509,13 +522,13 @@
                                             </div>
                                         </div>
 
-                                        <div style="flex-direction: row; display: flex;">
-                                            <button class="btn btn-warning btn-xs"
-                                                    type="button" disabled>
-                                                Buscar infracciones de la persona
-                                            </button>
-                                        </div>
-
+                                        <!-- <div style="flex-direction: row; display: flex;">
+                                                                                    <button class="btn btn-warning btn-xs"
+                                                                                            type="button" disabled>
+                                                                                        Buscar infracciones de la persona
+                                                                                    </button>
+                                                                                </div>
+                                        -->
 
                                     </div>
 
@@ -531,7 +544,7 @@
 
 
 
-                                        @Html.DropDownListFor(model => model.marca, new SelectList(items6, "id_localidad", "localidad"), "Localidad *", htmlAttributes: new { @class = "form-control", id = "localidadInfID" })
+                                        @Html.DropDownListFor(model => model.marca, new SelectList(items6, "id_localidad", "localidad"), "Localidad *", htmlAttributes: new { @class = "form-control", id = "localidadInfractorID" })
 
 
 
@@ -557,7 +570,6 @@
                                         </div>
 
 
-
                                     </div>
 
                                     <div class="col-sm-4">
@@ -570,9 +582,9 @@
 
 
                                         <div style="flex-direction: row; display: flex;">
-                                            <button class="btn btn-warning btn-xs"
+                                            <button class="btn btn-success btn-xs"
                                                     type="button" style="margin: auto" id="agregarInfractor">
-                                                Agregar persona nueva
+                                                Agregar persona
                                             </button>
                                         </div>
 
@@ -617,18 +629,28 @@
                         </div>
 
 
-                        <div class="wizard-footer">
+                        <div class="wizard-footer" style="text-align: center;">
+
                             <div class="pull-right">
                                 <input type='button' class='btn btn-next btn-fill btn-success btn-wd'
                                        name='next' value='Siguiente' id="btnSiguiente" />
+
                                 <input type='button' id="btnRegistrarActa" class='btn btn-finish btn-fill btn-success btn-wd'
                                        name='finish' value='Finalizar' />
                             </div>
+
+                            <div class="centrarBoton">
+                                <input type='button' class='btn btn-limpiarForm btn-fill btn-danger btn-wd'
+                                       name='limpiarForm' value='Limpiar' id="btnLimpiarForm" />
+                            </div>
+
 
                             <div class="pull-left">
                                 <input type='button' class='btn btn-previous btn-fill btn-default btn-wd'
                                        name='previous' value='Atrás' />
                             </div>
+
+
                             <div class="clearfix"></div>
                         </div>
                     </div>

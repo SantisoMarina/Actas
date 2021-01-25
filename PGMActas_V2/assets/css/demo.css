@@ -781,4 +781,45 @@ footer .pull-center {
         justify-content: center;
     }
 
+
+
+
+
+}
+
+
+.pills {
+    font-size: 18px;
+    align-content: center;
+    align-items: center;
+    display: inline-flex;
+    vertical-align: text-bottom;
+}
+.badge-danger {
+    background-color: #f44336;
+    width: 75px;
+    cursor:pointer;
+}
+
+.badge-light {
+    background-color: #1c7a32;
+    width: 75px;
+    cursor: pointer;
+    width: auto;
+}
+.pillPersona {
+    font-size: 14px;
+    align-content: center;
+    align-items: center;
+    display: inline-flex;
+    vertical-align: text-bottom;
+}
+
+
+.centrarBoton {
+    display: inline-block;
+}
+
+.over {
+    color: red;
 }

@@ -15,6 +15,8 @@ namespace PGMActas_V2.Models
         public Normativa normativa { get; set; }
         public Articulo articulo { get; set; }
         public GrupoInfraccion grupoInfracciones { get; set; }
+        public bool habilitado_retuvo_licencia { get; set; }
+        public bool habilitado_retuvo_vehiculo { get; set; }    
 
     }
 }

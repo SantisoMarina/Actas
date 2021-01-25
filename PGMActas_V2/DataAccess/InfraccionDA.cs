@@ -44,6 +44,8 @@ namespace PGMActas_V2.DataAccess
                         inf.nomenclatura = dataReader["nomenclatura"].ToString();
                         inf.descripcion = dataReader["descripcion"].ToString();
                         inf.estado = bool.Parse(dataReader["estado"].ToString());
+                        inf.habilitado_retuvo_licencia = (bool)dataReader["habilitado_retuvo_licencia"];
+                        inf.habilitado_retuvo_vehiculo = (bool)dataReader["habilitado_retuvo_vehiculo"];
                         inf.calificacion = dataReader["calificacion"].ToString();
                         n.codigo_normativa = int.Parse(dataReader["codigo_normativa"].ToString());
                         n.normativa = dataReader["normativa"].ToString();

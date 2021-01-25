@@ -25,6 +25,10 @@ namespace PGMActas_V2.Models
             this.modelo = modelo;
             this.color = color;
         }
+
+        public Automotor()
+        {
+        }
     }
 
 }

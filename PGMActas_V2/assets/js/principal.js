@@ -117,7 +117,8 @@ $("#tipoDoc, #tipoDocInf").on('change', function () {
 $('#btnAgregarInfraccion').click(function () {
     var infraccion = $('#infraccionID').val();
     var codigo_infraccion = $('#codigoinfraccionID').val();
-
+    var retuvo_licencia = $('#retuvoLicenciaID').val();
+    var retuvo_vehiculo = $('#retuvoVehiculoID').val();
     if (infraccion != ' ' && codigo_infraccion != ' ') {
         var codigoRepetido = false;
         var parentDiv = [];
@@ -131,12 +132,17 @@ $('#btnAgregarInfraccion').click(function () {
             }
         });
         if (!codigoRepetido) {
-            var badge = "<div class='badge badge-light' id='badgeEliminarInfraccion_" + codigo_infraccion + "'>" + infraccion + "</div>"
-            var inputForm = "<input name='form_codigo_infraccion_" + codigo_infraccion + "' type='text' class='form-control' id='form_codigo_infraccion' value='" + codigo_infraccion + "'>";
+            var badge = "<div style='display:inline-block; border-radius: 20px;' class='badge badge-danger' id='badgeEliminarInfraccion_" + codigo_infraccion + "'>  <i class='material-icons pills'>delete_forever</i>" + infraccion + "</div>"
+            var inputForm = "<input name='form_codigo_infraccion' type='text' class='form-control' id='form_codigo_infraccion' value='" + codigo_infraccion + "'>";
+            var inputRetuvoLicencia = "<input name='form_retuvo_licencia' type='text' class='form-control' id='form_retuvo_licencia' value='" + retuvo_licencia + "'>";
+            var inputRetuvoVehiculo = "<input name='form_retuvo_vehiculo' type='text' class='form-control' id='form_retuvo_vehiculo' value='" + retuvo_vehiculo + "'>";
+            var divMedidaAccesoria = "<div id='infraccion_" + codigo_infraccion + "'>" + inputRetuvoLicencia + inputRetuvoVehiculo + inputForm + "</div>"
+            
             $('#listadoInfracciones').append(badge);
-            $('#formCargarActa_infracciones').append(inputForm);
-            $('#infraccionID').val(' ');
-            $('#codigoinfraccionID').val(' ');
+            $('#formCargarActa_infracciones').append(divMedidaAccesoria);
+
+            $('#infraccionID').val('');
+            $('#codigoinfraccionID').val('');
         }
     }
 });
@@ -238,7 +244,7 @@ $('#agregarTitular').click(function () {
         console.log("Codigo repetido?")
         console.log(codigoRepetido);
         if (!codigoRepetido) {
-            var badgePersona = "<div class='badge badge-light' id='badgeEliminarPersona_" + personaID + "'>" + nombreTitular + " " + apellidoTitular + "</div>";
+            var badgePersona = "<div class='badge badge-light' id='badgeEliminarPersona_" + personaID + "'>" + nombreTitular + " " + apellidoTitular + " <span class='material-icons pillPersona'>contact_support</span> </div>";
             $('#titularesDeclarados').append(badgePersona);
             $('#personasRegistradas').append(datosPersonaTitular);
         }
@@ -447,7 +453,7 @@ $('#agregarInfractor').click(function () {
         if (!codigoRepetido) {
             datosPersonaTitular = "<div id='datosPersonasTitular|[0]_" + index + "' name='" + numeroDocumento + "'>" + inputFormIdPersona + inputFormTipoDocumento + inputFormNumeroDocumento + inputFormNombre + inputFormApellido + inputFormLocalidad + inputFormDomicilio + inputFormCodigoPostal + inputFormResponsabilidad + "</div>";
             $('#personasInfNoRegistradas').append(datosPersonaTitular);
-            var badgePersona = "<div class='badge badge-light' id='badgeEliminarPersona|[0]_" + index + "' name='" + numeroDocumento + "'>" + nombreInfractor + " " + apellidoInfractor + "</div>";
+            var badgePersona = "<div class='badge badge-info' id='badgeEliminarPersona|[0]_" + index + "' name='" + numeroDocumento + "'>" + nombreInfractor + " " + apellidoInfractor + "</div>";
             $('#infractoresNoDeclarados').append(badgePersona);
         }
 
@@ -464,9 +470,7 @@ $('#agregarInfractor').click(function () {
             parentDiv.push(idBadgePersona[1]);
         });
         parentDiv.forEach(element => {
-            console.log("verificando...");
-            console.log(element);
-            console.log(personaID);
+            
             if (element == personaID) {
                 codigoRepetido = true;
             }
@@ -474,7 +478,7 @@ $('#agregarInfractor').click(function () {
         console.log("Codigo repetido?")
         console.log(codigoRepetido);
         if (!codigoRepetido) {
-            var badgePersona = "<div class='badge badge-light' id='badgeEliminarPersona_" + personaID + "'>" + nombreInfractor + " " + apellidoInfractor + "</div>";
+            var badgePersona = "<div class='badge badge-light' id='badgeEliminarPersona_" + personaID + "'>" + nombreInfractor + " " + apellidoInfractor + " <span class='material-icons pillPersona'>contact_support</span> </div>";
             $('#infractoresDeclarados').append(badgePersona);
             $('#personasInfRegistradas').append(datosPersonaTitular);
         }
@@ -483,3 +487,57 @@ $('#agregarInfractor').click(function () {
 
     $("#listadoInfractores").css('display', 'block');
 });
+
+maxCharacters = 250;
+
+$('#count').text(maxCharacters);
+
+$('textarea').bind('keyup keydown', function () {
+    var count = $('#count');
+    var characters = $(this).val().length;
+
+    if (characters > maxCharacters) {
+        count.addClass('over');
+    } else {
+        count.removeClass('over');
+    }
+
+    count.text(maxCharacters - characters);
+});
+
+//botón limpiar
+$('#btnLimpiarForm').click(function () {
+    var result = confirm("¿Desea limpiar el formulario de carga?");
+    if (result) {
+        $(':input[type=text][name!=localidadInf][name!=normativa]').val('').prop('checked', false)
+            .prop('selected', false);
+        $('select').val('');
+        $("input[type=date]").val("");
+        $("input[type=time]").val("");
+        $('input[type="radio"]').prop('checked', false);
+
+        $('#titularesRegistrados').empty();
+        $('#titularesDeclarados').empty();
+        $('#titularesNoDeclarados').empty();
+        $('#personasRegistradas').empty();
+        $('#personasNoRegistradas').empty();
+
+        $('#infractoresDeclarados').empty();
+        $('#infractoresNoDeclarados').empty();
+        $('#personasInfRegistradas').empty();
+        $('#personasInfNoRegistradas').empty();
+
+        $('#formCargarActa_infracciones').empty();
+        $('#listadoInfracciones').empty();
+        
+        $("#formCargarActa > input").each((index, elem) => {
+            elem.remove();
+        });
+
+        $("#labelNumeroActa").remove();
+        $("#labelNumeroActaRangoInspector").remove();
+
+        $('#localidadInfID').val("1");
+    }
+});
+

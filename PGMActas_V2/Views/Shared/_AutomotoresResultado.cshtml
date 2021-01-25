@@ -47,6 +47,9 @@
                 "@Url.Action("ObtenerDetallesAutomotor","Automotor")",
                { idAutomotor: idAutomotor},
                function (response) {
+
+                   var inputForm = "<input id='id_automotor_form' name='id_automotor_form' value='" + response.id_automotor + "'>";
+                   $('#formCargarActa').append(inputForm);
                 //          $("#automotorID").attr("value", res[0]);
                    $("#automotorID").val(response.numero_dominio);
                    $("#automotorID").prop("disabled", true);
@@ -95,10 +98,10 @@
                             if (parentDiv.length > 0) {
                                 parentDiv.forEach(id_persona => {
                                     if (element.id_persona != id_persona) {
-                                        var badgePersona = "<div class='badge badge-light' id='badgeEliminarPersona_" + element.id_persona + "'>" + element.nombre + " " + element.apellido + "</div>";
+                                        var badgePersona = "<div class='badge badge-light' id='badgeEliminarPersona_" + element.id_persona + "'>" + element.nombre + " " + element.apellido + " <span class='material-icons pillPersona'>contact_support</span> </div>";
                                         $('#titularesRegistrados').append(badgePersona);
                                         var inputFormIdPersona = "<input name='form_id_persona' type='text' class='form-control' id='form_id_persona' value='" + element.id_persona + "'>";
-                                        var inputFormTipoDocumento = "<input name='form_tipo_documento' type='text' class='form-control' id='form_tipo_documento' value='" + element.tipoDocumento.tipo_documento + "'>";
+                                        var inputFormTipoDocumento = "<input name='form_tipo_documento' type='text' class='form-control' id='form_tipo_documento' value='" + element.tipoDocumento.id_tipo_documento + "'>";
                                         var inputFormNumeroDocumento = "<input name='form_numero_documento' type='text' class='form-control' id='form_numero_documento' value='" + element.numero_documento + "'>";
                                         var inputFormNombre = "<input name='form_nombre' type='text' class='form-control' id='form_nombre' value='" + element.nombre + "'>";
                                         var inputFormApellido = "<input name='form_apellido' type='text' class='form-control' id='form_apellido' value='" + element.apellido + "'>";
@@ -110,10 +113,10 @@
                                 });
                             }
                             else {
-                                var badgePersona = "<div class='badge badge-light' id='badgeEliminarPersona_" + element.id_persona + "'>" + element.nombre + " " + element.apellido + "</div>";
+                                var badgePersona = "<div class='badge badge-light' id='badgeEliminarPersona_" + element.id_persona + "'>" + element.nombre + " " + element.apellido + " <span class='material-icons pillPersona'>contact_support</span> </div>";
                                 $('#titularesRegistrados').append(badgePersona);
                                 var inputFormIdPersona = "<input name='form_id_persona' type='text' class='form-control' id='form_id_persona' value='" + element.id_persona + "'>";
-                                var inputFormTipoDocumento = "<input name='form_tipo_documento' type='text' class='form-control' id='form_tipo_documento' value='" + element.tipoDocumento.tipo_documento + "'>";
+                                var inputFormTipoDocumento = "<input name='form_tipo_documento' type='text' class='form-control' id='form_tipo_documento' value='" + element.tipoDocumento.id_tipo_documento + "'>";
                                 var inputFormNumeroDocumento = "<input name='form_numero_documento' type='text' class='form-control' id='form_numero_documento' value='" + element.numero_documento + "'>";
                                 var inputFormNombre = "<input name='form_nombre' type='text' class='form-control' id='form_nombre' value='" + element.nombre + "'>";
                                 var inputFormApellido = "<input name='form_apellido' type='text' class='form-control' id='form_apellido' value='" + element.apellido + "'>";
@@ -150,8 +153,15 @@
             $("#modeloVehiculoID").prop("disabled", false);
             $("#colorVehiculoID").val("");
             $("#btnAutomotorLimpiar").css('display', 'none');
-            $('#listadoTitulares').empty();
-            $('#formCargarActa_titulares').empty();
+
+
+            $('#titularesRegistrados').empty();
+            $('#titularesDeclarados').empty();
+            $('#titularesNoDeclarados').empty();
+            $('#personasRegistradas').empty();
+            $('#personasNoRegistradas').empty();
+
+            
         });
         $("#listadoTitulares").on("click", "div", function (event) {
             $('#modalPersonaUnitaria').modal('toggle');

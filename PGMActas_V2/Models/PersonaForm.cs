@@ -13,8 +13,8 @@ namespace PGMActas_V2.Models
         public string form_numero_documento { get; set; }
         public string form_tipo_documento { get; set; }
         public string form_localidad { get; set; }
-        public string inputFormDomicilio { get; set; }
-        public string inputFormCodigoPostal { get; set; }
-        public string inputFormResponsabilidad { get; set; }
+        public string form_domicilio { get; set; }
+        public string form_codigo_postal { get; set; }
+        public string form_responsabilidad { get; set; }
     }
 }

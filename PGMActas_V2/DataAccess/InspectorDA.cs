@@ -67,6 +67,11 @@ namespace PGMActas_V2.DataAccess
                         persona.tipoDocumento = td;
                         persona.localidad = localidad;
                         inspector.persona = persona;
+                        inspector.matricula = dataReader["matricula"].ToString();
+                        inspector.rango_comienzo_acta = int.Parse(dataReader["rango_comienzo_acta"].ToString());
+                        inspector.rango_fin_acta = int.Parse(dataReader["rango_fin_acta"].ToString());
+                        inspector.habilitado = bool.Parse(dataReader["habilitado"].ToString());
+                        inspector.id_inspector = int.Parse(dataReader["id_inspector"].ToString());
                         listaInspectores.Add(inspector);
                     }
                 }
@@ -81,6 +86,91 @@ namespace PGMActas_V2.DataAccess
             }
 
             return listaInspectores;
+        }
+
+
+        public static int obtenerRangoComienzoInspector(int id_inspector)
+        {
+            int rangoC = 0;
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+            SqlConnection conexion = new SqlConnection(cadenaConexion);
+
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                string selectPersona = "SELECT * " +
+                    " FROM Inspectores i " +
+                    " WHERE i.id_inspector = @id_inspector;";
+                command.Parameters.Clear();
+                command.Parameters.AddWithValue("@id_inspector", id_inspector);
+                command.CommandType = System.Data.CommandType.Text;
+                command.CommandText = selectPersona;
+                conexion.Open();
+                command.Connection = conexion;
+                SqlDataReader dataReader = command.ExecuteReader();
+                if (dataReader != null)
+                {
+                    while (dataReader.Read())
+                    {
+                        rangoC = int.Parse(dataReader["rango_comienzo_acta"].ToString());
+                    }
+                }
+            }
+
+            catch (Exception)
+            {
+
+                throw;
+            }
+            finally
+            {
+                conexion.Close();
+            }
+
+            return rangoC;
+        }
+
+        public static int obtenerRangoFinInspector(int id_inspector)
+        {
+            int rangoF = 0;
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+            SqlConnection conexion = new SqlConnection(cadenaConexion);
+
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                string selectPersona = "SELECT * " +
+                    " FROM Inspectores i " +
+                    " WHERE i.id_inspector = @id_inspector;";
+                command.Parameters.Clear();
+                command.Parameters.AddWithValue("@id_inspector", id_inspector);
+                command.CommandType = System.Data.CommandType.Text;
+                command.CommandText = selectPersona;
+                conexion.Open();
+                command.Connection = conexion;
+                SqlDataReader dataReader = command.ExecuteReader();
+                if (dataReader != null)
+                {
+                    while (dataReader.Read())
+                    {
+
+                        rangoF = int.Parse(dataReader["rango_fin_acta"].ToString());
+
+                    }
+                }
+            }
+
+            catch (Exception)
+            {
+
+                throw;
+            }
+            finally
+            {
+                conexion.Close();
+            }
+
+            return rangoF;
         }
 
     }
