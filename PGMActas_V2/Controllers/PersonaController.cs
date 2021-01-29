@@ -16,7 +16,7 @@ namespace PGMActas_V2.Controllers
             return View();
         }
 
-        public HtmlString ObtenerDetallesPersona(int numeroDocumento)
+        public HtmlString ObtenerDetallesPersona(string numeroDocumento)
         {
             List<Persona> listaPersonas = PersonaDA.obtenerListaPersonas();
             var persona = listaPersonas.Where(x => x.numero_documento == numeroDocumento).FirstOrDefault();

@@ -65,7 +65,12 @@ namespace PGMActas_V2.Controllers
             if (!String.IsNullOrEmpty(searchString))
             {
                 //  listaInfracciones = listaInfracciones.Where(s => s.nomenclatura.Contains(searchString)).ToList();
-                listaInfracciones = listaInfracciones.Where(s => s.nomenclatura.IndexOf(searchString, StringComparison.OrdinalIgnoreCase) != -1).ToList();
+                listaInfracciones = listaInfracciones.Where(s => s.nomenclatura.IndexOf(searchString, StringComparison.OrdinalIgnoreCase) != -1 ||
+                s.descripcion.IndexOf(searchString, StringComparison.OrdinalIgnoreCase) != -1 ||
+                s.grupoInfracciones.grupo.IndexOf(searchString, StringComparison.OrdinalIgnoreCase) != -1 ||
+                s.calificacion.IndexOf(searchString, StringComparison.OrdinalIgnoreCase) != -1
+
+                ).ToList();
             }
 
 
@@ -98,7 +103,8 @@ namespace PGMActas_V2.Controllers
             if (!String.IsNullOrEmpty(searchString))
             {
                 listaInspectores = listaInspectores.Where(s => (s.persona.nombre.ToLower().Contains(searchString.ToLower()) || s.persona.apellido.ToLower().Contains(searchString.ToLower()) ||
-                (s.persona.nombre.ToLower()+" " + s.persona.apellido.ToLower()).Contains(searchString.ToLower())
+                (s.persona.nombre.ToLower()+" " + s.persona.apellido.ToLower()).Contains(searchString.ToLower()) ||
+                s.matricula.ToString().Contains(searchString)
                 )).ToList();
 
             }
@@ -130,7 +136,12 @@ namespace PGMActas_V2.Controllers
             if (!String.IsNullOrEmpty(searchString))
             {
 
-                listaAutomotores = listaAutomotores.Where(s => s.numero_dominio.IndexOf(searchString, StringComparison.OrdinalIgnoreCase) != -1).ToList();
+                listaAutomotores = listaAutomotores.Where(s => s.numero_dominio.IndexOf(searchString, StringComparison.OrdinalIgnoreCase) != -1 ||
+                s.tipoVehiculo.tipo_vehiculo.IndexOf(searchString, StringComparison.OrdinalIgnoreCase) != -1 ||
+                s.marca.marca.IndexOf(searchString, StringComparison.OrdinalIgnoreCase) != -1 ||
+                s.modelo.IndexOf(searchString, StringComparison.OrdinalIgnoreCase) != -1
+
+                ).ToList();
             }
             return PartialView("_AutomotoresResultado", listaAutomotores);
         }
@@ -166,7 +177,10 @@ namespace PGMActas_V2.Controllers
                   bool success = Int32.TryParse(searchString, out nroDoc);
                   listaPersonas = listaPersonas.Where(s => s.numero_documento == nroDoc).ToList();
                 */
-                listaPersonas = listaPersonas.Where(s => s.numero_documento.ToString().Contains(searchString)).ToList();
+                listaPersonas = listaPersonas.Where(s => s.numero_documento.ToString().Contains(searchString) ||
+               s.nombre.ToLower().Contains(searchString.ToLower()) || s.apellido.ToLower().Contains(searchString.ToLower()) ||
+                (s.nombre.ToLower() + " " + s.apellido.ToLower()).Contains(searchString.ToLower())
+                ).ToList();
             }
             return PartialView("_PersonasResultado", listaPersonas);
         }
@@ -197,6 +211,21 @@ namespace PGMActas_V2.Controllers
             var response = new { success = success, Message = mensaje };
             System.Web.Script.Serialization.JavaScriptSerializer jSerializer = new System.Web.Script.Serialization.JavaScriptSerializer();
             return new HtmlString(jSerializer.Serialize(response));
+        }
+
+
+        //Partial view de las infracciones de una persona particular
+        [HttpGet]
+        public PartialViewResult InfraccionesPersonaParticular(int id_persona)
+        {
+
+            List<InfraccionesPersonaParticular> listaActasPersonaParticular = ActaDA.obtenerListaActasPersonaParticular(id_persona).OrderBy(o => o.responsabilidad_legal).ToList();
+
+            var persona = listaActasPersonaParticular.FirstOrDefault();
+    
+            ViewBag.Nombre = persona.nombre + ' ' + persona.apellido;
+  
+            return PartialView("_InfraccionesPersonaParticular", listaActasPersonaParticular);
         }
     }
 }

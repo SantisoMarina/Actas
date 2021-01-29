@@ -51,7 +51,7 @@ namespace PGMActas_V2.DataAccess
                         persona.id_persona = int.Parse(dataReader["id_persona"].ToString());
                         persona.nombre = dataReader["nombre"].ToString();
                         persona.apellido = dataReader["apellido"].ToString();
-                        persona.numero_documento = int.Parse(dataReader["numero_documento"].ToString());
+                        persona.numero_documento = dataReader["numero_documento"].ToString();
                         persona.direccion = dataReader["direccion"].ToString();
                         persona.codigo_postal = int.Parse(dataReader["codigo_postal"].ToString());
                         td.id_tipo_documento = int.Parse(dataReader["id_tipo_documento"].ToString());
@@ -98,13 +98,13 @@ namespace PGMActas_V2.DataAccess
             try
             {
                 SqlCommand command = new SqlCommand();
-                string selectPersona = "SELECT * " +
+                string selectRangoComienzo = "SELECT * " +
                     " FROM Inspectores i " +
                     " WHERE i.id_inspector = @id_inspector;";
                 command.Parameters.Clear();
                 command.Parameters.AddWithValue("@id_inspector", id_inspector);
                 command.CommandType = System.Data.CommandType.Text;
-                command.CommandText = selectPersona;
+                command.CommandText = selectRangoComienzo;
                 conexion.Open();
                 command.Connection = conexion;
                 SqlDataReader dataReader = command.ExecuteReader();
@@ -139,13 +139,13 @@ namespace PGMActas_V2.DataAccess
             try
             {
                 SqlCommand command = new SqlCommand();
-                string selectPersona = "SELECT * " +
+                string selectRangoFin = "SELECT * " +
                     " FROM Inspectores i " +
                     " WHERE i.id_inspector = @id_inspector;";
                 command.Parameters.Clear();
                 command.Parameters.AddWithValue("@id_inspector", id_inspector);
                 command.CommandType = System.Data.CommandType.Text;
-                command.CommandText = selectPersona;
+                command.CommandText = selectRangoFin;
                 conexion.Open();
                 command.Connection = conexion;
                 SqlDataReader dataReader = command.ExecuteReader();

@@ -72,5 +72,7 @@ namespace PGMActas_V2.DataAccess
             return listaInfracciones;
         }
 
+
+
     }
 }

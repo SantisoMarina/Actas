@@ -44,8 +44,8 @@ namespace PGMActas_V2.DataAccess
                 acta.fecha_acta = datosFormulario.fechaInf_form;
                 acta.hora_acta = datosFormulario.horaInf_form;
                 acta.observaciones = datosFormulario.observacionesInf_form;
-                acta.retuvo_licencia = true;
-                acta.retuvo_vehiculo = true;
+                acta.retuvo_licencia = datosFormulario.retuvoLicencia_form == 1 ? true:false;
+                acta.retuvo_vehiculo = datosFormulario.retuvoVehiculo_form == 1 ? true : false;
                 acta.id_localidad = 1; //capital
                 acta.direccion = datosFormulario.direccionInf_form;
                 acta.codigo_postal = Convert.ToInt32(datosFormulario.codigoPostalInf_form); ;
@@ -89,7 +89,7 @@ namespace PGMActas_V2.DataAccess
                         titular.id_persona = Convert.ToInt32(elemento.form_id_persona);
                         titular.nombre = elemento.form_nombre;
                         titular.apellido = elemento.form_apellido;
-                        titular.numero_documento = Convert.ToInt32(elemento.form_numero_documento);
+                        titular.numero_documento = elemento.form_numero_documento;
                         titular.direccion = domicilio;
                         titular.codigo_postal = 0;
                         titular.tipoDocumento = tipoDoc;
@@ -118,12 +118,12 @@ namespace PGMActas_V2.DataAccess
                         {
                             domicilio = elemento.form_domicilio;
                         }
-                        tipoDoc.id_tipo_documento = 1;//TODO agregar campo tipo documento
+                        tipoDoc.id_tipo_documento = 1;
                         localidad.id_localidad = Convert.ToInt32(elemento.form_localidad);
                         infractor.id_persona = Convert.ToInt32(elemento.form_id_persona);
                         infractor.nombre = elemento.form_nombre;
                         infractor.apellido = elemento.form_apellido;
-                        infractor.numero_documento = Convert.ToInt32(elemento.form_numero_documento);
+                        infractor.numero_documento = elemento.form_numero_documento;
                         infractor.direccion = domicilio;
                         infractor.codigo_postal = elemento.form_codigo_postal != null ? Convert.ToInt32(elemento.form_codigo_postal) : 0;
                         infractor.idResponsabilidadLegal = Convert.ToInt32(elemento.form_responsabilidad);

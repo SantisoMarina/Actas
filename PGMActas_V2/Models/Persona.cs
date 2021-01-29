@@ -11,7 +11,7 @@ namespace PGMActas_V2.Models
         public int id_persona { get; set; }
         public string nombre { get; set; }
         public string apellido { get; set; }
-        public int numero_documento { get; set; }
+        public string numero_documento { get; set; }
         public string direccion { get; set; }
         public int codigo_postal { get; set; }
         public TipoDocumentoItemVM tipoDocumento { get; set; }

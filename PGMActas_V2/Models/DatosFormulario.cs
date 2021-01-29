@@ -23,6 +23,8 @@ namespace PGMActas_V2.Models
         public string tipoVehiculo_form { get; set; }
         public string fechaCarga_form { get; set; }
         public string horaCarga_form { get; set; }
+        public int retuvoVehiculo_form { get; set; } = 0;
+        public int retuvoLicencia_form { get; set; } = 0;
         public List<InfraccionForm> infracciones { get; set; }
         public List<List<PersonaForm>> infractores { get; set; }
         public List<List<PersonaForm>> titulares { get; set; }

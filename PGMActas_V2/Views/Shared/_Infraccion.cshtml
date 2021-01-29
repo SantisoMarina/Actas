@@ -1,18 +1,17 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "_Infraccion";
 }
 
 @using (Ajax.BeginForm("InfraccionesResultado", "Acta", new AjaxOptions
 {
-    InsertionMode = InsertionMode.Replace, 
+    InsertionMode = InsertionMode.Replace,
     HttpMethod = "POST",
     UpdateTargetId = "tablaInfraccion"//,
-                                 
+
 }))
 {
 <p>
-    Buscar nomenclatura: @Html.TextBox("searchString")
+    Buscar nomenclatura, descripción, clasificación o calificación: @Html.TextBox("searchString", null, new { maxlength = 80, onkeypress = "return validacionCampoObservaciones(event)" })
     <input type="submit" id="search" class="btn btn-success btn-xs" value="Buscar" />
 </p>
 }
@@ -20,4 +19,3 @@
 
 <div id="tablaInfraccion">
 </div>
-

@@ -13,7 +13,7 @@
 }))
 {
     <p>
-        Buscar por número de dominio: @Html.TextBox("searchString")
+        Buscar por número de dominio, tipo de vehículo, marca o modelo: @Html.TextBox("searchString", null, new { maxlength = 50, onkeypress = "return noAlfanumericos(event)" })
         <input type="submit" id="search" class="btn btn-success btn-xs" value="Buscar" />
     </p>
 }

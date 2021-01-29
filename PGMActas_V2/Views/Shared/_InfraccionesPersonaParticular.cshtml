@@ -1,0 +1,33 @@
+﻿@model IEnumerable<PGMActas_V2.ViewModels.InfraccionesPersonaParticular>
+@{
+   
+}
+
+
+
+<div style="display:grid">
+    <h5>Actas de @ViewBag.Nombre</h5>    
+    <table>
+        <thead>
+            <tr class="table100-head" style="border-bottom: 2px solid #4caf50">
+                <th class="column1" style="padding: 0.3rem"> Nro Acta </th>
+                <th class="column2" style="padding: 0.3rem"> Fecha Acta </th>
+                <th class="column3" style="padding: 0.3rem"> Responsabilidad Legal </th>
+                <th class="column3" style="padding: 0.3rem"> Código de Infracción </th>
+                <th class="column3" style="padding: 0.3rem"> Observaciones </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var acta in Model)
+            {
+            <tr>
+                <td>@acta.numero_acta</td>
+                <td>@acta.fecha_acta</td>
+                <td>@acta.responsabilidad_legal</td>
+                <td>@acta.codigo_infraccion</td>
+                <td>@acta.observaciones</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>

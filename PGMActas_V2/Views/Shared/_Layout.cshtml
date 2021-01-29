@@ -83,6 +83,9 @@
 
     <script src="~/assets/js/principal.js"></script>
 
+
+    <script src="~/assets/js/jquery-ui.min.js"></script>
+
     <script>
         //Función Inspector
         $(function () {
@@ -99,7 +102,7 @@
                 return false;
             });
         });
-        
+
         //Función Infraccion
                 $(function () {
                     $('#btnInfracciones').click(function () {
@@ -136,6 +139,7 @@
              //Función Persona
                 $(function () {
                     $('#btnPersona').click(function () {
+                        $('#btnBuscarPersona').val('0');
                         $('#modalPersona').modal('toggle');
                 $.ajax({
                     url: "@(Url.Action("Persona", "Acta"))",
@@ -148,6 +152,43 @@
                 return false;
                      });
                 });
+            //Función Infracciones Persona Particular
+                $(function () {
+                    $('#visuaInfracciones').click(function () {
+                        var id_persona = $('#idPersonaMenuAbierta').val();
+                        id_persona = id_persona.split("_");
+                $.ajax({
+                    url: "@(Url.Action("InfraccionesPersonaParticular", "Acta"))",
+                    type: 'GET',
+                    data: { 'id_persona': id_persona[1]},
+                    cache: false,
+                    success: function (result) {
+                        $('#divInfraccionesPersonaParticular').html(result);
+                        $('#modalInfraccionesPersonaParticular').modal('toggle');
+                    }
+                });
+                return false;
+                     });
+                });
+               $(function () {
+                   $('#visuaInfraccionesINF').click(function () {
+                       var id_persona = $('#idPersonaINFMenuAbierta').val();
+                        id_persona = id_persona.split("_");
+                $.ajax({
+                    url: "@(Url.Action("InfraccionesPersonaParticular", "Acta"))",
+                    type: 'GET',
+                    data: { 'id_persona': id_persona[1]},
+                    cache: false,
+                    success: function (result) {
+                        $('#divInfraccionesPersonaParticular').html(result);
+                        $('#modalInfraccionesPersonaParticular').modal('toggle');
+                    }
+                });
+                return false;
+                     });
+               });
+
+
          $(function () {
              $('#btnPersonaInfID').click(function () {
                  $('#btnBuscarPersona').val('1');
@@ -163,144 +204,193 @@
                 return false;
                      });
          });
+        
+        
+        $('#btnRegistrarActa').click(function () {
+            
+            if (true) { //estaVacio()
+                if (true) {//validarExistenciaInfractor()
+                    var result = confirm("¿Desea guardar el acta?");
+                    console.log(result);
+                    if (result) {
+                        //fecha y ho actual
+                        //fecha
+                        var today = new Date();
+                        var dd = String(today.getDate()).padStart(2, '0');
+                        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+                        var yyyy = today.getFullYear();
+                        today = yyyy + '-' + mm + '-' + dd;
+                        //hora
+                        var currentdate = new Date();
+                        var datetime = currentdate.getHours() + ":" + currentdate.getMinutes();
 
-        $('#btnRegistrarActa').click(
-            function () {
-                var result = confirm("¿Desea guardar el acta?");
-                if (result) {
-                    //fecha y ho actual
-                    //fecha
-                    var today = new Date();
-                    var dd = String(today.getDate()).padStart(2, '0');
-                    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-                    var yyyy = today.getFullYear();
-                    today = yyyy + '-' + mm + '-' + dd;
-                    //hora
-                    var currentdate = new Date();
-                    var datetime = currentdate.getHours() + ":" + currentdate.getMinutes();
+                        var fechaCargaInput = "<input id='fechaCarga_form' name='fechaCarga_form' value='" + today + "'>";
+                        var horaCargaInput = "<input id='horaCarga_form' name='horaCarga_form' value='" + datetime + "'>";
 
-                    var fechaCargaInput = "<input id='fechaCarga_form' name='fechaCarga_form' value='" + today + "'>";
-                    var horaCargaInput = "<input id='horaCarga_form' name='horaCarga_form' value='" + datetime + "'>";
+                        $('#formCargarActa').append(fechaCargaInput);
+                        $('#formCargarActa').append(horaCargaInput);
+                        console.log("Comienza el guardado del acta");
+                        var datosActa = $('#formCargarActa');
+                        console.log("datos acta:");
+                        console.log(datosActa);
+                        var datosFormulario = {};
+                        var infracciones = [];
+                        var titulares = [];
+                        var titularesRegistrados = [];
+                        var titularesNoRegistrados = [];
 
-                    $('#formCargarActa').append(fechaCargaInput);
-                    $('#formCargarActa').append(horaCargaInput);
-                    console.log("Comienza el guardado del acta");
-                    var datosActa = $('#formCargarActa');
-                    console.log("datos acta:");
-                    console.log(datosActa);
-                    var datosFormulario = {};
-                    var infracciones = [];
-                    var titulares = [];
-                    var titularesRegistrados = [];
-                    var titularesNoRegistrados = [];
+                        var infractores = [];
+                        var infractoresRegistrados = [];
+                        var infractoresNoRegistrados = [];
 
-                    var infractores = [];
-                    var infractoresRegistrados = [];
-                    var infractoresNoRegistrados = [];
+                        $("#formCargarActa > input").each((index, elem) => {
+                            var key = elem.id;
+                            var objInput = {};
+                            datosFormulario[key] = elem.value;
 
-                    $("#formCargarActa > input").each((index, elem) => {
-                        var key = elem.id;
-                        var objInput = {};
-                        datosFormulario[key] = elem.value;
+                            //console.log("input valores:");
+                            //console.log(objInput);
+                        });
+                        $("#formCargarActa_infracciones > div").each((index, elem) => {
+                            var listado_inputs = elem.querySelectorAll("input");
+                            var objInput = {};
+                            listado_inputs.forEach(elemento => {
+                                var key = elemento.id;
 
-                        //console.log("input valores:");
-                        //console.log(objInput);
-                    });
-                    $("#formCargarActa_infracciones > div").each((index, elem) => {
-                        var listado_inputs = elem.querySelectorAll("input");
-                        var objInput = {};
-                        listado_inputs.forEach(elemento => {
-                            var key = elemento.id;
+                                objInput[key] = elemento.value;
+                            });
 
-                            objInput[key] = elemento.value;
+                            infracciones.push(objInput);
+
+                            //console.log("input valores:");
+                            //console.log(objInput);
+                        });
+                        $("#personasRegistradas > div").each((index, elem) => {
+                            var listado_inputs = elem.querySelectorAll("input");
+                            var objInput = {};
+
+                            listado_inputs.forEach(elemento => {
+                                var key = elemento.id;
+
+                                objInput[key] = elemento.value;
+                            });
+                            titularesRegistrados.push(objInput);
+                        });
+                        $("#personasNoRegistradas > div").each((index, elem) => {
+                            var listado_inputs = elem.querySelectorAll("input");
+                            var objInput = {};
+
+                            listado_inputs.forEach(elemento => {
+                                var key = elemento.id;
+
+                                objInput[key] = elemento.value;
+                            });
+                            titularesNoRegistrados.push(objInput);
+                        });
+                        $("#personasInfRegistradas > div").each((index, elem) => {
+                            var listado_inputs = elem.querySelectorAll("input");
+                            var objInput = {};
+
+                            listado_inputs.forEach(elemento => {
+                                var key = elemento.id;
+
+                                objInput[key] = elemento.value;
+                            });
+                            infractoresRegistrados.push(objInput);
+                        });
+                        $("#personasInfNoRegistradas > div").each((index, elem) => {
+                            var listado_inputs = elem.querySelectorAll("input");
+                            var objInput = {};
+
+                            listado_inputs.forEach(elemento => {
+                                var key = elemento.id;
+
+                                objInput[key] = elemento.value;
+                            });
+                            infractoresNoRegistrados.push(objInput);
                         });
 
-                        infracciones.push(objInput);
+                        titulares.push(titularesRegistrados);
+                        titulares.push(titularesNoRegistrados);
+                        infractores.push(infractoresRegistrados);
+                        infractores.push(infractoresNoRegistrados);
+                        datosFormulario['infractores'] = infractores;
+                        datosFormulario['titulares'] = titulares;
+                        datosFormulario['infracciones'] = infracciones;
+                        console.log("Datos Formulario:");
+                        console.log(datosFormulario);
 
-                        //console.log("input valores:");
-                        //console.log(objInput);
-                    });
-                    $("#personasRegistradas > div").each((index, elem) => {
-                        var listado_inputs = elem.querySelectorAll("input");
-                        var objInput = {};
 
-                        listado_inputs.forEach(elemento => {
-                            var key = elemento.id;
 
-                            objInput[key] = elemento.value;
+
+                        $.ajax({
+                            url: "@(Url.Action("GuardarFormulario", "Formulario"))",
+                            type: 'POST',
+                            data: JSON.stringify(datosFormulario),
+                            contentType: 'application/json; charset=utf-8',
+                            success: function (data) {
+                                console.log(data);
+                                alert("Acta agregada correctamente.");
+
+                            },
+                            error: function () {
+                                alert("Error al agregar el acta.");
+                            }
                         });
-                        titularesRegistrados.push(objInput);
-                    });
-                    $("#personasNoRegistradas > div").each((index, elem) => {
-                        var listado_inputs = elem.querySelectorAll("input");
-                        var objInput = {};
 
-                        listado_inputs.forEach(elemento => {
-                            var key = elemento.id;
+                        $(':input[type=text][name!=localidadInf][name!=normativa]').val('').prop('checked', false)
+                            .prop('selected', false);
+                        $('select').val('');
+                        $("input[type=date]").val("");
+                        $("input[type=time]").val("");
+                        $('#observacionesInfID').val("");
+                        $('input[type="radio"]').prop('checked', false);
 
-                            objInput[key] = elemento.value;
+                        $('#titularesRegistrados').empty();
+                        $('#titularesDeclarados').empty();
+                        $('#titularesNoDeclarados').empty();
+                        $('#personasRegistradas').empty();
+                        $('#personasNoRegistradas').empty();
+
+                        $('#infractoresDeclarados').empty();
+                        $('#infractoresNoDeclarados').empty();
+                        $('#personasInfRegistradas').empty();
+                        $('#personasInfNoRegistradas').empty();
+
+                        $('#formCargarActa_infracciones').empty();
+                        $('#listadoInfracciones').empty();
+
+                        $("#formCargarActa > input").each((index, elem) => {
+                            elem.remove();
                         });
-                        titularesNoRegistrados.push(objInput);
-                    });
-                    $("#personasInfRegistradas > div").each((index, elem) => {
-                        var listado_inputs = elem.querySelectorAll("input");
-                        var objInput = {};
 
-                        listado_inputs.forEach(elemento => {
-                            var key = elemento.id;
+                        $("#labelNumeroActa").remove();
+                        $("#labelNumeroActaRangoInspector").remove();
 
-                            objInput[key] = elemento.value;
-                        });
-                        infractoresRegistrados.push(objInput);
-                    });
-                    $("#personasInfNoRegistradas > div").each((index, elem) => {
-                        var listado_inputs = elem.querySelectorAll("input");
-                        var objInput = {};
+                        $('#localidadInfID').val("1");
 
-                        listado_inputs.forEach(elemento => {
-                            var key = elemento.id;
-
-                            objInput[key] = elemento.value;
-                        });
-                        infractoresNoRegistrados.push(objInput);
-                    });
-
-                    titulares.push(titularesRegistrados);
-                    titulares.push(titularesNoRegistrados);
-                    infractores.push(infractoresRegistrados);
-                    infractores.push(infractoresNoRegistrados);
-                    datosFormulario['infractores'] = infractores;
-                    datosFormulario['titulares'] = titulares;
-                    datosFormulario['infracciones'] = infracciones;
-                    console.log("Datos Formulario:");
-                    console.log(datosFormulario);
-
-
-
-
-                    $.ajax({
-                        url: "@(Url.Action("GuardarFormulario", "Formulario"))",
-                        type: 'POST',
-                        data: JSON.stringify(datosFormulario),
-                        contentType: 'application/json; charset=utf-8',
-                        success: function (data) {
-                            console.log(data);
-                            alert("Agregado Correctamente.");
-                        },
-                        error: function () {
-                            alert("error");
-                        }
-                    });
-
+                        window.location.reload(true);
+                    }
+                } else {
+                    alert("No se encuentra cargado ningun infractor, revisar!");
                 }
+
+            }else{
+                alert("Campos vacíos, revisar!");
             }
-        );
+
+
+    });
 
         //función verificar número de acta
         $("#numeroActaID").blur(function () {
             var numero_acta = $('#numeroActaID').val();
             var id_inspector = $('#inspector_form').val();
-            console.log(id_inspector);
+            $("#labelNumeroActaVacio").remove();
+            if (!$(this).val()) {
+                $("#numeroActaID").after('<p class="control-label" id="labelNumeroActaVacio" style="color:red">' + "Campo obligatorio, debe llenarlo." + '</p>');
+            }
+            else {
             //función verificar numero de acta repetido
             $.ajax({
                 url: "@(Url.Action("verificarNumeroActa", "Acta"))",
@@ -312,10 +402,11 @@
                   var result = $.parseJSON(data);
                   $("#labelNumeroActa").remove();
                 if (result.success) {
-                    $("#numeroActaID").after('<label class="control-label" id="labelNumeroActa" style="color:red">' + result.Message + '</label>');
+                    $("#numeroActaID").after('<p class="control-label" id="labelNumeroActa" style="color:red">' + result.Message + '</p>');
+                    $('#numeroActaID').val('');
                 }
                 else {
-                    $("#numeroActaID").after('<label class="control-label" id="labelNumeroActa" style="color:green">' + result.Message + '</label>');
+                    $("#numeroActaID").after('<p class="control-label" id="labelNumeroActa" style="color:green">' + result.Message + '</p>');
                 }
               }
             });
@@ -333,15 +424,16 @@
                   var result = $.parseJSON(data);
                   $("#labelNumeroActaRangoInspector").remove();
                   if (result.success) {
-                      $("#numeroActaID").after('<label class="control-label" id="labelNumeroActaRangoInspector" style="color:green">' + result.Message + '</label>');
+                      $("#numeroActaID").after('<p class="control-label" id="labelNumeroActaRangoInspector" style="color:green">' + result.Message + '</p>');
                   }
                   else {
-                      $("#numeroActaID").after('<label class="control-label" id="labelNumeroActaRangoInspector" style="color:red">' + result.Message + '</label>');
+                      $("#numeroActaID").after('<p class="control-label" id="labelNumeroActaRangoInspector" style="color:red">' + result.Message + '</p>');
+                      $('#numeroActaID').val('');
                   }
               }
             });
 
-
+            }
         });
 
     </script>

@@ -12,7 +12,7 @@
 }))
 {
     <p>
-        Buscar por nombre o apellido: @Html.TextBox("searchString")
+        Buscar por nombre y/o apellido o matrícula: @Html.TextBox("searchString", null, new { maxlength = 70, onkeypress = "return noAlfanumericos(event)"})
         <input type="submit" id="search" class="btn btn-success btn-xs" value="Buscar" />
     </p>
 }
