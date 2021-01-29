@@ -273,7 +273,7 @@ $('#agregarTitular').click(function () {
         $('#tipoDoc').prop('selectedIndex', 0);
     }
     else {
-        alert("Campos vacíos, revisar!");
+        alert("Campos vacíos, ¡Revisar!");
     }
 });
 
@@ -523,7 +523,7 @@ $('#agregarInfractor').click(function () {
         $('#comboResponsabilidadLegal').prop('selectedIndex', 0);
     }
     else {
-        alert("Campos vacíos, revisar!");
+        alert("Campos vacíos, ¡Revisar!");
     }
 });
 
@@ -659,6 +659,7 @@ $('#infractorTitular').click(function () {
 $("div[id^='infractores']").on('click', '.badgePersonaMenu', function () {
     event.stopPropagation();
     $("div[id ^= 'inf_badgeEliminarPersona']").removeClass('badge-seleccionado');
+    $("div[id ^= 'badgeEliminarPersona']").removeClass('badge-seleccionado');
     $('#' + this.id).toggleClass('badge-seleccionado');
     $('#menuPersonaINF').show();
     $('#idPersonaINFMenuAbierta').val(this.id);

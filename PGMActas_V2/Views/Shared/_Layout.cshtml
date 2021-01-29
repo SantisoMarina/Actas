@@ -173,11 +173,17 @@
                $(function () {
                    $('#visuaInfraccionesINF').click(function () {
                        var id_persona = $('#idPersonaINFMenuAbierta').val();
-                        id_persona = id_persona.split("_");
+                       id_persona = id_persona.split("_");
+                       if (id_persona.length == 2) {
+                           id_persona = id_persona[1];
+                       } else {
+                           id_persona = id_persona[2];
+                       }
+                       console.log(id_persona);
                 $.ajax({
                     url: "@(Url.Action("InfraccionesPersonaParticular", "Acta"))",
                     type: 'GET',
-                    data: { 'id_persona': id_persona[1]},
+                    data: { 'id_persona': id_persona},
                     cache: false,
                     success: function (result) {
                         $('#divInfraccionesPersonaParticular').html(result);
@@ -376,7 +382,7 @@
                 }
 
             }else{
-                alert("Campos vacíos, revisar!");
+                alert("Campos vacíos, ¡Revisar!");
             }
 
 

@@ -221,9 +221,17 @@ namespace PGMActas_V2.Controllers
 
             List<InfraccionesPersonaParticular> listaActasPersonaParticular = ActaDA.obtenerListaActasPersonaParticular(id_persona).OrderBy(o => o.responsabilidad_legal).ToList();
 
-            var persona = listaActasPersonaParticular.FirstOrDefault();
-    
-            ViewBag.Nombre = persona.nombre + ' ' + persona.apellido;
+           
+            if (listaActasPersonaParticular.Count()>0)
+            {
+                var persona = listaActasPersonaParticular.FirstOrDefault();
+                ViewBag.Nombre = "Actas de " + persona.nombre + ' ' + persona.apellido;
+            }
+            else
+            {
+                ViewBag.Nombre = "La persona seleccionada no tiene actas.";
+            }
+           
   
             return PartialView("_InfraccionesPersonaParticular", listaActasPersonaParticular);
         }
