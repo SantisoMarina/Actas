@@ -284,5 +284,53 @@ namespace PGMActas_V2.DataAccess
 
             return listaResponsabilidadLegal;
         }
+
+        public static bool obtenerNumeroDocumento(string numero_documento)
+        {
+            bool resultado = false;
+            Persona persona = new Persona();
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+            SqlConnection conexion = new SqlConnection(cadenaConexion);
+
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                string selectActa = "SELECT p.numero_documento" +
+                    " FROM Personas p " +
+                    " WHERE p.numero_documento = @numero_documento;";
+                command.Parameters.Clear();
+                command.Parameters.AddWithValue("@numero_documento", numero_documento);
+                command.CommandType = System.Data.CommandType.Text;
+                command.CommandText = selectActa;
+                conexion.Open();
+                command.Connection = conexion;
+                SqlDataReader dataReader = command.ExecuteReader();
+                if (dataReader != null)
+                {
+                    while (dataReader.Read())
+                    {
+                        persona.numero_documento = dataReader["numero_documento"].ToString();
+                        resultado = true;
+
+                    }
+                }
+            }
+
+            catch (Exception e)
+            {
+
+                throw;
+            }
+            finally
+            {
+                conexion.Close();
+            }
+
+            return resultado;
+        }
+
+
+
     }
+
 }

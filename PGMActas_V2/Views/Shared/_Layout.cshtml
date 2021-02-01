@@ -210,12 +210,12 @@
                 return false;
                      });
          });
-        
-        
+
+
         $('#btnRegistrarActa').click(function () {
-            
-            if (true) { //estaVacio()
-                if (true) {//validarExistenciaInfractor()
+
+            if (estaVacio()) { //
+                if (validarExistenciaInfractor()) {//
                     var result = confirm("¿Desea guardar el acta?");
                     console.log(result);
                     if (result) {
@@ -436,6 +436,134 @@
                       $("#numeroActaID").after('<p class="control-label" id="labelNumeroActaRangoInspector" style="color:red">' + result.Message + '</p>');
                       $('#numeroActaID').val('');
                   }
+              }
+            });
+
+            }
+        });
+
+
+
+    //función verificar numero de dominio repetido
+    $("#automotorID").blur(function () {
+        var numeroDominio = $('#automotorID').val().toLowerCase().replace(/\s+/g, '');
+
+        console.log(numeroDominio);
+        $("#labelNumeroDominio").remove();
+        $("#labelNumeroDominioCorto").remove();
+        if (numeroDominio=='') {
+            $('#automotorID').val('');
+            return null;
+        }
+        else if (numeroDominio.length <= 5) {
+
+            $("#automotorID").after('<p class="control-label" id="labelNumeroDominioCorto" style="color:red">' + "Número de dominio corto." + '</p>');
+            $('#automotorID').val('');
+            return null;
+        }
+        else {
+
+            $.ajax({
+                url: "@(Url.Action("verificarNumeroDominio", "Automotor"))",
+                type: 'GET',
+                data: {
+                    'numeroDominio': numeroDominio},
+              contentType: 'application/json; charset=utf-8',
+              success: function (data) {
+                  var result = $.parseJSON(data);
+                  $("#labelNumeroDominio").remove();
+                if (result.success) {
+                    $("#automotorID").after('<p class="control-label" id="labelNumeroDominio" style="color:red">' + result.Message + '</p>');
+                    $('#automotorID').val('');
+                }
+                else {
+                    $("#automotorID").after('<p class="control-label" id="labelNumeroDominio" style="color:green">' + result.Message + '</p>');
+                }
+              }
+            });
+
+            }
+        });
+
+
+    //función verificar numero de documento repetido TITULAR
+        $("#personaID").blur(function () {
+            var numeroDocumento = $('#personaID').val().replace(/\s+/g, '');
+            console.log(numeroDocumento);
+            $("#labelNumeroDocumento").remove();
+            $("#labelNumeroDocumentoCorto").remove();
+            if (numeroDocumento=='') {
+                $('#personaID').val('');
+            return null;
+        }
+            else if (numeroDocumento.length <= 5) {
+
+                $("#personaID").after('<p class="control-label" id="labelNumeroDocumentoCorto" style="color:red">' + "Número de documento corto." + '</p>');
+                $('#personaID').val('');
+            return null;
+            }
+
+        else {
+
+            $.ajax({
+                url: "@(Url.Action("verificarNumeroDocumento", "Persona"))",
+                type: 'GET',
+                data: {
+                    'numeroDocumento': numeroDocumento},
+              contentType: 'application/json; charset=utf-8',
+              success: function (data) {
+                  var result = $.parseJSON(data);
+                  $("#labelNumeroDocumento").remove();
+                if (result.success) {
+                    $("#personaID").after('<p class="control-label" id="labelNumeroDocumento" style="color:red">' + result.Message + '</p>');
+                    $('#personaID').val('');
+                }
+                else {
+                    $("#personaID").after('<p class="control-label" id="labelNumeroDocumento" style="color:green">' + result.Message + '</p>');
+                }
+              }
+            });
+
+            }
+        });
+
+
+    //función verificar numero de documento repetido INFRACTORES
+        $("#personaInfID").blur(function () {
+            var numeroDocumento = $('#personaInfID').val().replace(/\s+/g, '');
+            console.log(numeroDocumento);
+            $("#labelNumeroDocumentoInfractor").remove();
+            $("#labelNumeroDocumentoInfractorCorto").remove();
+            if (numeroDocumento=='') {
+                $('#personaInfID').val('');
+            return null;
+        }
+            else if (numeroDocumento.length <= 5) {
+
+                $("#personaInfID").after('<p class="control-label" id="labelNumeroDocumentoInfractorCorto" style="color:red">' + "Número de documento corto." + '</p>');
+                $('#personaInfID').val('');
+                return null;
+            }
+
+
+        else {
+
+            $.ajax({
+                url: "@(Url.Action("verificarNumeroDocumento", "Persona"))",
+                type: 'GET',
+                data: {
+                    'numeroDocumento': numeroDocumento},
+              contentType: 'application/json; charset=utf-8',
+              success: function (data) {
+                  var result = $.parseJSON(data);
+                  $("#labelNumeroDocumentoInfractor").remove();
+                if (result.success) {
+                    $("#personaInfID").after('<p class="control-label" id="labelNumeroDocumentoInfractor" style="color:red">' + result.Message + '</p>');
+                    $('#personaInfID').val('');
+                }
+                else {
+                    $("#personaInfID").after('<p class="control-label" id="labelNumeroDocumentoInfractor" style="color:green">' + result.Message + '</p>');
+                }
               }
             });
 

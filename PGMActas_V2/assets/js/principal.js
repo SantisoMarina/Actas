@@ -38,8 +38,7 @@ $("#horaInf").blur(function () {
     var hora = this.value;
     var currentdate = new Date();
     var datetime = currentdate.getHours() + ":" + currentdate.getMinutes();
-    var horaCargada = hora.split(":");
-    var horaActualCargada = datetime.split(":");
+
     if (dia == today) {
         if (Date.parse('01/01/2011 ' + hora + ':00') > Date.parse('01/01/2011 ' + datetime + ':00')) {
             $("#horaInf").after('<p class="control-label" id="errorHora" style="color:red">Hora mayor a la hora actual</p>');
@@ -63,20 +62,39 @@ $(".a").click(function () {
 
 
 
-//función para dominio -> solo letras, numeros y espacios
 
-//Función máscara CUIT
-$("#tipoDoc, #tipoDocInf").on('change', function () {
+//Función máscara CUIT titular
+$("#tipoDoc").on('change', function () {
     if (this.value > 0) {
-        $("#personaID, #personaInfID").prop("disabled", false);
         if (this.value == "3") {
-            $("#personaID, #personaInfID").mask("99-99999999-9", { placeholder: "XX-XXXXXXXX-X" });
+            $("#personaID").prop("disabled", false);
+            $("#personaID").mask("99-99999999-9", { placeholder: "XX-XXXXXXXX-X" });
         }
         else {
-            $("#personaID, #personaInfID").unmask();
+            $("#personaID").unmask();
         }
     }
 });
+//Función máscara CUIT infractor
+$("#tipoDocInf").on('change', function () {
+    if (this.value > 0) {
+        if (this.value == "3") {
+            $("#personaInfID").prop("disabled", false);
+            $("#personaInfID").mask("99-99999999-9", { placeholder: "XX-XXXXXXXX-X" });
+        }
+        else {
+            $("#personaInfID").unmask();
+        }
+    }
+});
+
+//funcion deshabilitar doc titular
+$("#tipoDoc").on('change', function () {
+    if (this.value > 0) {
+        $("#personaID").prop("disabled", false);
+    }
+});
+S
 //funcion deshabilitar doc infractor
 $("#tipoDocInf").on('change', function () {
     if (this.value > 0) {
@@ -994,6 +1012,8 @@ function lettersSpacesOnly(evt) {
     }
     return true;
 }
+
+
 //Función no alfanumericos
 function noAlfanumericos(evt) {
     var charCode = (evt.which) ? evt.which : event.keyCode;

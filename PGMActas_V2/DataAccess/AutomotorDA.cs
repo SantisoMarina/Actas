@@ -187,5 +187,51 @@ namespace PGMActas_V2.DataAccess
 
             return listaTiposVehiculos;
         }
+
+        public static bool obtenerNumeroDominio(string numero_dominio)
+        {
+            bool resultado = false;
+            Automotor automotor = new Automotor();
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+            SqlConnection conexion = new SqlConnection(cadenaConexion);
+
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                string selectActa = "SELECT LOWER(REPLACE(numero_dominio, ' ', '')) AS 'numero_dominio'" +
+                    " FROM Automotores a " +
+                    " WHERE  LOWER(REPLACE(numero_dominio, ' ', '')) = @numero_dominio;";
+                command.Parameters.Clear();
+                command.Parameters.AddWithValue("@numero_dominio", numero_dominio);
+                command.CommandType = System.Data.CommandType.Text;
+                command.CommandText = selectActa;
+                conexion.Open();
+                command.Connection = conexion;
+                SqlDataReader dataReader = command.ExecuteReader();
+                if (dataReader != null)
+                {
+                    while (dataReader.Read())
+                    {
+
+                        string aux = dataReader["numero_dominio"].ToString();
+                        automotor.numero_dominio = aux.ToLower().Replace(" ", "");
+                        resultado = true;
+
+                    }
+                }
+            }
+
+            catch (Exception e)
+            {
+
+                throw;
+            }
+            finally
+            {
+                conexion.Close();
+            }
+
+            return resultado;
+        }
     }
 }

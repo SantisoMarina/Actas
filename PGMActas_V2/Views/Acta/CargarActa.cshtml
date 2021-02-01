@@ -169,7 +169,7 @@
                                                     Código postal
                                                     <small>(obligatorio)</small>
                                                 </label>
-                                                <input name="direccion" type="text" class="form-control" onkeypress="return isNumberKey(event);" id="codigoPostalInfID">
+                                                <input name="direccion" type="text" class="form-control" onkeypress="return isNumberKey(event);" id="codigoPostalInfID"  maxlength="10">
 
                                             </div>
                                         </div>
@@ -276,13 +276,13 @@
 
                                                 <div style="flex-direction: row; display: flex; flex-wrap:wrap;">
                                                     <label class="control-label">
-                                                        Nro de dominio
+                                                        Número de dominio
                                                         <small>(obligatorio)</small>
                                                     </label>
                                                     <input name="numeroDominio" maxlength="10" type="text" class="form-control" value=" " id="automotorID" onkeypress="return noAlfanumericos(event);">
                                                     <button class="btn btn-warning btn-xs"
                                                             type="button" style="margin-left:10px;" id="btnAutomotor">
-                                                        Buscar Automotor por patente
+                                                        Buscar Automotor 
                                                     </button>
                                                     <button class="btn btn-danger btn-xs"
                                                             type="button" style="margin-left:10px; display:none" id="btnAutomotorLimpiar">
@@ -304,7 +304,7 @@
                                             <div class="form-group label-floating">
                                                 <label class="control-label">
                                                     Modelo y Año
-
+                                                    <small>(obligatorio)</small>
                                                 </label>
                                                 <input name="direccion" type="text" class="form-control" id="modeloVehiculoID" value=" "  maxlength="40">
                                             </div>
@@ -377,7 +377,7 @@
                                         <div style="flex-direction: row; display: flex;">
                                             <button class="btn btn-warning btn-xs"
                                                     type="button" id="btnPersona">
-                                                Buscar persona por número de documento
+                                                Buscar persona
                                             </button>
                                         </div>
 
@@ -465,7 +465,7 @@
                                                 <div style="flex-direction: row; display: flex;">
                                                     <button class="btn btn-warning btn-xs"
                                                             type="button" id="btnPersonaInfID">
-                                                        Buscar persona por número de documento
+                                                        Buscar persona 
                                                     </button>
                                                 </div>
                                             </div>

@@ -67,6 +67,12 @@
                 var mensajeInspector = "<label id='labelRangoInspector'>" + "Rango de " + s[1] + " a " + s[2] + "</label>";
                 $("#divInspectorInputButton").after(mensajeInspector);
 
+                //
+                $("#labelNumeroActaVacio").remove();
+                $("#numeroActaID").after('<p class="control-label" id="labelNumeroActaVacio" style="color:red">' + "Campo obligatorio, debe llenarlo." + '</p>');
+                $("#labelNumeroActa").remove();
+                $("#labelNumeroActaRangoInspector").remove();
+                $('#numeroActaID').val("");
             })
         });
 
