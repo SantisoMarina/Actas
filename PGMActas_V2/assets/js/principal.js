@@ -94,7 +94,6 @@ $("#tipoDoc").on('change', function () {
         $("#personaID").prop("disabled", false);
     }
 });
-S
 //funcion deshabilitar doc infractor
 $("#tipoDocInf").on('change', function () {
     if (this.value > 0) {
