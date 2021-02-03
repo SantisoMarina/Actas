@@ -352,7 +352,6 @@ namespace PGMActas_V2.DataAccess
             catch (Exception e)
             {
                 resultado = false;
-                throw;
             }
             finally
             {
@@ -387,7 +386,6 @@ namespace PGMActas_V2.DataAccess
             catch (Exception e)
             {
                 resultado = false;
-                throw;
             }
             finally
             {
