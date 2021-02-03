@@ -315,11 +315,20 @@
                             });
                             infractoresNoRegistrados.push(objInput);
                         });
-
-                        titulares.push(titularesRegistrados);
-                        titulares.push(titularesNoRegistrados);
-                        infractores.push(infractoresRegistrados);
-                        infractores.push(infractoresNoRegistrados);
+                        
+                        if (titularesNoRegistrados.length>0) {
+                            titulares.push(titularesNoRegistrados);
+                        }
+                        if (titularesRegistrados.length>0) {
+                            titulares.push(titularesRegistrados);
+                        }
+                        if (infractoresRegistrados.length > 0) {
+                            infractores.push(infractoresRegistrados);
+                        }
+                        if (infractoresNoRegistrados.length>0) {
+                            infractores.push(infractoresNoRegistrados);
+                        }
+                                                  
                         datosFormulario['infractores'] = infractores;
                         datosFormulario['titulares'] = titulares;
                         datosFormulario['infracciones'] = infracciones;
@@ -375,7 +384,7 @@
 
                         $('#localidadInfID').val("1");
 
-                        window.location.reload(true);
+                       // window.location.reload(true);
                     }
                 } else {
                     alert("No se encuentra cargado ningun infractor, revisar!");
@@ -411,9 +420,9 @@
                     $("#numeroActaID").after('<p class="control-label" id="labelNumeroActa" style="color:red">' + result.Message + '</p>');
                     $('#numeroActaID').val('');
                 }
-                else {
+               /* else {
                     $("#numeroActaID").after('<p class="control-label" id="labelNumeroActa" style="color:green">' + result.Message + '</p>');
-                }
+                }*/
               }
             });
 
@@ -430,7 +439,7 @@
                   var result = $.parseJSON(data);
                   $("#labelNumeroActaRangoInspector").remove();
                   if (result.success) {
-                      $("#numeroActaID").after('<p class="control-label" id="labelNumeroActaRangoInspector" style="color:green">' + result.Message + '</p>');
+                     // $("#numeroActaID").after('<p class="control-label" id="labelNumeroActaRangoInspector" style="color:green">' + result.Message + '</p>');
                   }
                   else {
                       $("#numeroActaID").after('<p class="control-label" id="labelNumeroActaRangoInspector" style="color:red">' + result.Message + '</p>');
@@ -477,7 +486,7 @@
                     $('#automotorID').val('');
                 }
                 else {
-                    $("#automotorID").after('<p class="control-label" id="labelNumeroDominio" style="color:green">' + result.Message + '</p>');
+                   // $("#automotorID").after('<p class="control-label" id="labelNumeroDominio" style="color:green">' + result.Message + '</p>');
                 }
               }
             });
@@ -519,7 +528,7 @@
                     $('#personaID').val('');
                 }
                 else {
-                    $("#personaID").after('<p class="control-label" id="labelNumeroDocumento" style="color:green">' + result.Message + '</p>');
+                 //   $("#personaID").after('<p class="control-label" id="labelNumeroDocumento" style="color:green">' + result.Message + '</p>');
                 }
               }
             });
@@ -562,7 +571,7 @@
                     $('#personaInfID').val('');
                 }
                 else {
-                    $("#personaInfID").after('<p class="control-label" id="labelNumeroDocumentoInfractor" style="color:green">' + result.Message + '</p>');
+               //     $("#personaInfID").after('<p class="control-label" id="labelNumeroDocumentoInfractor" style="color:green">' + result.Message + '</p>');
                 }
               }
             });

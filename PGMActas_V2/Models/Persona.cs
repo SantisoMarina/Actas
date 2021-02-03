@@ -17,5 +17,8 @@ namespace PGMActas_V2.Models
         public TipoDocumentoItemVM tipoDocumento { get; set; }
         public LocalidadItemVM localidad { get; set; }
         public int idResponsabilidadLegal { get; set; }
+        public bool infractor { get; set; }
+        public bool variasResp { get; set; } = false;
+        public List<int> resposabilidadesLegales { get; set; }
     }
 }

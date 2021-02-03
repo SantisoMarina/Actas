@@ -246,7 +246,7 @@ $('#agregarTitular').click(function () {
                 }
             });
             if (!codigoRepetido) {
-                datosPersonaTitular = "<div id='datosPersonasTitular|[0]_" + index + "' name='" + numeroDocumento + "'>" + inputFormIdPersona + inputFormTipoDocumento + inputFormNumeroDocumento + inputFormNombre + inputFormApellido + "</div>";
+                datosPersonaTitular = "<div id='datosPersonasTitularNR_" + index + "' name='" + numeroDocumento + "'>" + inputFormIdPersona + inputFormTipoDocumento + inputFormNumeroDocumento + inputFormNombre + inputFormApellido + "</div>";
                 $('#personasNoRegistradas').append(datosPersonaTitular);
                 var badgePersona = "<div class='badge badge-light badgePersonaMenu mb-1' id='badgeEliminarPersonaNR_" + index + "' name='" + numeroDocumento + "'>" + nombreTitular + " " + apellidoTitular + "</div>";
                 $('#titularesNoDeclarados').append(badgePersona);
@@ -493,9 +493,9 @@ $('#agregarInfractor').click(function () {
             console.log("Persona repetida?")
             console.log(codigoRepetido);
             if (!codigoRepetido) {
-                datosPersonaTitular = "<div id='datosPersonasInfractor|[0]_" + index + "' name='" + numeroDocumento + "'>" + inputFormIdPersona + inputFormTipoDocumento + inputFormNumeroDocumento + inputFormNombre + inputFormApellido + inputFormLocalidad + inputFormDomicilio + inputFormCodigoPostal + inputFormResponsabilidad + "</div>";
+                datosPersonaTitular = "<div id='datosPersonasInfractorNR_" + index + "' name='" + numeroDocumento + "'>" + inputFormIdPersona + inputFormTipoDocumento + inputFormNumeroDocumento + inputFormNombre + inputFormApellido + inputFormLocalidad + inputFormDomicilio + inputFormCodigoPostal + inputFormResponsabilidad + "</div>";
                 $('#personasInfNoRegistradas').append(datosPersonaTitular);
-                var badgePersona = "<div class='badge badge-info badgePersonaMenu mb-1' id='badgeEliminarPersonaNR_" + index + "' name='" + numeroDocumento + "'>" + nombreInfractor + " " + apellidoInfractor + "</div>";
+                var badgePersona = "<div class='badge badge-light badgePersonaMenu mb-1' id='inf_badgeEliminarPersonaNR_" + index + "' name='" + numeroDocumento + "'>" + nombreInfractor + " " + apellidoInfractor + "</div>"; //ACA CAMBIE EL BADGE, ERA BADGE-INFO
                 $('#infractoresNoDeclarados').append(badgePersona);
             }
 
@@ -885,7 +885,7 @@ function validarExistenciaInfractor() {
             resultado = true;
         }
     });
-    $('#personasInfRegistradas :input[id="form_responsabilidad"]').each((index, elem) => {
+    $('#personasInfNoRegistradas :input[id="form_responsabilidad"]').each((index, elem) => {
         if (elem.value == 2) {
             resultado = true;
         }
@@ -895,15 +895,15 @@ function validarExistenciaInfractor() {
 
 
 function getSelectorPersona(tipoTINF) {
-    var selectorFormNew = 'datosPersonasTitular|[0]_';
+    var selectorFormNew = 'datosPersonasTitularNR_';
     var selectorFormReg = 'datosPersonasTitular_';
     var idBadgePersona = '#' + $('#idPersonaMenuAbierta').val();
     if (tipoTINF == 2) {
-        selectorFormNew = 'datosPersonasInfractor|[0]_';
+        selectorFormNew = 'datosPersonasInfractorNR_';
         selectorFormReg = 'datosPersonasInfractor_';
         idBadgePersona = '#' + $('#idPersonaINFMenuAbierta').val();
     }
-    var arrayIdPersona = idBadgePersona.split('|');
+    var arrayIdPersona = idBadgePersona.split('NR');
     var idPersona = 0;
     if (arrayIdPersona.length > 1) {
         arrayIdPersona = arrayIdPersona[1].split('_');
@@ -1016,7 +1016,7 @@ function lettersSpacesOnly(evt) {
 //Función no alfanumericos
 function noAlfanumericos(evt) {
     var charCode = (evt.which) ? evt.which : event.keyCode;
-    if (charCode > 32 && (charCode < 48 || charCode > 90) &&
+    if (charCode == 63 || charCode > 32 && (charCode < 48 || charCode > 90) &&
         (charCode < 97 || charCode > 122)) {
         return false;
     }
@@ -1125,6 +1125,7 @@ function registerTitulares(response) {
     $('#formCargarActa').append(inputForm);
     //$("#colorVehiculoID").attr("value", res[4]);
     $("#colorVehiculoID").val(response.color);
+    $("#colorVehiculoID").prop("disabled", true);
     $("#colorVehiculo_form").remove();
     var colorVehiculo = $("#colorVehiculoID").val();
     var inputForm = "<input id='colorVehiculo_form' name='colorVehiculo_form' value='" + colorVehiculo + "'>";
@@ -1186,6 +1187,7 @@ function limpiarTitulares() {
     $("#modeloVehiculoID").val("");
     $("#modeloVehiculoID").prop("disabled", false);
     $("#colorVehiculoID").val("");
+    $("#colorVehiculoID").prop("disabled", false);
     $("#btnAutomotorLimpiar").css('display', 'none');
 
 

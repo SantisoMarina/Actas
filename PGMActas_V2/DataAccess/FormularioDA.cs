@@ -95,12 +95,13 @@ namespace PGMActas_V2.DataAccess
                         titular.tipoDocumento = tipoDoc;
                         titular.localidad = localidad;
                         titular.idResponsabilidadLegal = 1;
+                        titular.infractor = false;
                         titulares.Add(titular);
+
 
                     });
                 });
-                guardarTitular(titulares, idAutomotor);
-                //Guardado de titulares
+
                 List<Persona> infractores = new List<Persona>();
                 datosFormulario.infractores.ForEach(elem =>
                 {
@@ -119,7 +120,7 @@ namespace PGMActas_V2.DataAccess
                             domicilio = elemento.form_domicilio;
                         }
                         tipoDoc.id_tipo_documento = 1;
-                        localidad.id_localidad = Convert.ToInt32(elemento.form_localidad);
+                        localidad.id_localidad = Convert.ToInt32(elemento.form_localidad) == 0 ? 1 : Convert.ToInt32(elemento.form_localidad);
                         infractor.id_persona = Convert.ToInt32(elemento.form_id_persona);
                         infractor.nombre = elemento.form_nombre;
                         infractor.apellido = elemento.form_apellido;
@@ -129,11 +130,26 @@ namespace PGMActas_V2.DataAccess
                         infractor.idResponsabilidadLegal = Convert.ToInt32(elemento.form_responsabilidad);
                         infractor.localidad = localidad;
                         infractor.tipoDocumento = tipoDoc;
+                        infractor.infractor = true;
                         infractores.Add(infractor);
 
                     });
                 });
-                guardarInfractor(infractores, numeroActa);
+                List<Persona> personas = new List<Persona>();
+                personas.AddRange(infractores);
+                personas.AddRange(titulares);
+                var personasNR = personas.GroupBy(i => i.numero_documento)
+                                        .Select(g => {
+                                            var personND = g.First();
+                                            if (g.Count()>1) {
+                                                personND.variasResp = true;
+                                                personND.resposabilidadesLegales = g.Where(y => y.idResponsabilidadLegal!=1).Select(x => x.idResponsabilidadLegal).ToList();
+                                            }
+                                            return personND;
+                                        })
+                                        .ToList();
+
+                guardarPersona(personasNR, numeroActa,idAutomotor);
 
             }
             catch (Exception e)
@@ -227,61 +243,50 @@ namespace PGMActas_V2.DataAccess
             return idAutomotor;
         }
 
-        public static bool guardarTitular(List<Persona> listadoPersonasTitulares, int idAutmotor)
+        
+        public static bool guardarPersona(List<Persona> listadoPersonas, int numeroActa, int idAutomotor)
         {
-            bool resultado = true;
+            bool resultado = false;
             string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
             SqlConnection conexion = new SqlConnection(cadenaConexion);
             conexion.Open();
             try
             {
-                foreach (var personaTitular in listadoPersonasTitulares)
+                foreach (var persona in listadoPersonas)
                 {
-
-                    if (personaTitular.id_persona == 0)
+                    if (persona.id_persona == 0)
                     {
-                        SqlCommand command = new SqlCommand();
+                        SqlCommand command2 = new SqlCommand();
                         string insertPersona = "INSERT INTO Personas " +
                             " VALUES " +
                             " (@nombre, @apellido, @id_tipo_documento, @numero_documento, @id_localidad, @direccion, @codigo_postal)SET @ID = SCOPE_IDENTITY();";
-                        command.Parameters.Clear();
-                        command.Parameters.AddWithValue("@nombre", personaTitular.nombre);
-                        command.Parameters.AddWithValue("@apellido", personaTitular.apellido);
-                        command.Parameters.AddWithValue("@id_tipo_documento", personaTitular.tipoDocumento.id_tipo_documento);
-                        command.Parameters.AddWithValue("@numero_documento", personaTitular.numero_documento);
-                        command.Parameters.AddWithValue("@id_localidad", personaTitular.localidad.id_localidad);
-                        command.Parameters.AddWithValue("@direccion", personaTitular.direccion);
-                        command.Parameters.AddWithValue("@codigo_postal", personaTitular.codigo_postal);
-                        command.Parameters.Add("@ID", SqlDbType.Int, 4).Direction = ParameterDirection.Output;
-                        command.CommandType = System.Data.CommandType.Text;
-                        command.CommandText = insertPersona;
-                        command.Connection = conexion;
-                        command.ExecuteNonQuery();
-                        personaTitular.id_persona = Convert.ToInt32(command.Parameters["@ID"].Value);
-
-                    }
-
-                    try
-                    {
-                        SqlCommand command2 = new SqlCommand();
-                        string insertPersonaxAutomotor = "INSERT INTO AutomotoresxPersonas " +
-                            " VALUES " +
-                            " (@id_automotor, @id_persona, @id_responsabilidad_legal);";
                         command2.Parameters.Clear();
-                        command2.Parameters.AddWithValue("@id_automotor", idAutmotor);
-                        command2.Parameters.AddWithValue("@id_persona", personaTitular.id_persona);
-                        command2.Parameters.AddWithValue("@id_responsabilidad_legal", personaTitular.idResponsabilidadLegal);
+                        command2.Parameters.AddWithValue("@nombre", persona.nombre);
+                        command2.Parameters.AddWithValue("@apellido", persona.apellido);
+                        command2.Parameters.AddWithValue("@id_tipo_documento", persona.tipoDocumento.id_tipo_documento);
+                        command2.Parameters.AddWithValue("@numero_documento", persona.numero_documento);
+                        command2.Parameters.AddWithValue("@id_localidad", persona.localidad.id_localidad);
+                        command2.Parameters.AddWithValue("@direccion", persona.direccion);
+                        command2.Parameters.AddWithValue("@codigo_postal", persona.codigo_postal);
+                        command2.Parameters.Add("@ID", SqlDbType.Int, 4).Direction = ParameterDirection.Output;
                         command2.CommandType = System.Data.CommandType.Text;
-                        command2.CommandText = insertPersonaxAutomotor;
+                        command2.CommandText = insertPersona;
                         command2.Connection = conexion;
                         command2.ExecuteNonQuery();
+                        persona.id_persona = Convert.ToInt32(command2.Parameters["@ID"].Value);
                     }
-                    catch (Exception e )
+                    if (persona.variasResp) {
+                        guardarInfraccionActa(persona, numeroActa);
+                        guardarTitularesAutomotor(persona, idAutomotor);
+                    }
+                    else if (persona.infractor)
                     {
-                        Console.WriteLine("Error al intentar guardar las personas por los automotores");
+                        guardarInfraccionActa(persona, numeroActa);
+                    }
+                    else {
+                        guardarTitularesAutomotor(persona, idAutomotor);
                     }
                     
-
 
                 }
 
@@ -297,7 +302,8 @@ namespace PGMActas_V2.DataAccess
             }
             return resultado;
         }
-        public static bool guardarInfractor(List<Persona> listadoPersonasInfractores, int numeroActa)
+
+        public static bool guardarInfraccionActa(Persona personaInfractor, int numeroActa)
         {
             bool resultado = false;
             string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
@@ -305,30 +311,26 @@ namespace PGMActas_V2.DataAccess
             conexion.Open();
             try
             {
-                foreach (var personaInfractor in listadoPersonasInfractores)
+                if (personaInfractor.variasResp)
                 {
-                    if (personaInfractor.id_persona == 0)
+                    foreach (var responsabilidad in personaInfractor.resposabilidadesLegales)
                     {
-                        SqlCommand command2 = new SqlCommand();
-                        string insertPersona = "INSERT INTO Personas " +
+                        SqlCommand command = new SqlCommand();
+                        string insertPersonaxActa = "INSERT INTO PersonaInfraccionxActa " +
                             " VALUES " +
-                            " (@nombre, @apellido, @id_tipo_documento, @numero_documento, @id_localidad, @direccion, @codigo_postal)SET @ID = SCOPE_IDENTITY();";
-                        command2.Parameters.Clear();
-                        command2.Parameters.AddWithValue("@nombre", personaInfractor.nombre);
-                        command2.Parameters.AddWithValue("@apellido", personaInfractor.apellido);
-                        command2.Parameters.AddWithValue("@id_tipo_documento", personaInfractor.tipoDocumento.id_tipo_documento);
-                        command2.Parameters.AddWithValue("@numero_documento", personaInfractor.numero_documento);
-                        command2.Parameters.AddWithValue("@id_localidad", personaInfractor.localidad.id_localidad);
-                        command2.Parameters.AddWithValue("@direccion", personaInfractor.direccion);
-                        command2.Parameters.AddWithValue("@codigo_postal", personaInfractor.codigo_postal);
-                        command2.Parameters.Add("@ID", SqlDbType.Int, 4).Direction = ParameterDirection.Output;
-                        command2.CommandType = System.Data.CommandType.Text;
-                        command2.CommandText = insertPersona;
-                        command2.Connection = conexion;
-                        command2.ExecuteNonQuery();
-                        personaInfractor.id_persona = Convert.ToInt32(command2.Parameters["@ID"].Value);
-                    }
+                            " (@id_persona, @numero_acta, @id_responsabilidad_legal);";
+                        command.Parameters.Clear();
+                        command.Parameters.AddWithValue("@id_persona", personaInfractor.id_persona);
+                        command.Parameters.AddWithValue("@numero_acta", numeroActa);
+                        command.Parameters.AddWithValue("@id_responsabilidad_legal", responsabilidad);
 
+                        command.CommandType = System.Data.CommandType.Text;
+                        command.CommandText = insertPersonaxActa;
+                        command.Connection = conexion;
+                        command.ExecuteNonQuery();
+                    }
+                }
+                else {
                     SqlCommand command = new SqlCommand();
                     string insertPersonaxActa = "INSERT INTO PersonaInfraccionxActa " +
                         " VALUES " +
@@ -342,8 +344,9 @@ namespace PGMActas_V2.DataAccess
                     command.CommandText = insertPersonaxActa;
                     command.Connection = conexion;
                     command.ExecuteNonQuery();
-
                 }
+                
+                    
 
             }
             catch (Exception e)
@@ -357,6 +360,45 @@ namespace PGMActas_V2.DataAccess
             }
             return resultado;
         }
+
+        public static bool guardarTitularesAutomotor(Persona personaInfractor, int idAutomor)
+        {
+            bool resultado = false;
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+            SqlConnection conexion = new SqlConnection(cadenaConexion);
+            conexion.Open();
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                string insertPersonaxActa = "INSERT INTO AutomotoresxPersonas " +
+                    " VALUES " +
+                    " (@id_automotor, @id_persona, @id_responsabilidad_legal);";
+                command.Parameters.Clear();
+                command.Parameters.AddWithValue("@id_automotor", idAutomor);
+                command.Parameters.AddWithValue("@id_persona", personaInfractor.id_persona);
+                command.Parameters.AddWithValue("@id_responsabilidad_legal", 1);
+
+                command.CommandType = System.Data.CommandType.Text;
+                command.CommandText = insertPersonaxActa;
+                command.Connection = conexion;
+                command.ExecuteNonQuery();
+
+            }
+            catch (Exception e)
+            {
+                resultado = false;
+                throw;
+            }
+            finally
+            {
+                conexion.Close();
+            }
+            return resultado;
+        }
+
+
+
+
 
         public static bool guardarInfracciones(List<int> codigosInfraccion, int numeroActa)
         {

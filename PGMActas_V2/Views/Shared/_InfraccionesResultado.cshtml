@@ -53,8 +53,8 @@
                 $("#codigoinfraccionID").val(s[1]);
                 !!$("#retuvoLicenciaID").val(!!s[2]);
                 !!$("#retuvoVehiculoID").val(!!s[3]);
-                //TODO infraccion con medida auxiliar
-                console.log(!!s[3]);
+
+                $('#modalInfraccion').modal('toggle');
             })
         });
 
