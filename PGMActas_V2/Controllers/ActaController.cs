@@ -190,7 +190,7 @@ namespace PGMActas_V2.Controllers
         {
 
             var success = ActaDA.obtenerNumeroActa(numero_acta);
-            var mensaje = success ? "Acta ya existente, para consultarla ingrese <a href=''>aquí</a>":"Número de acta válido.";
+            var mensaje = success ? "Acta "+ numero_acta +" ya existente, para consultarla ingrese <a href=''>aquí</a>":"Número de acta válido.";
             var response = new { success = success, Message = mensaje };
             System.Web.Script.Serialization.JavaScriptSerializer jSerializer = new System.Web.Script.Serialization.JavaScriptSerializer();
             return new HtmlString(jSerializer.Serialize(response));
@@ -207,7 +207,7 @@ namespace PGMActas_V2.Controllers
                 success = true;
             }
 
-            var mensaje = success ? "Acta dentro del rango del inspector. ":"Acta fuera del rango del inspector.";
+            var mensaje = success ? "Acta dentro del rango del inspector. ":"Acta "+ numero_acta+ " fuera del rango del inspector.";
             var response = new { success = success, Message = mensaje };
             System.Web.Script.Serialization.JavaScriptSerializer jSerializer = new System.Web.Script.Serialization.JavaScriptSerializer();
             return new HtmlString(jSerializer.Serialize(response));

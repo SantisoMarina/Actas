@@ -26,11 +26,11 @@ namespace PGMActas_V2.Controllers
         }
 
         //verificar numero de dominio repetido
-        public HtmlString verificarNumeroDominio(string numeroDominio)
+        public HtmlString verificarNumeroDominio(string numeroDominio, string numeroDominioOriginal)
         {
 
             var success = AutomotorDA.obtenerNumeroDominio(numeroDominio);
-            var mensaje = success ? "Número de dominio ya existente." : "Número de dominio válido.";
+            var mensaje = success ? "Número de dominio "+ numeroDominioOriginal + " ya existente." : "Número de dominio válido.";
             var response = new { success = success, Message = mensaje };
             System.Web.Script.Serialization.JavaScriptSerializer jSerializer = new System.Web.Script.Serialization.JavaScriptSerializer();
             return new HtmlString(jSerializer.Serialize(response));

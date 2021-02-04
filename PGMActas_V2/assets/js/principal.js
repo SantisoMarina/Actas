@@ -538,6 +538,8 @@ $('#agregarInfractor').click(function () {
         $('#domicilioInfID').val('');
         $('#codigoPostalID').val('');
         $('#comboResponsabilidadLegal').prop('selectedIndex', 0);
+
+        $('#comboResponsabilidadLegal').children().eq(1).remove();
     }
     else {
         alert("Campos vacíos, ¡Revisar!");
@@ -671,6 +673,7 @@ $('#infractorTitular').click(function () {
         $('#personasInfRegistradas').append(formData);
         $('#'+selectorForm).append('<input name="form_responsabilidad" type="text" class="form-control" id="form_responsabilidad" value="2">');
     }
+    $('#comboResponsabilidadLegal').children().eq(1).remove();
 });
 
 $("div[id^='infractores']").on('click', '.badgePersonaMenu', function () {
@@ -685,10 +688,31 @@ $("div[id^='infractores']").on('click', '.badgePersonaMenu', function () {
 $('#elimTitularINF').click(function () {
     var idBadgePersona = '#' + $('#idPersonaINFMenuAbierta').val();
     var selectorForm = getSelectorPersona(2);
+    
+    validacionInfractorUnico(idBadgePersona);
     $(selectorForm).remove();
     $(idBadgePersona).remove();
     $('#menuPersonaINF').hide();
+   
 });
+function validacionInfractorUnico(idBadge) {
+    var selectorFormNew = '#inf_datosPersonasTitularNR_';
+    var selectorFormReg = '#inf_datosPersonasTitular_';
+    var nuevaPersona = idBadge.indexOf('NR') > -1;
+    var selectorForm = '';
+    var idPersona = idBadge.split('_');
+    if (nuevaPersona) {
+        selectorForm = selectorFormNew + idPersona[2];
+    }
+    else {
+        selectorForm = selectorFormReg + idPersona[2];
+    }
+    var responsabilidad = $(selectorForm).find('#form_responsabilidad').val();
+    if (responsabilidad == 2) {
+        var selectInfractor = '<option value="2">Infractor</option>';
+        $('#comboResponsabilidadLegal').children().eq(0).after(selectInfractor);
+    }
+}
 
 //funciones de validacion textbox vacios
 $('#fechaInf').blur(function () {

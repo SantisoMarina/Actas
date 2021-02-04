@@ -336,8 +336,6 @@
                         console.log(datosFormulario);
 
 
-
-
                         $.ajax({
                             url: "@(Url.Action("GuardarFormulario", "Formulario"))",
                             type: 'POST',
@@ -384,7 +382,11 @@
 
                         $('#localidadInfID').val("1");
 
-                        window.location.reload(true);
+                        setTimeout(function () {
+                            window.location.reload(true);
+                        }, 5000);
+
+                        
                     }
                 } else {
                     alert("No se encuentra cargado ningun infractor, revisar!");
@@ -456,7 +458,7 @@
     //función verificar numero de dominio repetido
     $("#automotorID").blur(function () {
         var numeroDominio = $('#automotorID').val().toLowerCase().replace(/\s+/g, '');
-
+        var numeroDominioOriginal = $('#automotorID').val();
         console.log(numeroDominio);
         $("#labelNumeroDominio").remove();
         $("#labelNumeroDominioCorto").remove();
@@ -476,7 +478,10 @@
                 url: "@(Url.Action("verificarNumeroDominio", "Automotor"))",
                 type: 'GET',
                 data: {
-                    'numeroDominio': numeroDominio},
+                    'numeroDominio': numeroDominio,
+                    'numeroDominioOriginal': numeroDominioOriginal
+                },
+
               contentType: 'application/json; charset=utf-8',
               success: function (data) {
                   var result = $.parseJSON(data);
@@ -505,7 +510,7 @@
                 $('#personaID').val('');
             return null;
         }
-            else if (numeroDocumento.length <= 5) {
+            else if (numeroDocumento.length <= 6) {
 
                 $("#personaID").after('<p class="control-label" id="labelNumeroDocumentoCorto" style="color:red">' + "Número de documento corto." + '</p>');
                 $('#personaID').val('');
@@ -547,7 +552,7 @@
                 $('#personaInfID').val('');
             return null;
         }
-            else if (numeroDocumento.length <= 5) {
+            else if (numeroDocumento.length <= 6) {
 
                 $("#personaInfID").after('<p class="control-label" id="labelNumeroDocumentoInfractorCorto" style="color:red">' + "Número de documento corto." + '</p>');
                 $('#personaInfID').val('');

@@ -29,7 +29,7 @@ namespace PGMActas_V2.Controllers
         {
 
             var success = PersonaDA.obtenerNumeroDocumento(numeroDocumento);
-            var mensaje = success ? "Número de documento ya existente." : "Número de documento válido.";
+            var mensaje = success ? "Número de documento "+ numeroDocumento +" ya existente." : "Número de documento válido.";
             var response = new { success = success, Message = mensaje };
             System.Web.Script.Serialization.JavaScriptSerializer jSerializer = new System.Web.Script.Serialization.JavaScriptSerializer();
             return new HtmlString(jSerializer.Serialize(response));
