@@ -43,12 +43,13 @@ namespace PGMActas_V2.DataAccess
                 acta.hora_carga = datosFormulario.horaCarga_form;
                 acta.fecha_acta = datosFormulario.fechaInf_form;
                 acta.hora_acta = datosFormulario.horaInf_form;
-                acta.observaciones = datosFormulario.observacionesInf_form;
+                if (datosFormulario.observacionesInf_form == null) { acta.observaciones = " "; } else { acta.observaciones = datosFormulario.observacionesInf_form; }
+               // acta.observaciones = datosFormulario.observacionesInf_form;
                 acta.retuvo_licencia = datosFormulario.retuvoLicencia_form == 1 ? true:false;
                 acta.retuvo_vehiculo = datosFormulario.retuvoVehiculo_form == 1 ? true : false;
                 acta.id_localidad = 1; //capital
                 acta.direccion = datosFormulario.direccionInf_form;
-                acta.codigo_postal = Convert.ToInt32(datosFormulario.codigoPostalInf_form); ;
+                acta.codigo_postal = Convert.ToInt32(datosFormulario.codigoPostalInf_form); 
                 acta.automotor = automotorForm;
 
 

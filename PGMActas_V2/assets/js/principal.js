@@ -539,7 +539,10 @@ $('#agregarInfractor').click(function () {
         $('#codigoPostalID').val('');
         $('#comboResponsabilidadLegal').prop('selectedIndex', 0);
 
-        $('#comboResponsabilidadLegal').children().eq(1).remove();
+        if (responsabilidadInfractor==2) {
+            $('#comboResponsabilidadLegal').children().eq(1).remove();
+        }
+
     }
     else {
         alert("Campos vacíos, ¡Revisar!");
@@ -651,6 +654,7 @@ $('#infractorTitular').click(function () {
     var selectorForm = selectorForm.replace('#','inf_');
     var existeBadge = false;
     var existeForm = false;
+    var responsabilidades = $('#comboResponsabilidadLegal').children();
     $("#infractoresDeclarados > div").each((index, elem) => {
         var elemSel = '#' + elem.id;
         var idBadgePersonaINF = idBadgePersona.replace('#', '#inf_')
@@ -665,15 +669,20 @@ $('#infractorTitular').click(function () {
             existeForm = true;
         }
     });
-    if (!existeBadge) {
+    if (!existeBadge && responsabilidades.length == 4) {
         $('#infractoresDeclarados').append(badge);
         $('#listadoInfractores').show();
     }
-    if (!existeForm) {
+    if (!existeForm && responsabilidades.length == 4) {
         $('#personasInfRegistradas').append(formData);
-        $('#'+selectorForm).append('<input name="form_responsabilidad" type="text" class="form-control" id="form_responsabilidad" value="2">');
+        $('#' + selectorForm).append('<input name="form_responsabilidad" type="text" class="form-control" id="form_responsabilidad" value="2">');
+       
     }
-    $('#comboResponsabilidadLegal').children().eq(1).remove();
+    
+    if (responsabilidades.length==4) {
+        $('#comboResponsabilidadLegal').children().eq(1).remove();
+    }
+   
 });
 
 $("div[id^='infractores']").on('click', '.badgePersonaMenu', function () {
