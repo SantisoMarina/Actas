@@ -105,6 +105,7 @@ $("#tipoDocInf").on('change', function () {
 //Funcion agregar infraccion
 
 $('#btnAgregarInfraccion').click(function () {
+    
     var infraccion = $('#infraccionID').val();
     var codigo_infraccion = $('#codigoinfraccionID').val();
     var retuvo_licencia = $('#retuvoLicenciaID').val();
@@ -131,8 +132,8 @@ $('#btnAgregarInfraccion').click(function () {
             $('#listadoInfracciones').append(badge);
             $('#formCargarActa_infracciones').append(divMedidaAccesoria);
 
-            $('#infraccionID').val('');
-            $('#codigoinfraccionID').val('');
+            $('#infraccionID').val(' ');
+            $('#codigoinfraccionID').val(' ');
             verificarMostrarRetuvoLV();
         }
     }
@@ -1038,6 +1039,11 @@ function lettersSpacesOnly(evt) {
     evt = (evt) ? evt : event;
     var charCode = (evt.charCode) ? evt.charCode : ((evt.keyCode) ? evt.keyCode :
         ((evt.which) ? evt.which : 0));
+    if (charCode == 241 || charCode == 209 || charCode == 193 || charCode == 225 ||
+        charCode == 233 || charCode == 201 || charCode == 237 || charCode == 205 ||
+        charCode == 211 || charCode == 243 || charCode == 250 || charCode == 218) {
+        return true;
+    }
     if (charCode > 32 && (charCode < 65 || charCode > 90) &&
         (charCode < 97 || charCode > 122)) {
         return false;
@@ -1049,10 +1055,24 @@ function lettersSpacesOnly(evt) {
 //Función no alfanumericos
 function noAlfanumericos(evt) {
     var charCode = (evt.which) ? evt.which : event.keyCode;
+    if (charCode == 168) {
+        return false;
+    }
+
+    if (charCode == 241 || charCode == 209 || charCode == 193 || charCode == 225 ||
+        charCode == 233 || charCode == 201 || charCode == 237 || charCode == 205 ||
+        charCode == 211 || charCode == 243 || charCode == 250 || charCode == 218 ) {
+        return true;
+    }
+
     if (charCode == 63 || charCode > 32 && (charCode < 48 || charCode > 90) &&
         (charCode < 97 || charCode > 122)) {
         return false;
     }
+    if (charCode == 64 || charCode == 61 || charCode == 58 || charCode == 168) {
+        return false;
+    }
+  
     return true;
 }
 //(charCode>193 && charCode<201 && (charCode>201 && charCode<205) &&  charCode > 252  )
@@ -1064,6 +1084,10 @@ function validacionCampoObservaciones(evt) {
         && charCode!=225 && charCode!=233 && charCode!=237 && charCode!=241 && charCode!=243 && charCode!=250))) {
         return false;
     }
+    if (charCode == 64 || charCode == 42 || charCode == 47 || charCode == 43 || charCode == 61 || charCode == 168 ) {
+        return false;
+    }
+ 
     return true;
 }
 
@@ -1230,3 +1254,10 @@ function limpiarTitulares() {
     $('#personasRegistradas').empty();
     $('#personasNoRegistradas').empty();
 }
+
+$("#codigoPostalInfID, #personaID, #personaInfID, #codigoPostalID, #numeroActaID").blur(function () {
+    if (!$.isNumeric(this.value))
+        this.value = "";
+});
+
+

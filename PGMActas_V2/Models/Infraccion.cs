@@ -12,6 +12,7 @@ namespace PGMActas_V2.Models
         public string descripcion { get; set; }
         public bool estado { get; set; }
         public string calificacion { get; set; }
+        public double? monto_unitario { get; set; }
         public Normativa normativa { get; set; }
         public Articulo articulo { get; set; }
         public GrupoInfraccion grupoInfracciones { get; set; }

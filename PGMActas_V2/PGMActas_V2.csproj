@@ -45,7 +45,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BouncyCastle.Crypto, Version=1.8.6.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
+      <HintPath>..\packages\BouncyCastle.1.8.6.1\lib\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp, Version=5.5.13.2, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.13.2\lib\itextsharp.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="OnBarcode.Barcode.ASPNET">
+      <HintPath>..\..\..\..\Downloads\OnBarcode.BarcodeGenerator.DotnetSuite(1)\OnBarcode.BarcodeGenerator.DotnetSuite\dll\Net40\OnBarcode.Barcode.ASPNET.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -110,6 +119,12 @@
       <Private>True</Private>
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="zxing, Version=0.16.6.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZXing.Net.0.16.6\lib\net47\zxing.dll</HintPath>
+    </Reference>
+    <Reference Include="zxing.presentation, Version=0.16.6.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZXing.Net.0.16.6\lib\net47\zxing.presentation.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform">
@@ -125,6 +140,7 @@
     <Compile Include="Controllers\FormularioController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PersonaController.cs" />
+    <Compile Include="Controllers\ReporteController.cs" />
     <Compile Include="DataAccess\ActaDA.cs" />
     <Compile Include="DataAccess\AutomotorDA.cs" />
     <Compile Include="DataAccess\FormularioDA.cs" />
@@ -172,6 +188,7 @@
     <Content Include="assets\img\favicon.png" />
     <Content Include="assets\img\karsten-wurth-ImeGmbUNarA-unsplash.jpg" />
     <Content Include="assets\img\logo-oscuro-01.png" />
+    <Content Include="assets\img\logoPDF.png" />
     <Content Include="assets\img\new_logo.png" />
     <Content Include="assets\img\stewart-edward-05zSlV1O_ys-unsplash.jpg" />
     <Content Include="assets\img\thumb_list_boat.png" />
@@ -257,6 +274,7 @@
     <Content Include="Views\Shared\_Persona.cshtml" />
     <Content Include="Views\Shared\_PersonasResultado.cshtml" />
     <Content Include="Views\Shared\_InfraccionesPersonaParticular.cshtml" />
+    <Content Include="Views\Acta\ActaCargada.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -264,6 +282,7 @@
     <Folder Include="Views\Formulario\" />
     <Folder Include="Views\Persona\" />
     <Folder Include="Views\Prueba\" />
+    <Folder Include="Views\Reporte\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

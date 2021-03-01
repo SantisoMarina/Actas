@@ -84,3 +84,10 @@ C:\Users\Marina\source\repos\PGMActas_V2\PGMActas_V2\obj\Debug\PGMActas_V2.cspro
 C:\Users\Marina\source\repos\PGMActas_V2\PGMActas_V2\obj\Debug\PGMActas_V2.csproj.CopyComplete
 C:\Users\Marina\source\repos\PGMActas_V2\PGMActas_V2\obj\Debug\PGMActas_V2.dll
 C:\Users\Marina\source\repos\PGMActas_V2\PGMActas_V2\obj\Debug\PGMActas_V2.pdb
+C:\Users\Marina\source\repos\PGMActas_V2\PGMActas_V2\bin\BouncyCastle.Crypto.dll
+C:\Users\Marina\source\repos\PGMActas_V2\PGMActas_V2\bin\itextsharp.dll
+C:\Users\Marina\source\repos\PGMActas_V2\PGMActas_V2\bin\itextsharp.xml
+C:\Users\Marina\source\repos\PGMActas_V2\PGMActas_V2\bin\zxing.dll
+C:\Users\Marina\source\repos\PGMActas_V2\PGMActas_V2\bin\zxing.presentation.dll
+C:\Users\Marina\source\repos\PGMActas_V2\PGMActas_V2\bin\zxing.xml
+C:\Users\Marina\source\repos\PGMActas_V2\PGMActas_V2\bin\zxing.presentation.xml

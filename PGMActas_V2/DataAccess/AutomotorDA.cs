@@ -233,5 +233,61 @@ namespace PGMActas_V2.DataAccess
 
             return resultado;
         }
+
+        public static String[] obtenerAutomotor(int numero_acta)
+        {
+            String[] datosAutomotor = new String[5];
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+            SqlConnection conexion = new SqlConnection(cadenaConexion);
+
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                string selectPersonas = "SELECT a.numero_dominio AS 'NumeroDominio', m.marca AS 'Marca' , a.modelo AS 'Modelo'," +
+                    " tv.tipo_vehiculo AS 'TipoVehiculo', a.color AS 'Color' " +
+                    " FROM Automotores a " +
+                    " JOIN MarcasxTipos_vehiculos mtv" +
+                    " ON a.id_marca_tipo_vehiculo = mtv.id_marca_tipo_vehiculo " +
+                    " JOIN Marcas M " +
+                    " ON m.id_marca = mtv.id_marca " +
+                    " JOIN Tipos_vehiculos tv " +
+                    " ON tv.id_tipo_vehiculo = mtv.id_tipo_vehiculo " +
+                    " JOIN Actas ac" +
+                    " ON a.id_automotor=ac.id_automotor" +
+                    " WHERE numero_acta = @numero_acta;";
+                command.Parameters.Clear();
+                command.Parameters.AddWithValue("@numero_acta", numero_acta);
+                command.CommandType = System.Data.CommandType.Text;
+                command.CommandText = selectPersonas;
+                conexion.Open();
+                command.Connection = conexion;
+                SqlDataReader dataReader = command.ExecuteReader();
+                if (dataReader != null)
+                {
+                    while (dataReader.Read())
+                    {
+                        datosAutomotor[0] = dataReader["NumeroDominio"].ToString();
+                        datosAutomotor[1] = dataReader["Marca"].ToString();
+                        datosAutomotor[2] = dataReader["Modelo"].ToString();
+                        datosAutomotor[3] = dataReader["TipoVehiculo"].ToString();
+                        datosAutomotor[4] = dataReader["Color"].ToString();
+
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
+            finally
+            {
+                conexion.Close();
+            }
+
+            return datosAutomotor;
+        }
     }
+
+    
+
 }

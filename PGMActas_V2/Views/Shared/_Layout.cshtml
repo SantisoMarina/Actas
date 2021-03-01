@@ -315,7 +315,7 @@
                             });
                             infractoresNoRegistrados.push(objInput);
                         });
-                        
+
                         if (titularesNoRegistrados.length>0) {
                             titulares.push(titularesNoRegistrados);
                         }
@@ -328,7 +328,7 @@
                         if (infractoresNoRegistrados.length>0) {
                             infractores.push(infractoresNoRegistrados);
                         }
-                                                  
+
                         datosFormulario['infractores'] = infractores;
                         datosFormulario['titulares'] = titulares;
                         datosFormulario['infracciones'] = infracciones;
@@ -342,16 +342,20 @@
                             data: JSON.stringify(datosFormulario),
                             contentType: 'application/json; charset=utf-8',
                             success: function (data) {
-                                console.log(data);
-                                alert("Acta agregada correctamente.");
+                                //console.log(data);
+                                //alert("Acta agregada correctamente.");
+                                var nro_acta = $('#numeroActa_form').val();
+                                var url = '@Url.Action("ActaCargada", "Acta", new { numero_acta = "_nro_acta_" })';
+                                window.location.href = url.replace('_nro_acta_', nro_acta);
+
+                              
 
                             },
                             error: function () {
                                 alert("Error al agregar el acta.");
                             }
                         });
-
-                        $(':input[type=text][name!=localidadInf][name!=normativa]').val('').prop('checked', false)
+                       /* $(':input[type=text][name!=localidadInf][name!=normativa]').val('').prop('checked', false)
                             .prop('selected', false);
                         $('select').val('');
                         $("input[type=date]").val("");
@@ -380,13 +384,8 @@
                         $("#labelNumeroActa").remove();
                         $("#labelNumeroActaRangoInspector").remove();
 
-                        $('#localidadInfID').val("1");
+                        $('#localidadInfID').val("1");*/
 
-                        setTimeout(function () {
-                            window.location.reload(true);
-                        }, 5000);
-
-                        
                     }
                 } else {
                     alert("No se encuentra cargado ningun infractor, revisar!");
@@ -583,6 +582,8 @@
 
             }
         });
+
+
 
     </script>
 </body>

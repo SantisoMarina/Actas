@@ -76,7 +76,58 @@ namespace PGMActas_V2.DataAccess
 
             return listaPersonas;
         }
+        public static String[] obtenerPersonaInfractor(int numero_acta)
+        {
+            String[] datosInfractor = new String[4];
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+            SqlConnection conexion = new SqlConnection(cadenaConexion);
 
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                string selectPersonas = "SELECT p.nombre + ' ' + p.apellido AS 'nombreCompleto', p.direccion + ' ' + loc.localidad AS 'direccionCompleta'," +
+                    " td.tipo_documento, p.numero_documento" +
+                    " FROM Personas p " +
+                    "JOIN Tipos_documentos td " +
+                    "ON p.id_tipo_documento = td.id_tipo_documento " +
+                    "JOIN Localidades loc " +
+                    "ON loc.id_localidad = p.id_localidad " +
+                    "JOIN PersonaInfraccionxActa pia " +
+                    "ON pia.id_persona = p.id_persona " +
+                    "WHERE pia.numero_acta = @numero_acta " +
+                    "AND pia.id_responsabilidad_legal=2;";
+                command.Parameters.Clear();
+                command.Parameters.AddWithValue("@numero_acta", numero_acta);
+                command.CommandType = System.Data.CommandType.Text;
+                command.CommandText = selectPersonas;
+                conexion.Open();
+                command.Connection = conexion;
+                SqlDataReader dataReader = command.ExecuteReader();
+                if (dataReader != null)
+                {
+                    while (dataReader.Read())
+                    {
+                        datosInfractor[0] = dataReader["nombreCompleto"].ToString();
+
+
+                        datosInfractor[1] = dataReader["direccionCompleta"].ToString();
+                        datosInfractor[2] = dataReader["tipo_documento"].ToString();
+                        datosInfractor[3] = dataReader["numero_documento"].ToString();
+
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
+            finally
+            {
+                conexion.Close();
+            }
+
+            return datosInfractor;
+        }
 
 
         public static List<TipoDocumentoItemVM> obtenerTiposDocumentos()

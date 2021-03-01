@@ -99,14 +99,14 @@
                                         <div class="input-group">
                                             <div class="form-group label-floating">
                                                 <label>
-                                                    Fecha
+                                                    Fecha de la Infracción
                                                     <small>(obligatorio)</small>
                                                 </label><br />
                                                 <div style="flex-direction: row; display: flex; flex-wrap:wrap">
 
                                                     <input class="datefield" data-val="true"
                                                            data-val-required="Date is required"
-                                                           name="ReleaseDate" type="date" id="fechaInf" required />
+                                                           name="ReleaseDate" type="date" id="fechaInf" min="1970-01-01" required />
                                                     <button class="btn btn-warning btn-xs"
                                                             type="button" style="margin-left:10px" id="btnFechaInf">
                                                         Llenar con día actual
@@ -118,7 +118,7 @@
                                         <div class="input-group">
                                             <div class="form-group has-error" id="divHora">
                                                 <label>
-                                                    Hora
+                                                    Hora de la Infracción
                                                     <small>(obligatorio)</small>
                                                     </br>
                                                 </label>
@@ -143,7 +143,7 @@
 
                                             <div class="form-group label-floating">
                                                 <label>
-                                                    Localidad
+                                                    Localidad de la Infracción
 
                                                 </label><br />
                                 
@@ -155,7 +155,7 @@
 
                                             <div class="form-group label-floating">
                                                 <label class="control-label">
-                                                    Dirección
+                                                    Dirección de la Infracción
                                                     <small>(obligatorio)</small>
                                                 </label>
                                                 <input name="direccion" type="text" class="form-control" id="direccionInfID" maxlength="50" onkeypress="return noAlfanumericos(event)">
@@ -166,7 +166,7 @@
                                         <div class="input-group">
                                             <div class="form-group label-floating">
                                                 <label class="control-label">
-                                                    Código postal
+                                                    Código postal de la Infracción
                                                     <small>(obligatorio)</small>
                                                 </label>
                                                 <input name="direccion" type="text" class="form-control" onkeypress="return isNumberKey(event);" id="codigoPostalInfID"  maxlength="10">
@@ -185,7 +185,7 @@
 
 
                                         <div class="input-group">
-                                            <div class="form-group label-floating">
+                                            <div class="form-group">
                                                 <label class="control-label">
                                                     Infracción
                                                     <small>(obligatorio)</small>
@@ -246,7 +246,7 @@
                                             <div class="form-group label-floating">
 
                                                 <label>
-                                                    Observaciones
+                                                    Observaciones de la Infracción
                                                 </label>
                                                 <textarea class="form-control" rows="5" maxlength="250" id="observacionesInfID" onkeypress="return validacionCampoObservaciones(event)"></textarea>
                                                 <br />
@@ -387,7 +387,7 @@
                                                     Nombre del titular
                                                     <small>(obligatorio)</small>
                                                 </label>
-                                                <input  maxlength="50" id="nombrePersona" name="direccion" type="text" class="form-control"  value=" " onkeypress="return lettersSpacesOnly(event)">
+                                                <input  maxlength="20" id="nombrePersona" name="direccion" type="text" class="form-control"  value=" " onkeypress="return lettersSpacesOnly(event)">
                                             </div>
                                         </div>
 
@@ -398,7 +398,7 @@
                                                     Apellido del titular
                                                     <small>(obligatorio)</small>
                                                 </label>
-                                                <input   id="apellidoPersona" name="direccion" type="text" class="form-control" value=" " maxlength="50" onkeypress="return lettersSpacesOnly(event)">
+                                                <input   id="apellidoPersona" name="direccion" type="text" class="form-control" value=" " maxlength="20" onkeypress="return lettersSpacesOnly(event)">
 
                                             </div>
                                         </div>
@@ -479,7 +479,7 @@
                                                     Nombre
                                                     <small>(obligatorio)</small>
                                                 </label>
-                                                <input name="direccion" type="text" class="form-control" id="nombreInfID" value=" " maxlength="50" onkeypress="return lettersSpacesOnly(event)">
+                                                <input name="direccion" type="text" class="form-control" id="nombreInfID" value=" " maxlength="20" onkeypress="return lettersSpacesOnly(event)">
                                             </div>
                                         </div>
 
@@ -490,7 +490,7 @@
                                                     Apellido
                                                     <small>(obligatorio)</small>
                                                 </label>
-                                                <input name="direccion" type="text" class="form-control" id="apellidoInfID" value=" " maxlength="50" onkeypress="return lettersSpacesOnly(event)">
+                                                <input name="direccion" type="text" class="form-control" id="apellidoInfID" value=" " maxlength="20" onkeypress="return lettersSpacesOnly(event)">
 
                                             </div>
                                         </div>

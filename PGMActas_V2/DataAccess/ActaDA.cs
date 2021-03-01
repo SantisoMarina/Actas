@@ -176,5 +176,52 @@ namespace PGMActas_V2.DataAccess
             return listaActasPersonaParticular;
         }
 
+
+        public static String[] obtenerActa(int numero_acta)
+        {
+            String[] datosActa = new String[4];
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+            SqlConnection conexion = new SqlConnection(cadenaConexion);
+
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                string selectPersonas = "SELECT a.numero_acta, a.fecha_acta, a.direccion_infraccion, p.nombre + ' '+p.apellido AS 'NombreCompletoInspector'" +
+                    " FROM Actas a "+
+                     " JOIN Inspectores i " +
+                     " ON a.id_inspector = i.id_inspector" +
+                     " JOIN Personas p " +
+                     " ON i.id_persona = p.id_persona" +
+                    " WHERE numero_acta = @numero_acta;";
+                command.Parameters.Clear();
+                command.Parameters.AddWithValue("@numero_acta", numero_acta);
+                command.CommandType = System.Data.CommandType.Text;
+                command.CommandText = selectPersonas;
+                conexion.Open();
+                command.Connection = conexion;
+                SqlDataReader dataReader = command.ExecuteReader();
+                if (dataReader != null)
+                {
+                    while (dataReader.Read())
+                    {
+                        datosActa[0] = dataReader["numero_acta"].ToString();
+                        datosActa[1] = dataReader["fecha_acta"].ToString();
+                        datosActa[2] = dataReader["direccion_infraccion"].ToString();
+                        datosActa[3] = dataReader["NombreCompletoInspector"].ToString();
+
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
+            finally
+            {
+                conexion.Close();
+            }
+
+            return datosActa;
+        }
     }
 }

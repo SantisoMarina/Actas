@@ -73,6 +73,94 @@ namespace PGMActas_V2.DataAccess
         }
 
 
+        public static List<Infraccion> obtenerListaInfraccionesPorActa(int numero_acta)
+        {
+            List<Infraccion> listaInfraccionesPorActa = new List<Infraccion>();
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+            SqlConnection conexion = new SqlConnection(cadenaConexion);
+
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                string selectInfraccion = "SELECT i.nomenclatura,  i.descripcion, i.monto_unitario " +
+                     " FROM Infracciones i " +
+                     " JOIN InfraccionesxActas ia " +
+                      " ON i.codigo_infraccion = ia.codigo_infraccion "+
+                      " where ia.numero_acta = @numero_acta; ";
+                command.Parameters.Clear();
+                command.Parameters.AddWithValue("@numero_acta", numero_acta);
+                command.CommandType = System.Data.CommandType.Text;
+                command.CommandText = selectInfraccion;
+                conexion.Open();
+                command.Connection = conexion;
+                SqlDataReader dataReader = command.ExecuteReader();
+                if (dataReader != null)
+                {
+                    while (dataReader.Read())
+                    {
+                        Infraccion inf = new Infraccion();
+                        inf.nomenclatura = dataReader["nomenclatura"].ToString();
+                        inf.descripcion = dataReader["descripcion"].ToString();
+                        inf.monto_unitario = double.Parse(dataReader["monto_unitario"].ToString());
+                        listaInfraccionesPorActa.Add(inf);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
+            finally
+            {
+                conexion.Close();
+            }
+
+            return listaInfraccionesPorActa;
+        }
+
+        public static String[] obtenerOrdenanza(int numero_acta)
+        {
+            String[] datosOrdenanza = new String[2];
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"].ToString();
+            SqlConnection conexion = new SqlConnection(cadenaConexion);
+
+            try
+            {
+                SqlCommand command = new SqlCommand();
+                string selectPersonas = "SELECT DISTINCT n.codigo_normativa, n.abreviatura " +
+                     "FROM Normativas n " +
+                    "JOIN Infracciones i on n.codigo_normativa = i.codigo_normativa " +
+                    "JOIN InfraccionesxActas ia on ia.codigo_infraccion = i.codigo_infraccion " +
+                    "WHERE ia.numero_acta = @numero_acta ";
+                command.Parameters.Clear();
+                command.Parameters.AddWithValue("@numero_acta", numero_acta);
+                command.CommandType = System.Data.CommandType.Text;
+                command.CommandText = selectPersonas;
+                conexion.Open();
+                command.Connection = conexion;
+                SqlDataReader dataReader = command.ExecuteReader();
+                if (dataReader != null)
+                {
+                    while (dataReader.Read())
+                    {
+                        datosOrdenanza[0] = dataReader["codigo_normativa"].ToString();
+                        datosOrdenanza[1] = dataReader["abreviatura"].ToString();  
+
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
+            finally
+            {
+                conexion.Close();
+            }
+
+            return datosOrdenanza;
+        }
+
 
     }
 }

@@ -44,12 +44,14 @@
     </table>
     </div>
     <script type="text/javascript">
+
         $(document).ready(function () {
 
             $('button.agregarInfraccion').click(function () {
                 var s = $(this).attr('id');
                 s = s.split('|');
-                $("#infraccionID").val(s[0]);
+
+                $("#infraccionID").val(s[0]);                
                 $("#codigoinfraccionID").val(s[1]);
                 !!$("#retuvoLicenciaID").val(!!s[2]);
                 !!$("#retuvoVehiculoID").val(!!s[3]);
@@ -57,6 +59,8 @@
                 $('#modalInfraccion').modal('toggle');
             })
         });
+
+   
 
     </script>
 

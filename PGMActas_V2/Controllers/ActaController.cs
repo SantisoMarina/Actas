@@ -41,6 +41,14 @@ namespace PGMActas_V2.Controllers
             return View();
         }
 
+         [HttpGet]
+         public ActionResult ActaCargada(int numero_acta)
+          {
+            ViewBag.numero_acta = numero_acta;
+              return View();
+          }
+
+
         //Vista Parciales de Infracciones
         [HttpGet]
         public PartialViewResult Infraccion()
